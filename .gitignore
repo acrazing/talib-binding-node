@@ -1,0 +1,12 @@
+lib/
+.idea/
+node_modules/
+temp/
+dist/
+*.log
+*.dat
+*.config.yaml
+*.out
+*.csv
+*.config.json
+cmake-build-debug/
