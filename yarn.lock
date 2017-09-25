@@ -134,6 +134,12 @@ json2ts@^0.0.7:
   dependencies:
     underscore "^1.8.3"
 
+known-types@^1.0.1:
+  version "1.0.1"
+  resolved "http://registry.npm.taobao.org/known-types/download/known-types-1.0.1.tgz#d80ab4cd133c8f8594f092e209f47150441bffcc"
+  dependencies:
+    tslib "^1.7.1"
+
 lcid@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/lcid/download/lcid-1.0.0.tgz#308accafa0bc483a3867b4b6f2b9506251d1b835"
@@ -350,6 +356,10 @@ strip-bom@^3.0.0:
 strip-eof@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/strip-eof/download/strip-eof-1.0.0.tgz#bb43ff5598a6eb05d89b59fcd129c983313606bf"
+
+tslib@^1.7.1:
+  version "1.7.1"
+  resolved "http://registry.npm.taobao.org/tslib/download/tslib-1.7.1.tgz#bc8004164691923a79fe8378bbeb3da2017538ec"
 
 underscore@^1.8.3:
   version "1.8.3"
