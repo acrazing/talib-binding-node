@@ -1,4 +1,4 @@
-src/
+lib/
 .idea/
 node_modules/
 temp/
@@ -9,3 +9,11 @@ dist/
 *.out
 *.csv
 *.config.json
+cmake-build-debug/
+node/
+build/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+ta_config.h
