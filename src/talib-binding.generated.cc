@@ -5,12 +5,6 @@
 #include <nan.h>
 #include "../ta-lib/c/include/ta_libc.h"
 
-static const v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
-static const v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
-static const v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
-static const v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
-static const v8::Local<v8::String> inVolumeName = Nan::New("Volume").ToLocalChecked();
-
 void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
@@ -53,13 +47,15 @@ void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -153,9 +149,10 @@ void TA_FUNC_ACOS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -236,15 +233,17 @@ void TA_FUNC_AD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
-        v8::Local<v8::Array> inVolume_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inVolumeName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::String> inVolumeName = Nan::New("Volume").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
-            inVolume[i] = inVolume_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inVolume[i] = inObject->Get(inVolumeName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -327,11 +326,11 @@ void TA_FUNC_ADD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     } else {
         v8::Local<v8::String> inReal0Name = info[1]->ToString();
         v8::Local<v8::String> inReal1Name = info[2]->ToString();
-        v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal0Name));
-        v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal1Name));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
+            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
         }
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
@@ -418,15 +417,17 @@ void TA_FUNC_ADOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
         endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
-        v8::Local<v8::Array> inVolume_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inVolumeName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::String> inVolumeName = Nan::New("Volume").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
-            inVolume[i] = inVolume_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inVolume[i] = inObject->Get(inVolumeName)->NumberValue();
         }
         optFast_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optFast_Period;
         optSlow_Period = argc > 5 && info[5]->IsInt32() ?  info[5]->Int32Value() : optSlow_Period;
@@ -514,13 +515,15 @@ void TA_FUNC_ADX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -605,13 +608,15 @@ void TA_FUNC_ADXR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -695,9 +700,10 @@ void TA_FUNC_APO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
         optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlow_Period;
@@ -779,11 +785,13 @@ void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
         optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -871,11 +879,13 @@ void TA_FUNC_AROONOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
         optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -951,9 +961,10 @@ void TA_FUNC_ASIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -1026,9 +1037,10 @@ void TA_FUNC_ATAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -1108,13 +1120,15 @@ void TA_FUNC_ATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -1200,15 +1214,17 @@ void TA_FUNC_AVGPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -1289,9 +1305,10 @@ void TA_FUNC_AVGDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -1377,9 +1394,10 @@ void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         optDeviations_up = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optDeviations_up;
@@ -1478,11 +1496,11 @@ void TA_FUNC_BETA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     } else {
         v8::Local<v8::String> inReal0Name = info[1]->ToString();
         v8::Local<v8::String> inReal1Name = info[2]->ToString();
-        v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal0Name));
-        v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal1Name));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
+            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
         }
         optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
@@ -1566,15 +1584,17 @@ void TA_FUNC_BOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -1660,13 +1680,15 @@ void TA_FUNC_CCI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -1752,15 +1774,17 @@ void TA_FUNC_CDL2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -1847,15 +1871,17 @@ void TA_FUNC_CDL3BLACKCROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -1942,15 +1968,17 @@ void TA_FUNC_CDL3INSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -2037,15 +2065,17 @@ void TA_FUNC_CDL3LINESTRIKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -2132,15 +2162,17 @@ void TA_FUNC_CDL3OUTSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -2227,15 +2259,17 @@ void TA_FUNC_CDL3STARSINSOUTH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -2322,15 +2356,17 @@ void TA_FUNC_CDL3WHITESOLDIERS(const Nan::FunctionCallbackInfo<v8::Value> &info)
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -2419,15 +2455,17 @@ void TA_FUNC_CDLABANDONEDBABY(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -2515,15 +2553,17 @@ void TA_FUNC_CDLADVANCEBLOCK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -2610,15 +2650,17 @@ void TA_FUNC_CDLBELTHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -2705,15 +2747,17 @@ void TA_FUNC_CDLBREAKAWAY(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -2800,15 +2844,17 @@ void TA_FUNC_CDLCLOSINGMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -2895,15 +2941,17 @@ void TA_FUNC_CDLCONCEALBABYSWALL(const Nan::FunctionCallbackInfo<v8::Value> &inf
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -2990,15 +3038,17 @@ void TA_FUNC_CDLCOUNTERATTACK(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -3087,15 +3137,17 @@ void TA_FUNC_CDLDARKCLOUDCOVER(const Nan::FunctionCallbackInfo<v8::Value> &info)
         startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -3183,15 +3235,17 @@ void TA_FUNC_CDLDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -3278,15 +3332,17 @@ void TA_FUNC_CDLDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -3373,15 +3429,17 @@ void TA_FUNC_CDLDRAGONFLYDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -3468,15 +3526,17 @@ void TA_FUNC_CDLENGULFING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -3565,15 +3625,17 @@ void TA_FUNC_CDLEVENINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
         startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -3663,15 +3725,17 @@ void TA_FUNC_CDLEVENINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -3759,15 +3823,17 @@ void TA_FUNC_CDLGAPSIDESIDEWHITE(const Nan::FunctionCallbackInfo<v8::Value> &inf
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -3854,15 +3920,17 @@ void TA_FUNC_CDLGRAVESTONEDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -3949,15 +4017,17 @@ void TA_FUNC_CDLHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -4044,15 +4114,17 @@ void TA_FUNC_CDLHANGINGMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -4139,15 +4211,17 @@ void TA_FUNC_CDLHARAMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -4234,15 +4308,17 @@ void TA_FUNC_CDLHARAMICROSS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -4329,15 +4405,17 @@ void TA_FUNC_CDLHIGHWAVE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -4424,15 +4502,17 @@ void TA_FUNC_CDLHIKKAKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -4519,15 +4599,17 @@ void TA_FUNC_CDLHIKKAKEMOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -4614,15 +4696,17 @@ void TA_FUNC_CDLHOMINGPIGEON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -4709,15 +4793,17 @@ void TA_FUNC_CDLIDENTICAL3CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -4804,15 +4890,17 @@ void TA_FUNC_CDLINNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -4899,15 +4987,17 @@ void TA_FUNC_CDLINVERTEDHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info)
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -4994,15 +5084,17 @@ void TA_FUNC_CDLKICKING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -5089,15 +5181,17 @@ void TA_FUNC_CDLKICKINGBYLENGTH(const Nan::FunctionCallbackInfo<v8::Value> &info
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -5184,15 +5278,17 @@ void TA_FUNC_CDLLADDERBOTTOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -5279,15 +5375,17 @@ void TA_FUNC_CDLLONGLEGGEDDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -5374,15 +5472,17 @@ void TA_FUNC_CDLLONGLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -5469,15 +5569,17 @@ void TA_FUNC_CDLMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -5564,15 +5666,17 @@ void TA_FUNC_CDLMATCHINGLOW(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -5661,15 +5765,17 @@ void TA_FUNC_CDLMATHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -5759,15 +5865,17 @@ void TA_FUNC_CDLMORNINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
         startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -5857,15 +5965,17 @@ void TA_FUNC_CDLMORNINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -5953,15 +6063,17 @@ void TA_FUNC_CDLONNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -6048,15 +6160,17 @@ void TA_FUNC_CDLPIERCING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -6143,15 +6257,17 @@ void TA_FUNC_CDLRICKSHAWMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -6238,15 +6354,17 @@ void TA_FUNC_CDLRISEFALL3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -6333,15 +6451,17 @@ void TA_FUNC_CDLSEPARATINGLINES(const Nan::FunctionCallbackInfo<v8::Value> &info
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -6428,15 +6548,17 @@ void TA_FUNC_CDLSHOOTINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -6523,15 +6645,17 @@ void TA_FUNC_CDLSHORTLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -6618,15 +6742,17 @@ void TA_FUNC_CDLSPINNINGTOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -6713,15 +6839,17 @@ void TA_FUNC_CDLSTALLEDPATTERN(const Nan::FunctionCallbackInfo<v8::Value> &info)
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -6808,15 +6936,17 @@ void TA_FUNC_CDLSTICKSANDWICH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -6903,15 +7033,17 @@ void TA_FUNC_CDLTAKURI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -6998,15 +7130,17 @@ void TA_FUNC_CDLTASUKIGAP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -7093,15 +7227,17 @@ void TA_FUNC_CDLTHRUSTING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -7188,15 +7324,17 @@ void TA_FUNC_CDLTRISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -7283,15 +7421,17 @@ void TA_FUNC_CDLUNIQUE3RIVER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -7378,15 +7518,17 @@ void TA_FUNC_CDLUPSIDEGAP2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -7473,15 +7615,17 @@ void TA_FUNC_CDLXSIDEGAP3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -7560,9 +7704,10 @@ void TA_FUNC_CEIL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -7637,9 +7782,10 @@ void TA_FUNC_CMO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -7719,11 +7865,11 @@ void TA_FUNC_CORREL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     } else {
         v8::Local<v8::String> inReal0Name = info[1]->ToString();
         v8::Local<v8::String> inReal1Name = info[2]->ToString();
-        v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal0Name));
-        v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal1Name));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
+            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
         }
         optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
@@ -7799,9 +7945,10 @@ void TA_FUNC_COS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -7874,9 +8021,10 @@ void TA_FUNC_COSH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -7951,9 +8099,10 @@ void TA_FUNC_DEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -8031,11 +8180,11 @@ void TA_FUNC_DIV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     } else {
         v8::Local<v8::String> inReal0Name = info[1]->ToString();
         v8::Local<v8::String> inReal1Name = info[2]->ToString();
-        v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal0Name));
-        v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal1Name));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
+            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
         }
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
@@ -8117,13 +8266,15 @@ void TA_FUNC_DX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -8203,9 +8354,10 @@ void TA_FUNC_EMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -8279,9 +8431,10 @@ void TA_FUNC_EXP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -8354,9 +8507,10 @@ void TA_FUNC_FLOOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -8429,9 +8583,10 @@ void TA_FUNC_HT_DCPERIOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -8504,9 +8659,10 @@ void TA_FUNC_HT_DCPHASE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -8581,9 +8737,10 @@ void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -8666,9 +8823,10 @@ void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -8749,9 +8907,10 @@ void TA_FUNC_HT_TRENDLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -8824,9 +8983,10 @@ void TA_FUNC_HT_TRENDMODE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -8903,11 +9063,13 @@ void TA_FUNC_IMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inOpenName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -8985,9 +9147,10 @@ void TA_FUNC_KAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -9063,9 +9226,10 @@ void TA_FUNC_LINEARREG(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -9141,9 +9305,10 @@ void TA_FUNC_LINEARREG_ANGLE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -9219,9 +9384,10 @@ void TA_FUNC_LINEARREG_INTERCEPT(const Nan::FunctionCallbackInfo<v8::Value> &inf
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -9297,9 +9463,10 @@ void TA_FUNC_LINEARREG_SLOPE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -9373,9 +9540,10 @@ void TA_FUNC_LN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -9448,9 +9616,10 @@ void TA_FUNC_LOG10(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -9527,9 +9696,10 @@ void TA_FUNC_MA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         optMA_Type = argc > 2 && info[2]->IsInt32() ? (TA_MAType)  info[2]->Int32Value() : optMA_Type;
@@ -9614,9 +9784,10 @@ void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
         optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlow_Period;
@@ -9724,9 +9895,10 @@ void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 8 && info[8]->IsInt32() ? info[8]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
         optFast_MA = argc > 2 && info[2]->IsInt32() ? (TA_MAType)  info[2]->Int32Value() : optFast_MA;
@@ -9827,9 +9999,10 @@ void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optSignal_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optSignal_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -9925,9 +10098,10 @@ void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optFast_Limit = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optFast_Limit;
         optSlow_Limit = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optSlow_Limit;
@@ -10020,11 +10194,11 @@ void TA_FUNC_MAVP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
         v8::Local<v8::String> inPeriodsName = info[2]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
-        v8::Local<v8::Array> inPeriods_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inPeriodsName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
-            inPeriods[i] = inPeriods_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inPeriods[i] = inObject->Get(inPeriodsName)->NumberValue();
         }
         optMinimum_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optMinimum_Period;
         optMaximum_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optMaximum_Period;
@@ -10104,9 +10278,10 @@ void TA_FUNC_MAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -10182,9 +10357,10 @@ void TA_FUNC_MAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -10260,11 +10436,13 @@ void TA_FUNC_MEDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -10349,15 +10527,17 @@ void TA_FUNC_MFI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
-        v8::Local<v8::Array> inVolume_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inVolumeName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::String> inVolumeName = Nan::New("Volume").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
-            inVolume[i] = inVolume_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inVolume[i] = inObject->Get(inVolumeName)->NumberValue();
         }
         optTime_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -10439,9 +10619,10 @@ void TA_FUNC_MIDPOINT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -10519,11 +10700,13 @@ void TA_FUNC_MIDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
         optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -10601,9 +10784,10 @@ void TA_FUNC_MIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -10679,9 +10863,10 @@ void TA_FUNC_MININDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -10759,9 +10944,10 @@ void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -10847,9 +11033,10 @@ void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -10938,13 +11125,15 @@ void TA_FUNC_MINUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -11026,11 +11215,13 @@ void TA_FUNC_MINUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
         optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -11108,9 +11299,10 @@ void TA_FUNC_MOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -11188,11 +11380,11 @@ void TA_FUNC_MULT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     } else {
         v8::Local<v8::String> inReal0Name = info[1]->ToString();
         v8::Local<v8::String> inReal1Name = info[2]->ToString();
-        v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal0Name));
-        v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal1Name));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
+            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
         }
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
@@ -11274,13 +11466,15 @@ void TA_FUNC_NATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -11361,11 +11555,12 @@ void TA_FUNC_OBV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
-        v8::Local<v8::Array> inVolume_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inVolumeName));
+        v8::Local<v8::String> inVolumeName = Nan::New("Volume").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
-            inVolume[i] = inVolume_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inVolume[i] = inObject->Get(inVolumeName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -11447,13 +11642,15 @@ void TA_FUNC_PLUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -11535,11 +11732,13 @@ void TA_FUNC_PLUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
         optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -11621,9 +11820,10 @@ void TA_FUNC_PPO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
         optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlow_Period;
@@ -11701,9 +11901,10 @@ void TA_FUNC_ROC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -11779,9 +11980,10 @@ void TA_FUNC_ROCP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -11857,9 +12059,10 @@ void TA_FUNC_ROCR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -11935,9 +12138,10 @@ void TA_FUNC_ROCR100(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -12013,9 +12217,10 @@ void TA_FUNC_RSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -12095,11 +12300,13 @@ void TA_FUNC_SAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
         optAcceleration_Factor = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optAcceleration_Factor;
         optAF_Maximum = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optAF_Maximum;
@@ -12194,11 +12401,13 @@ void TA_FUNC_SAREXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 10 && info[10]->IsInt32() ? info[10]->Int32Value() : startIdx;
         endIdx = argc > 11 && info[11]->IsInt32() ? info[11]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
         optStart_Value = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optStart_Value;
         optOffset_on_Reverse = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optOffset_on_Reverse;
@@ -12281,9 +12490,10 @@ void TA_FUNC_SIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -12356,9 +12566,10 @@ void TA_FUNC_SINH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -12433,9 +12644,10 @@ void TA_FUNC_SMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -12509,9 +12721,10 @@ void TA_FUNC_SQRT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -12588,9 +12801,10 @@ void TA_FUNC_STDDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         optDeviations = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optDeviations;
@@ -12682,13 +12896,15 @@ void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 8 && info[8]->IsInt32() ? info[8]->Int32Value() : startIdx;
         endIdx = argc > 9 && info[9]->IsInt32() ? info[9]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optFastK_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFastK_Period;
         optSlowK_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSlowK_Period;
@@ -12791,13 +13007,15 @@ void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
         endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optFastK_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFastK_Period;
         optFastD_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optFastD_Period;
@@ -12895,9 +13113,10 @@ void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         optFastK_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFastK_Period;
@@ -12986,11 +13205,11 @@ void TA_FUNC_SUB(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     } else {
         v8::Local<v8::String> inReal0Name = info[1]->ToString();
         v8::Local<v8::String> inReal1Name = info[2]->ToString();
-        v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal0Name));
-        v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inReal1Name));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
+            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
         }
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
@@ -13067,9 +13286,10 @@ void TA_FUNC_SUM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -13147,9 +13367,10 @@ void TA_FUNC_T3(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         optVolume_Factor = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optVolume_Factor;
@@ -13224,9 +13445,10 @@ void TA_FUNC_TAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -13299,9 +13521,10 @@ void TA_FUNC_TANH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
@@ -13376,9 +13599,10 @@ void TA_FUNC_TEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -13457,13 +13681,15 @@ void TA_FUNC_TRANGE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -13542,9 +13768,10 @@ void TA_FUNC_TRIMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -13620,9 +13847,10 @@ void TA_FUNC_TRIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -13698,9 +13926,10 @@ void TA_FUNC_TSF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
@@ -13779,13 +14008,15 @@ void TA_FUNC_TYPPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -13873,13 +14104,15 @@ void TA_FUNC_ULTOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
         endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optFirst_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFirst_Period;
         optSecond_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSecond_Period;
@@ -13963,9 +14196,10 @@ void TA_FUNC_VAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         optDeviations = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optDeviations;
@@ -14045,13 +14279,15 @@ void TA_FUNC_WCLPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
@@ -14135,13 +14371,15 @@ void TA_FUNC_WILLR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
     } else {
-        v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inHighName));
-        v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inLowName));
-        v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inCloseName));
+        v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
+        v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
+        v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inHigh[i] = inObject->Get(inHighName)->NumberValue();
+            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
         optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
@@ -14221,9 +14459,10 @@ void TA_FUNC_WMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     } else {
         v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(inFirst->Get(inRealName));
+        v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inObject = inFirst->Get(i)->ToObject();
+            inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
         optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;

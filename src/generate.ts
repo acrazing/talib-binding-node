@@ -236,12 +236,6 @@ export function generateBindings() {
         '#include <nan.h>',
         '#include "../ta-lib/c/include/ta_libc.h"',
         '',
-        'static const v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();',
-        'static const v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();',
-        'static const v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();',
-        'static const v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();',
-        'static const v8::Local<v8::String> inVolumeName = Nan::New("Volume").ToLocalChecked();',
-        '',
     )
     const footer = new ContentBuilder()
     footer
@@ -253,7 +247,7 @@ export function generateBindings() {
         .normal('return;')
         .undent('}')
     const config: TaFuncApiXml = require('./ta_func_api.generated.json')
-    config.FinancialFunctions.FinancialFunction.slice(0).forEach((func) => {
+    config.FinancialFunctions.FinancialFunction.filter((func) => !!func).forEach((func) => {
         const name = func.Abbreviation[0]
         const required: RequiredInputArgument[] = func.RequiredInputArguments
             ? func.RequiredInputArguments.reduce((prev, curr) => {
@@ -339,16 +333,17 @@ export function generateBindings() {
                 return `${name} = argc > ${index} && info[${index}]->IsInt32() ? info[${index}]->Int32Value() : ${name};`
             }))
             .undent('} else {')
-            .indent(...doubleRequired.map((argv, index) => {
-                return `v8::Local<v8::String> ${inName(argv)}Name = info[${index + 1}]->ToString();`
+            .indent(...required.map((argv, index) => {
+                const ctor = doubleRequired.indexOf(argv) === -1
+                    ? `Nan::New("${argv.Type[0]}").ToLocalChecked()`
+                    : `info[${index + 1}]->ToString()`
+                return `v8::Local<v8::String> ${inName(argv)}Name = ${ctor};`
             }))
-            .normal(...required.map((argv) => {
-                return `v8::Local<v8::Array> ${jsInName(argv)} `
-                    + `= v8::Local<v8::Array>::Cast(inFirst->Get(${inName(argv)}Name));`
-            }))
+            .normal(`v8::Local<v8::Object> inObject;`)
             .normal('for (i = 0; i < (uint32_t) inLength; i++) {')
-            .indent(...required.map((argv) => {
-                return `${inName(argv)}[i] = ${jsInName(argv)}->Get(i)->NumberValue();`
+            .indent('inObject = inFirst->Get(i)->ToObject();')
+            .normal(...required.map((argv) => {
+                return `${inName(argv)}[i] = inObject->Get(${inName(argv)}Name)->NumberValue();`
             }))
             .undent('}')
             .normal(...optional.map((argv, index) => {
