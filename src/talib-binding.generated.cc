@@ -57,9 +57,13 @@ void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ACCBANDS_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -157,6 +161,10 @@ void TA_FUNC_ACOS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_ACOS_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -248,6 +256,10 @@ void TA_FUNC_AD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_AD_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -334,6 +346,10 @@ void TA_FUNC_ADD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ADD_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -429,10 +445,14 @@ void TA_FUNC_ADOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
             inVolume[i] = inObject->Get(inVolumeName)->NumberValue();
         }
-        optFast_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 5 && info[5]->IsInt32() ?  info[5]->Int32Value() : optSlow_Period;
+        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
+        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlow_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ADOSC_Lookback(optFast_Period, optSlow_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -525,9 +545,13 @@ void TA_FUNC_ADX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ADX_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -618,9 +642,13 @@ void TA_FUNC_ADXR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ADXR_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -705,11 +733,15 @@ void TA_FUNC_APO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlow_Period;
-        optMA_Type = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optMA_Type;
+        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFast_Period;
+        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optSlow_Period;
+        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optMA_Type;
         startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_APO_Lookback(optFast_Period, optSlow_Period, optMA_Type);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -793,9 +825,13 @@ void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inHigh[i] = inObject->Get(inHighName)->NumberValue();
             inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_AROON_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -887,9 +923,13 @@ void TA_FUNC_AROONOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inHigh[i] = inObject->Get(inHighName)->NumberValue();
             inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_AROONOSC_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -969,6 +1009,10 @@ void TA_FUNC_ASIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_ASIN_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -1044,6 +1088,10 @@ void TA_FUNC_ATAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ATAN_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -1130,9 +1178,13 @@ void TA_FUNC_ATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ATR_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -1229,6 +1281,10 @@ void TA_FUNC_AVGPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_AVGPRICE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -1310,9 +1366,13 @@ void TA_FUNC_AVGDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_AVGDEV_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -1399,12 +1459,16 @@ void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optDeviations_up = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optDeviations_up;
-        optDeviations_down = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optDeviations_down;
-        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optMA_Type;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optDeviations_up = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optDeviations_up;
+        optDeviations_down = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optDeviations_down;
+        optMA_Type = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optMA_Type;
         startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
         endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_BBANDS_Lookback(optTime_Period, optDeviations_up, optDeviations_down, optMA_Type);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -1502,9 +1566,13 @@ void TA_FUNC_BETA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
             inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_BETA_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -1599,6 +1667,10 @@ void TA_FUNC_BOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_BOP_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -1690,9 +1762,13 @@ void TA_FUNC_CCI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CCI_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -1788,6 +1864,10 @@ void TA_FUNC_CDL2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDL2CROWS_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -1886,6 +1966,10 @@ void TA_FUNC_CDL3BLACKCROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDL3BLACKCROWS_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -1982,6 +2066,10 @@ void TA_FUNC_CDL3INSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDL3INSIDE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -2080,6 +2168,10 @@ void TA_FUNC_CDL3LINESTRIKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDL3LINESTRIKE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -2176,6 +2268,10 @@ void TA_FUNC_CDL3OUTSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDL3OUTSIDE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -2274,6 +2370,10 @@ void TA_FUNC_CDL3STARSINSOUTH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDL3STARSINSOUTH_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -2371,6 +2471,10 @@ void TA_FUNC_CDL3WHITESOLDIERS(const Nan::FunctionCallbackInfo<v8::Value> &info)
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDL3WHITESOLDIERS_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -2467,9 +2571,13 @@ void TA_FUNC_CDLABANDONEDBABY(const Nan::FunctionCallbackInfo<v8::Value> &info) 
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLABANDONEDBABY_Lookback(optPenetration);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -2568,6 +2676,10 @@ void TA_FUNC_CDLADVANCEBLOCK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLADVANCEBLOCK_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -2664,6 +2776,10 @@ void TA_FUNC_CDLBELTHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLBELTHOLD_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -2762,6 +2878,10 @@ void TA_FUNC_CDLBREAKAWAY(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLBREAKAWAY_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -2858,6 +2978,10 @@ void TA_FUNC_CDLCLOSINGMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLCLOSINGMARUBOZU_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -2956,6 +3080,10 @@ void TA_FUNC_CDLCONCEALBABYSWALL(const Nan::FunctionCallbackInfo<v8::Value> &inf
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLCONCEALBABYSWALL_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -3053,6 +3181,10 @@ void TA_FUNC_CDLCOUNTERATTACK(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLCOUNTERATTACK_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -3149,9 +3281,13 @@ void TA_FUNC_CDLDARKCLOUDCOVER(const Nan::FunctionCallbackInfo<v8::Value> &info)
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLDARKCLOUDCOVER_Lookback(optPenetration);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -3250,6 +3386,10 @@ void TA_FUNC_CDLDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLDOJI_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -3346,6 +3486,10 @@ void TA_FUNC_CDLDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLDOJISTAR_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -3444,6 +3588,10 @@ void TA_FUNC_CDLDRAGONFLYDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLDRAGONFLYDOJI_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -3541,6 +3689,10 @@ void TA_FUNC_CDLENGULFING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLENGULFING_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -3637,9 +3789,13 @@ void TA_FUNC_CDLEVENINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLEVENINGDOJISTAR_Lookback(optPenetration);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -3737,9 +3893,13 @@ void TA_FUNC_CDLEVENINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLEVENINGSTAR_Lookback(optPenetration);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -3838,6 +3998,10 @@ void TA_FUNC_CDLGAPSIDESIDEWHITE(const Nan::FunctionCallbackInfo<v8::Value> &inf
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLGAPSIDESIDEWHITE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -3934,6 +4098,10 @@ void TA_FUNC_CDLGRAVESTONEDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLGRAVESTONEDOJI_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -4032,6 +4200,10 @@ void TA_FUNC_CDLHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLHAMMER_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -4128,6 +4300,10 @@ void TA_FUNC_CDLHANGINGMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLHANGINGMAN_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -4226,6 +4402,10 @@ void TA_FUNC_CDLHARAMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLHARAMI_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -4322,6 +4502,10 @@ void TA_FUNC_CDLHARAMICROSS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLHARAMICROSS_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -4420,6 +4604,10 @@ void TA_FUNC_CDLHIGHWAVE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLHIGHWAVE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -4516,6 +4704,10 @@ void TA_FUNC_CDLHIKKAKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLHIKKAKE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -4614,6 +4806,10 @@ void TA_FUNC_CDLHIKKAKEMOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLHIKKAKEMOD_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -4710,6 +4906,10 @@ void TA_FUNC_CDLHOMINGPIGEON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLHOMINGPIGEON_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -4808,6 +5008,10 @@ void TA_FUNC_CDLIDENTICAL3CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLIDENTICAL3CROWS_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -4904,6 +5108,10 @@ void TA_FUNC_CDLINNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLINNECK_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -5002,6 +5210,10 @@ void TA_FUNC_CDLINVERTEDHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info)
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLINVERTEDHAMMER_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -5098,6 +5310,10 @@ void TA_FUNC_CDLKICKING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLKICKING_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -5196,6 +5412,10 @@ void TA_FUNC_CDLKICKINGBYLENGTH(const Nan::FunctionCallbackInfo<v8::Value> &info
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLKICKINGBYLENGTH_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -5292,6 +5512,10 @@ void TA_FUNC_CDLLADDERBOTTOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLLADDERBOTTOM_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -5390,6 +5614,10 @@ void TA_FUNC_CDLLONGLEGGEDDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLLONGLEGGEDDOJI_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -5486,6 +5714,10 @@ void TA_FUNC_CDLLONGLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLLONGLINE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -5584,6 +5816,10 @@ void TA_FUNC_CDLMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLMARUBOZU_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -5681,6 +5917,10 @@ void TA_FUNC_CDLMATCHINGLOW(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLMATCHINGLOW_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -5777,9 +6017,13 @@ void TA_FUNC_CDLMATHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLMATHOLD_Lookback(optPenetration);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -5877,9 +6121,13 @@ void TA_FUNC_CDLMORNINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLMORNINGDOJISTAR_Lookback(optPenetration);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -5977,9 +6225,13 @@ void TA_FUNC_CDLMORNINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLMORNINGSTAR_Lookback(optPenetration);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -6078,6 +6330,10 @@ void TA_FUNC_CDLONNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLONNECK_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -6174,6 +6430,10 @@ void TA_FUNC_CDLPIERCING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLPIERCING_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -6272,6 +6532,10 @@ void TA_FUNC_CDLRICKSHAWMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLRICKSHAWMAN_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -6368,6 +6632,10 @@ void TA_FUNC_CDLRISEFALL3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLRISEFALL3METHODS_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -6466,6 +6734,10 @@ void TA_FUNC_CDLSEPARATINGLINES(const Nan::FunctionCallbackInfo<v8::Value> &info
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLSEPARATINGLINES_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -6562,6 +6834,10 @@ void TA_FUNC_CDLSHOOTINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLSHOOTINGSTAR_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -6660,6 +6936,10 @@ void TA_FUNC_CDLSHORTLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLSHORTLINE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -6756,6 +7036,10 @@ void TA_FUNC_CDLSPINNINGTOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLSPINNINGTOP_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -6854,6 +7138,10 @@ void TA_FUNC_CDLSTALLEDPATTERN(const Nan::FunctionCallbackInfo<v8::Value> &info)
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLSTALLEDPATTERN_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -6950,6 +7238,10 @@ void TA_FUNC_CDLSTICKSANDWICH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLSTICKSANDWICH_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -7048,6 +7340,10 @@ void TA_FUNC_CDLTAKURI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLTAKURI_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -7144,6 +7440,10 @@ void TA_FUNC_CDLTASUKIGAP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLTASUKIGAP_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -7242,6 +7542,10 @@ void TA_FUNC_CDLTHRUSTING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLTHRUSTING_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -7338,6 +7642,10 @@ void TA_FUNC_CDLTRISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLTRISTAR_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -7436,6 +7744,10 @@ void TA_FUNC_CDLUNIQUE3RIVER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLUNIQUE3RIVER_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -7532,6 +7844,10 @@ void TA_FUNC_CDLUPSIDEGAP2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CDLUPSIDEGAP2CROWS_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -7630,6 +7946,10 @@ void TA_FUNC_CDLXSIDEGAP3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CDLXSIDEGAP3METHODS_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -7712,6 +8032,10 @@ void TA_FUNC_CEIL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_CEIL_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -7787,9 +8111,13 @@ void TA_FUNC_CMO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CMO_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -7871,9 +8199,13 @@ void TA_FUNC_CORREL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
             inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_CORREL_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -7953,6 +8285,10 @@ void TA_FUNC_COS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_COS_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -8029,6 +8365,10 @@ void TA_FUNC_COSH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_COSH_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -8104,9 +8444,13 @@ void TA_FUNC_DEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_DEMA_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -8188,6 +8532,10 @@ void TA_FUNC_DIV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_DIV_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -8276,9 +8624,13 @@ void TA_FUNC_DX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_DX_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -8359,9 +8711,13 @@ void TA_FUNC_EMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_EMA_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -8439,6 +8795,10 @@ void TA_FUNC_EXP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_EXP_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -8514,6 +8874,10 @@ void TA_FUNC_FLOOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_FLOOR_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -8591,6 +8955,10 @@ void TA_FUNC_HT_DCPERIOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_HT_DCPERIOD_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -8666,6 +9034,10 @@ void TA_FUNC_HT_DCPHASE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_HT_DCPHASE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -8744,6 +9116,10 @@ void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_HT_PHASOR_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -8831,6 +9207,10 @@ void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_HT_SINE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -8915,6 +9295,10 @@ void TA_FUNC_HT_TRENDLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_HT_TRENDLINE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -8990,6 +9374,10 @@ void TA_FUNC_HT_TRENDMODE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_HT_TRENDMODE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -9071,9 +9459,13 @@ void TA_FUNC_IMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inOpen[i] = inObject->Get(inOpenName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_IMI_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -9152,9 +9544,13 @@ void TA_FUNC_KAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_KAMA_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -9231,9 +9627,13 @@ void TA_FUNC_LINEARREG(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_LINEARREG_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -9310,9 +9710,13 @@ void TA_FUNC_LINEARREG_ANGLE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_LINEARREG_ANGLE_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -9389,9 +9793,13 @@ void TA_FUNC_LINEARREG_INTERCEPT(const Nan::FunctionCallbackInfo<v8::Value> &inf
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_LINEARREG_INTERCEPT_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -9468,9 +9876,13 @@ void TA_FUNC_LINEARREG_SLOPE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_LINEARREG_SLOPE_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -9548,6 +9960,10 @@ void TA_FUNC_LN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_LN_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -9623,6 +10039,10 @@ void TA_FUNC_LOG10(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_LOG10_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -9701,10 +10121,14 @@ void TA_FUNC_MA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optMA_Type = argc > 2 && info[2]->IsInt32() ? (TA_MAType)  info[2]->Int32Value() : optMA_Type;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optMA_Type = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optMA_Type;
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MA_Lookback(optTime_Period, optMA_Type);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -9789,11 +10213,15 @@ void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlow_Period;
-        optSignal_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optSignal_Period;
+        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFast_Period;
+        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optSlow_Period;
+        optSignal_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSignal_Period;
         startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MACD_Lookback(optFast_Period, optSlow_Period, optSignal_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -9900,14 +10328,18 @@ void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
-        optFast_MA = argc > 2 && info[2]->IsInt32() ? (TA_MAType)  info[2]->Int32Value() : optFast_MA;
-        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optSlow_Period;
-        optSlow_MA = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optSlow_MA;
-        optSignal_Period = argc > 5 && info[5]->IsInt32() ?  info[5]->Int32Value() : optSignal_Period;
-        optSignal_MA = argc > 6 && info[6]->IsInt32() ? (TA_MAType)  info[6]->Int32Value() : optSignal_MA;
+        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFast_Period;
+        optFast_MA = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optFast_MA;
+        optSlow_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSlow_Period;
+        optSlow_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optSlow_MA;
+        optSignal_Period = argc > 6 && info[6]->IsInt32() ?  info[6]->Int32Value() : optSignal_Period;
+        optSignal_MA = argc > 7 && info[7]->IsInt32() ? (TA_MAType)  info[7]->Int32Value() : optSignal_MA;
         startIdx = argc > 8 && info[8]->IsInt32() ? info[8]->Int32Value() : startIdx;
         endIdx = argc > 9 && info[9]->IsInt32() ? info[9]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MACDEXT_Lookback(optFast_Period, optFast_MA, optSlow_Period, optSlow_MA, optSignal_Period, optSignal_MA);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10004,9 +10436,13 @@ void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optSignal_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optSignal_Period;
+        optSignal_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSignal_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MACDFIX_Lookback(optSignal_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10103,10 +10539,14 @@ void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optFast_Limit = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optFast_Limit;
-        optSlow_Limit = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optSlow_Limit;
+        optFast_Limit = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optFast_Limit;
+        optSlow_Limit = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optSlow_Limit;
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MAMA_Lookback(optFast_Limit, optSlow_Limit);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10200,11 +10640,15 @@ void TA_FUNC_MAVP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inReal[i] = inObject->Get(inRealName)->NumberValue();
             inPeriods[i] = inObject->Get(inPeriodsName)->NumberValue();
         }
-        optMinimum_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optMinimum_Period;
-        optMaximum_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optMaximum_Period;
-        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optMA_Type;
+        optMinimum_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optMinimum_Period;
+        optMaximum_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optMaximum_Period;
+        optMA_Type = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optMA_Type;
         startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
         endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MAVP_Lookback(optMinimum_Period, optMaximum_Period, optMA_Type);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10283,9 +10727,13 @@ void TA_FUNC_MAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MAX_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10362,9 +10810,13 @@ void TA_FUNC_MAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MAXINDEX_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10446,6 +10898,10 @@ void TA_FUNC_MEDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MEDPRICE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10539,9 +10995,13 @@ void TA_FUNC_MFI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
             inVolume[i] = inObject->Get(inVolumeName)->NumberValue();
         }
-        optTime_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MFI_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10624,9 +11084,13 @@ void TA_FUNC_MIDPOINT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MIDPOINT_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10708,9 +11172,13 @@ void TA_FUNC_MIDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inHigh[i] = inObject->Get(inHighName)->NumberValue();
             inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MIDPRICE_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10789,9 +11257,13 @@ void TA_FUNC_MIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MIN_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10868,9 +11340,13 @@ void TA_FUNC_MININDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MININDEX_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -10949,9 +11425,13 @@ void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MINMAX_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11038,9 +11518,13 @@ void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MINMAXINDEX_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11135,9 +11619,13 @@ void TA_FUNC_MINUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MINUS_DI_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11223,9 +11711,13 @@ void TA_FUNC_MINUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inHigh[i] = inObject->Get(inHighName)->NumberValue();
             inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MINUS_DM_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11304,9 +11796,13 @@ void TA_FUNC_MOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MOM_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11388,6 +11884,10 @@ void TA_FUNC_MULT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_MULT_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11476,9 +11976,13 @@ void TA_FUNC_NATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_NATR_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11564,6 +12068,10 @@ void TA_FUNC_OBV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_OBV_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11652,9 +12160,13 @@ void TA_FUNC_PLUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_PLUS_DI_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11740,9 +12252,13 @@ void TA_FUNC_PLUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inHigh[i] = inObject->Get(inHighName)->NumberValue();
             inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_PLUS_DM_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11825,11 +12341,15 @@ void TA_FUNC_PPO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlow_Period;
-        optMA_Type = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optMA_Type;
+        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFast_Period;
+        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optSlow_Period;
+        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optMA_Type;
         startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
         endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_PPO_Lookback(optFast_Period, optSlow_Period, optMA_Type);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11906,9 +12426,13 @@ void TA_FUNC_ROC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ROC_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -11985,9 +12509,13 @@ void TA_FUNC_ROCP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ROCP_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -12064,9 +12592,13 @@ void TA_FUNC_ROCR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ROCR_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -12143,9 +12675,13 @@ void TA_FUNC_ROCR100(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ROCR100_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -12222,9 +12758,13 @@ void TA_FUNC_RSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_RSI_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -12308,10 +12848,14 @@ void TA_FUNC_SAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inHigh[i] = inObject->Get(inHighName)->NumberValue();
             inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
-        optAcceleration_Factor = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optAcceleration_Factor;
-        optAF_Maximum = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optAF_Maximum;
+        optAcceleration_Factor = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optAcceleration_Factor;
+        optAF_Maximum = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optAF_Maximum;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_SAR_Lookback(optAcceleration_Factor, optAF_Maximum);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -12409,16 +12953,20 @@ void TA_FUNC_SAREXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inHigh[i] = inObject->Get(inHighName)->NumberValue();
             inLow[i] = inObject->Get(inLowName)->NumberValue();
         }
-        optStart_Value = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optStart_Value;
-        optOffset_on_Reverse = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optOffset_on_Reverse;
-        optAF_Init_Long = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optAF_Init_Long;
-        optAF_Long = argc > 5 && info[5]->IsNumber() ?  info[5]->NumberValue() : optAF_Long;
-        optAF_Max_Long = argc > 6 && info[6]->IsNumber() ?  info[6]->NumberValue() : optAF_Max_Long;
-        optAF_Init_Short = argc > 7 && info[7]->IsNumber() ?  info[7]->NumberValue() : optAF_Init_Short;
-        optAF_Short = argc > 8 && info[8]->IsNumber() ?  info[8]->NumberValue() : optAF_Short;
-        optAF_Max_Short = argc > 9 && info[9]->IsNumber() ?  info[9]->NumberValue() : optAF_Max_Short;
+        optStart_Value = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optStart_Value;
+        optOffset_on_Reverse = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optOffset_on_Reverse;
+        optAF_Init_Long = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optAF_Init_Long;
+        optAF_Long = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optAF_Long;
+        optAF_Max_Long = argc > 5 && info[5]->IsNumber() ?  info[5]->NumberValue() : optAF_Max_Long;
+        optAF_Init_Short = argc > 6 && info[6]->IsNumber() ?  info[6]->NumberValue() : optAF_Init_Short;
+        optAF_Short = argc > 7 && info[7]->IsNumber() ?  info[7]->NumberValue() : optAF_Short;
+        optAF_Max_Short = argc > 8 && info[8]->IsNumber() ?  info[8]->NumberValue() : optAF_Max_Short;
         startIdx = argc > 9 && info[9]->IsInt32() ? info[9]->Int32Value() : startIdx;
         endIdx = argc > 10 && info[10]->IsInt32() ? info[10]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_SAREXT_Lookback(optStart_Value, optOffset_on_Reverse, optAF_Init_Long, optAF_Long, optAF_Max_Long, optAF_Init_Short, optAF_Short, optAF_Max_Short);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -12498,6 +13046,10 @@ void TA_FUNC_SIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_SIN_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -12574,6 +13126,10 @@ void TA_FUNC_SINH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_SINH_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -12649,9 +13205,13 @@ void TA_FUNC_SMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_SMA_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -12728,6 +13288,10 @@ void TA_FUNC_SQRT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_SQRT_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -12806,10 +13370,14 @@ void TA_FUNC_STDDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optDeviations = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optDeviations;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optDeviations = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optDeviations;
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_STDDEV_Lookback(optTime_Period, optDeviations);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -12906,13 +13474,17 @@ void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optFastK_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFastK_Period;
-        optSlowK_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSlowK_Period;
-        optSlowK_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optSlowK_MA;
-        optSlowD_Period = argc > 6 && info[6]->IsInt32() ?  info[6]->Int32Value() : optSlowD_Period;
-        optSlowD_MA = argc > 7 && info[7]->IsInt32() ? (TA_MAType)  info[7]->Int32Value() : optSlowD_MA;
+        optFastK_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFastK_Period;
+        optSlowK_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlowK_Period;
+        optSlowK_MA = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optSlowK_MA;
+        optSlowD_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSlowD_Period;
+        optSlowD_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optSlowD_MA;
         startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
         endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_STOCH_Lookback(optFastK_Period, optSlowK_Period, optSlowK_MA, optSlowD_Period, optSlowD_MA);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -13017,11 +13589,15 @@ void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optFastK_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFastK_Period;
-        optFastD_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optFastD_Period;
-        optFastD_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optFastD_MA;
+        optFastK_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFastK_Period;
+        optFastD_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFastD_Period;
+        optFastD_MA = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optFastD_MA;
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_STOCHF_Lookback(optFastK_Period, optFastD_Period, optFastD_MA);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -13118,12 +13694,16 @@ void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optFastK_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFastK_Period;
-        optFastD_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFastD_Period;
-        optFastD_MA = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optFastD_MA;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optFastK_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFastK_Period;
+        optFastD_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optFastD_Period;
+        optFastD_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optFastD_MA;
         startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
         endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_STOCHRSI_Lookback(optTime_Period, optFastK_Period, optFastD_Period, optFastD_MA);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -13214,6 +13794,10 @@ void TA_FUNC_SUB(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_SUB_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -13291,9 +13875,13 @@ void TA_FUNC_SUM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_SUM_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -13372,10 +13960,14 @@ void TA_FUNC_T3(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optVolume_Factor = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optVolume_Factor;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optVolume_Factor = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optVolume_Factor;
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_T3_Lookback(optTime_Period, optVolume_Factor);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -13453,6 +14045,10 @@ void TA_FUNC_TAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_TAN_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -13529,6 +14125,10 @@ void TA_FUNC_TANH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_TANH_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -13604,9 +14204,13 @@ void TA_FUNC_TEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_TEMA_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -13694,6 +14298,10 @@ void TA_FUNC_TRANGE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
     }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
+    }
     int lookback = TA_TRANGE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
     outLength = temp > endIdx ? 0 : endIdx - temp + 1;
@@ -13773,9 +14381,13 @@ void TA_FUNC_TRIMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_TRIMA_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -13852,9 +14464,13 @@ void TA_FUNC_TRIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_TRIX_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -13931,9 +14547,13 @@ void TA_FUNC_TSF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_TSF_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -14020,6 +14640,10 @@ void TA_FUNC_TYPPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_TYPPRICE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -14114,11 +14738,15 @@ void TA_FUNC_ULTOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optFirst_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFirst_Period;
-        optSecond_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSecond_Period;
-        optThird_Period = argc > 5 && info[5]->IsInt32() ?  info[5]->Int32Value() : optThird_Period;
+        optFirst_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFirst_Period;
+        optSecond_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSecond_Period;
+        optThird_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optThird_Period;
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_ULTOSC_Lookback(optFirst_Period, optSecond_Period, optThird_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -14201,10 +14829,14 @@ void TA_FUNC_VAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optDeviations = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optDeviations;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
+        optDeviations = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optDeviations;
         startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
         endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_VAR_Lookback(optTime_Period, optDeviations);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -14291,6 +14923,10 @@ void TA_FUNC_WCLPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         }
         startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
         endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_WCLPRICE_Lookback();
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -14381,9 +15017,13 @@ void TA_FUNC_WILLR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inLow[i] = inObject->Get(inLowName)->NumberValue();
             inClose[i] = inObject->Get(inCloseName)->NumberValue();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
         startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
         endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_WILLR_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;
@@ -14464,9 +15104,13 @@ void TA_FUNC_WMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
             inObject = inFirst->Get(i)->ToObject();
             inReal[i] = inObject->Get(inRealName)->NumberValue();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
         startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
         endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+    }
+    if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
+        Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
+        return;
     }
     int lookback = TA_WMA_Lookback(optTime_Period);
     int temp = lookback > startIdx ? lookback : startIdx;

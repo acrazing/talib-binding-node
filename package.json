@@ -2,7 +2,7 @@
   "name": "talib-binding",
   "main": "./build/Release/talib_binding.node",
   "types": "./src/talib-binding.generated.d.ts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "scripts": {
     "install": "cd ta-lib && cmake ./ && make -j4 && cd .. && node-gyp configure build -j4"

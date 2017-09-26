@@ -247,7 +247,7 @@ export function generateBindings() {
         .normal('return;')
         .undent('}')
     const config: TaFuncApiXml = require('./ta_func_api.generated.json')
-    config.FinancialFunctions.FinancialFunction.filter((func) => !!func).forEach((func) => {
+    config.FinancialFunctions.FinancialFunction.filter((func) => func.Abbreviation[0] === 'SAR' || 1).forEach((func) => {
         const name = func.Abbreviation[0]
         const required: RequiredInputArgument[] = func.RequiredInputArguments
             ? func.RequiredInputArguments.reduce((prev, curr) => {
@@ -347,7 +347,7 @@ export function generateBindings() {
             }))
             .undent('}')
             .normal(...optional.map((argv, index) => {
-                index += required.length
+                index += 1 + doubleRequired.length
                 const type = optType(argv)
                 const check = type === 'double' ? 'Number' : 'Int32'
                 const cast = type === 'TA_MAType' ? '(TA_MAType) ' : ''
@@ -358,6 +358,10 @@ export function generateBindings() {
                 index += 1 + doubleRequired.length + optional.length
                 return `${name} = argc > ${index} && info[${index}]->IsInt32() ? info[${index}]->Int32Value() : ${name};`
             }))
+            .undent('}')
+            .normal('if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {')
+            .indent('Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");')
+            .normal('return;')
             .undent('}')
             .normal(`int lookback = TA_${name}_Lookback(${optional.map((argv) => optName(argv)).join(', ')});`)
             .normal('int temp = lookback > startIdx ? lookback : startIdx;')
