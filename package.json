@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "license": "MIT",
   "scripts": {
-    "install": "cd ta-lib && cmake ./ && make -j4 && cd ./c/make/csr/linux/g++ && make -j4 && cd ../../../../../../ && node-gyp configure build -j4"
+    "install": "cd ta-lib && cmake ./ && make -j4 && mkdir -p c/lib/ c/bin/{gen_code,ta_regtest} c/temp/csr/gen_code && cd ./c/make/csr/linux/g++ && make -j4 && cd ../../../../../../ && node-gyp configure build -j4"
   },
   "description": "The [TA-Lib](http://ta-lib.org/) sync bindings.",
   "devDependencies": {
