@@ -5,12 +5,14 @@
   "version": "0.2.0",
   "license": "MIT",
   "scripts": {
-    "install": "cd ta-lib && cmake ./ && make -j4 && mkdir -p c/lib/ c/bin/{gen_code,ta_regtest} c/temp/csr/gen_code && cd ./c/make/csr/linux/g++ && make -j4 && cd ../../../../../../ && node-gyp configure build -j4"
+    "install2": "mkdir -p ta-lib/{lib,c/{lib,bin,temp/csr/{gen_code,ta_abstract,ta_common,ta_func,ta_libc,ta_regtest}}} && cd ta-lib && cmake ./ && make && cd ./c/make/csr/linux/g++ && CFLAGS=\"-arch $(uname -m)\" LDFLAGS=\"-arch $(uname -m)\" make && cd ../../../../../../ && node-gyp configure build -j4"
   },
   "description": "The [TA-Lib](http://ta-lib.org/) sync bindings.",
   "devDependencies": {
+    "@types/glob": "^5.0.32",
     "@types/node": "^8.0.30",
     "@types/xml2js": "^0.4.0",
+    "glob": "^7.1.2",
     "json2ts": "^0.0.7",
     "known-types": "^1.0.1",
     "piclick": "^1.0.4",

@@ -13,6 +13,7 @@ import * as fs from "fs"
 import {parseString} from "xml2js"
 import {OptionalInputArgument, OutputArgument, RequiredInputArgument, TaFuncApiXml} from "./ta_func_api.generated"
 import {createMap, IMap} from "known-types"
+import G = require("glob")
 
 interface Json2ts {
     convertObjectToTsInterfaces<T>(content: T, name?: string): string;
@@ -528,6 +529,29 @@ export function generateTypes() {
             .normal('')
     })
     fs.writeFileSync(__dirname + '/talib-binding.generated.d.ts', body.build())
+}
+
+export function generateGyp() {
+    const sources = G.sync('ta-lib/c/src/{ta_abstract,ta_common,ta_func}/**/!(ta_java_defs|excel_glue).c', {
+        cwd: __dirname + '/..',
+        nodir: true,
+    })
+    const includes = G.sync('ta-lib/c/{include,src/{ta_abstract,ta_common,ta_func}/**}/', {
+        cwd: __dirname + '/..',
+        nodir: false,
+    })
+    sources.push('src/talib-binding.generated.cc')
+    includes.push('<!(node -e "require(\'nan\')")')
+    const config: any = {
+        targets: [
+            {
+                target_name: 'talib_binding',
+                sources: sources,
+                include_dirs: includes,
+            }
+        ]
+    }
+    fs.writeFileSync(__dirname + '/../binding.gyp', JSON.stringify(config, void 0, 2))
 }
 
 autorun(module)

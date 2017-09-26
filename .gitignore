@@ -1,8 +1,8 @@
-lib/
+lib
 .idea/
 node_modules/
-temp/
-dist/
+temp
+dist
 *.log
 *.dat
 *.config.yaml
@@ -18,3 +18,4 @@ cmake_install.cmake
 ta_config.h
 ta-lib/Makefile
 ta-lib/c/Makefile
+ta-lib/c/bin
