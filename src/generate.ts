@@ -14,6 +14,7 @@ import {parseString} from "xml2js"
 import {OptionalInputArgument, OutputArgument, RequiredInputArgument, TaFuncApiXml} from "./ta_func_api.generated"
 import {createMap, IMap} from "known-types"
 import G = require("glob")
+import {Arguments} from "yargs"
 
 interface Json2ts {
     convertObjectToTsInterfaces<T>(content: T, name?: string): string;
@@ -227,7 +228,7 @@ export const TA_MATypes: IMap<string> = createMap({
     8: 'TA_MAType_T3',
 })
 
-export function generateBindings() {
+export function generateBindings({_}: Arguments) {
     const body = new ContentBuilder()
     body.normal(
         '/*!',
@@ -248,7 +249,9 @@ export function generateBindings() {
         .normal('return;')
         .undent('}')
     const config: TaFuncApiXml = require('./ta_func_api.generated.json')
-    config.FinancialFunctions.FinancialFunction.filter((func) => func.Abbreviation[0] === 'SAR' || 1).forEach((func) => {
+    config.FinancialFunctions.FinancialFunction.filter(
+        (func) => _.length === 0 || _.indexOf(func.Abbreviation[0]) > -1
+    ).forEach((func) => {
         const name = func.Abbreviation[0]
         const required: RequiredInputArgument[] = func.RequiredInputArguments
             ? func.RequiredInputArguments.reduce((prev, curr) => {
@@ -270,6 +273,7 @@ export function generateBindings() {
         if (output.length === 1) {
             outInitJS.push(`outAll_JS = ${jsOutName(output[0])};`)
         } else {
+            outInitJS.push(`outAll_JS = Nan::New<v8::Array>(${output.length});`)
             output.forEach((argv, index) => {
                 outInitJS.push(`outAll_JS->Set(${index}, ${jsOutName(argv)});`)
             })

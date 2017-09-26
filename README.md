@@ -1,6 +1,6 @@
 # talib-binding
 
-The [TA-Lib](http://ta-lib.org/) sync bindings.
+A synchronous [TA-Lib](http://ta-lib.org/) bindings for Node.js & TypeScript.
 
 ## Install
 
@@ -10,73 +10,68 @@ yarn add talib-binding
 
 ## Usage
 
-All the functions are exported, you can call it in the same form to [c api](https://ta-lib.org/d_api/d_api.html), but
-there are some difference:
-
-- the `startIdx` and `endIdx` is placed at the end of the function signature, and is optional.
-- the return value is the computed result, if result is one array, will be it, else will be a nested array to contains all output arrays.
-- if the ta-lib function returns a error code, will throw a error.
-
-Additionally, you can pass a `Record[]` to extract its fields rather than input double array such as `inHigh`, `inLow`, etc.
-And if the input field is a implicit field of the records, you need to input a string to specifying which one field will be extract
-as it.
+1. All the functions are exported, you can call it in the same form to [c api](https://ta-lib.org/d_api/d_api.html), but there are some difference:
+    - the `startIdx` and `endIdx` is placed at the end of the function signature, and is optional.
+    - the return value is the computed result, if result is one array, will be it, else will be a nested array to contains all output arrays.
+    - if the ta-lib function returns a error code, will throw a error.
+2. Additionally, you can pass a `Record[]` to extract its fields rather than input double array such as `inHigh`, `inLow`, etc. And if the input field is a implicit field of the records, you need to input a string to specifying which one field will be extract as it.
+3. The types for TypeScript is generated, you can use this it in TypeScript projects.
 
 ## Example
 
-```typescript
-import * as talib from './src/talib-binding.generated'
-
-// Input double array directly:
-let output = talib.SAR(
-    [2, 3, 4, 5], /* inHigh */
-    [1, 2, 3, 4], /* inLow */
-    0.02, /* optAcceleration_Factor, optional */
-    0.2, /* optAF_Maximum, optional */
-    0, /* startIdx, optional */
-    3 /* endIdx, optional */
-)
-console.log(output)
-
-// Input a records array:
-output = talib.SAR([
-    {
-        Time: 0,
-        Open: 1,
-        High: 2,
-        Low: 1,
-        Close: 2,
-        Volume: 1,
-    },
-    {
-        Time: 0,
-        Open: 2,
-        High: 3,
-        Low: 2,
-        Close: 3,
-        Volume: 1,
-    },
-])
-
-// Input implicit field name with Record[]
-output = talib.COS([
-    {
-        Time: 0,
-        Open: 1,
-        High: 2,
-        Low: 1,
-        Close: 2,
-        Volume: 1,
-    },
-    {
-        Time: 0,
-        Open: 2,
-        High: 3,
-        Low: 2,
-        Close: 3,
-        Volume: 1,
-    },
-], 'Volume')
-```
+- call in the same form of `TA-Lib`:
+    ```typescript
+    // import * as talib from 'talib-binding'
+    import * as talib from './src/talib-binding.generated'
+    
+    talib.SAR(
+        [2, 3, 4, 5], /* inHigh */
+        [1, 2, 3, 4], /* inLow */
+        0.02, /* optAcceleration_Factor, optional */
+        0.2, /* optAF_Maximum, optional */
+        0, /* startIdx, optional */
+        3 /* endIdx, optional */
+    )
+    ```
+- pass a `Record` array as the first parameter, the library will extract the field value automatically, if the function contains some implicit parameter name, you need to pass the name string to extract it. The implicit parameter means that the param is not one of `High`, `Low`, `Open`, `Close`, and `Volume`, just like `inReal`, more detailed information could be found in the TypeScript function signatures.
+    ```typescript
+    // import * as talib from 'talib-binding'
+    import * as talib from './src/talib-binding.generated'
+    talib.SAR([
+      {Time: 0, Open: 1, High: 2, Low: 1, Close: 2, Volume: 1},
+      {Time: 0, Open: 2, High: 3, Low: 2, Close: 3, Volume: 1},
+      {Time: 0, Open: 3, High: 4, Low: 3, Close: 4, Volume: 1},
+      {Time: 0, Open: 4, High: 5, Low: 4, Close: 5, Volume: 1},
+    ])
+    // The COS function contains implicit parameter name, you need to call it as follow:
+    talib.COS([
+      {Time: 0, Open: 1, High: 2, Low: 1, Close: 2, Volume: 1},
+      {Time: 0, Open: 2, High: 3, Low: 2, Close: 3, Volume: 1},
+      {Time: 0, Open: 3, High: 4, Low: 3, Close: 4, Volume: 1},
+      {Time: 0, Open: 4, High: 5, Low: 4, Close: 5, Volume: 1},
+    ], 'Volume')
+    ```
+- if function return a single array, the return value will be it, else will be a nested array.
+    ```typescript
+    // import * as talib from 'talib-binding'
+    import * as talib from './src/talib-binding.generated'
+    const outReal = talib.SAR([2, 3, 4, 5], [1, 2, 3, 4])
+    console.log(outReal)
+    // [ 1, 1.04, 1.1584 ]
+    
+    const [outUp, outMid, outLow] = talib.ACCBANDS([2, 3, 4, 5], [1, 2, 3, 4], [2, 3, 4, 5], 3)
+    console.log(outUp, outMid, outLow)
+    // [ 5.45079365079365, 6.302645502645503 ]
+    // [ 3, 4 ]
+    // [ 0.4507936507936508, 1.3026455026455028 ]
+    ```
+- **if TA function returns a error, OR startIdx/endIdx out of range, will throw it**:
+    ```typescript
+    // import * as talib from 'talib-binding'
+    import * as talib from './src/talib-binding.generated'
+    talib.ACCBANDS([2, 3, 4, 5], [1, 2, 3, 4], [2, 3, 4, 5], 3)
+    // throw RangeError: `startIdx` or `endIdx` out of range
+    ```
 
 ## Notes
 

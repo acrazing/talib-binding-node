@@ -14,6 +14,7 @@ void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outRealUpperBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(3);
         outAll_JS->Set(0, outRealUpperBand_JS);
         outAll_JS->Set(1, outRealMiddleBand_JS);
         outAll_JS->Set(2, outRealLowerBand_JS);
@@ -73,6 +74,7 @@ void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outRealUpperBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(3);
         outAll_JS->Set(0, outRealUpperBand_JS);
         outAll_JS->Set(1, outRealMiddleBand_JS);
         outAll_JS->Set(2, outRealLowerBand_JS);
@@ -104,6 +106,7 @@ void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outRealUpperBand_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(3);
     outAll_JS->Set(0, outRealUpperBand_JS);
     outAll_JS->Set(1, outRealMiddleBand_JS);
     outAll_JS->Set(2, outRealLowerBand_JS);
@@ -788,6 +791,7 @@ void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outAroonDown_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outAroonUp_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outAroonDown_JS);
         outAll_JS->Set(1, outAroonUp_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -840,6 +844,7 @@ void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outAroonDown_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outAroonUp_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outAroonDown_JS);
         outAll_JS->Set(1, outAroonUp_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -866,6 +871,7 @@ void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outAll_JS;
     v8::Local<v8::Array> outAroonDown_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outAroonUp_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(2);
     outAll_JS->Set(0, outAroonDown_JS);
     outAll_JS->Set(1, outAroonUp_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
@@ -1420,6 +1426,7 @@ void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outRealUpperBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(3);
         outAll_JS->Set(0, outRealUpperBand_JS);
         outAll_JS->Set(1, outRealMiddleBand_JS);
         outAll_JS->Set(2, outRealLowerBand_JS);
@@ -1478,6 +1485,7 @@ void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outRealUpperBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(3);
         outAll_JS->Set(0, outRealUpperBand_JS);
         outAll_JS->Set(1, outRealMiddleBand_JS);
         outAll_JS->Set(2, outRealLowerBand_JS);
@@ -1507,6 +1515,7 @@ void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outRealUpperBand_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(3);
     outAll_JS->Set(0, outRealUpperBand_JS);
     outAll_JS->Set(1, outRealMiddleBand_JS);
     outAll_JS->Set(2, outRealLowerBand_JS);
@@ -9084,6 +9093,7 @@ void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outInPhase_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outQuadrature_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outInPhase_JS);
         outAll_JS->Set(1, outQuadrature_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -9128,6 +9138,7 @@ void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outInPhase_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outQuadrature_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outInPhase_JS);
         outAll_JS->Set(1, outQuadrature_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -9153,6 +9164,7 @@ void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outAll_JS;
     v8::Local<v8::Array> outInPhase_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outQuadrature_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(2);
     outAll_JS->Set(0, outInPhase_JS);
     outAll_JS->Set(1, outQuadrature_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
@@ -9174,6 +9186,7 @@ void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outSine_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outLeadSine_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outSine_JS);
         outAll_JS->Set(1, outLeadSine_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -9218,6 +9231,7 @@ void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outSine_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outLeadSine_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outSine_JS);
         outAll_JS->Set(1, outLeadSine_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -9243,6 +9257,7 @@ void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outAll_JS;
     v8::Local<v8::Array> outSine_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outLeadSine_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(2);
     outAll_JS->Set(0, outSine_JS);
     outAll_JS->Set(1, outLeadSine_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
@@ -10176,6 +10191,7 @@ void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACD_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(3);
         outAll_JS->Set(0, outMACD_JS);
         outAll_JS->Set(1, outMACDSignal_JS);
         outAll_JS->Set(2, outMACDHist_JS);
@@ -10231,6 +10247,7 @@ void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACD_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(3);
         outAll_JS->Set(0, outMACD_JS);
         outAll_JS->Set(1, outMACDSignal_JS);
         outAll_JS->Set(2, outMACDHist_JS);
@@ -10260,6 +10277,7 @@ void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outMACD_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(3);
     outAll_JS->Set(0, outMACD_JS);
     outAll_JS->Set(1, outMACDSignal_JS);
     outAll_JS->Set(2, outMACDHist_JS);
@@ -10285,6 +10303,7 @@ void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACD_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(3);
         outAll_JS->Set(0, outMACD_JS);
         outAll_JS->Set(1, outMACDSignal_JS);
         outAll_JS->Set(2, outMACDHist_JS);
@@ -10349,6 +10368,7 @@ void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACD_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(3);
         outAll_JS->Set(0, outMACD_JS);
         outAll_JS->Set(1, outMACDSignal_JS);
         outAll_JS->Set(2, outMACDHist_JS);
@@ -10378,6 +10398,7 @@ void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outMACD_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(3);
     outAll_JS->Set(0, outMACD_JS);
     outAll_JS->Set(1, outMACDSignal_JS);
     outAll_JS->Set(2, outMACDHist_JS);
@@ -10403,6 +10424,7 @@ void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACD_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(3);
         outAll_JS->Set(0, outMACD_JS);
         outAll_JS->Set(1, outMACDSignal_JS);
         outAll_JS->Set(2, outMACDHist_JS);
@@ -10452,6 +10474,7 @@ void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACD_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(3);
         outAll_JS->Set(0, outMACD_JS);
         outAll_JS->Set(1, outMACDSignal_JS);
         outAll_JS->Set(2, outMACDHist_JS);
@@ -10481,6 +10504,7 @@ void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outMACD_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(3);
     outAll_JS->Set(0, outMACD_JS);
     outAll_JS->Set(1, outMACDSignal_JS);
     outAll_JS->Set(2, outMACDHist_JS);
@@ -10505,6 +10529,7 @@ void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outMAMA_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFAMA_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outMAMA_JS);
         outAll_JS->Set(1, outFAMA_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -10555,6 +10580,7 @@ void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outMAMA_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFAMA_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outMAMA_JS);
         outAll_JS->Set(1, outFAMA_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -10580,6 +10606,7 @@ void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outAll_JS;
     v8::Local<v8::Array> outMAMA_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outFAMA_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(2);
     outAll_JS->Set(0, outMAMA_JS);
     outAll_JS->Set(1, outFAMA_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
@@ -11393,6 +11420,7 @@ void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outMin_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMax_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outMin_JS);
         outAll_JS->Set(1, outMax_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -11440,6 +11468,7 @@ void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outMin_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMax_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outMin_JS);
         outAll_JS->Set(1, outMax_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -11465,6 +11494,7 @@ void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outAll_JS;
     v8::Local<v8::Array> outMin_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMax_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(2);
     outAll_JS->Set(0, outMin_JS);
     outAll_JS->Set(1, outMax_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
@@ -11486,6 +11516,7 @@ void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outMinIdx_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMaxIdx_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outMinIdx_JS);
         outAll_JS->Set(1, outMaxIdx_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -11533,6 +11564,7 @@ void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outMinIdx_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMaxIdx_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outMinIdx_JS);
         outAll_JS->Set(1, outMaxIdx_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -11558,6 +11590,7 @@ void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outAll_JS;
     v8::Local<v8::Array> outMinIdx_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMaxIdx_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(2);
     outAll_JS->Set(0, outMinIdx_JS);
     outAll_JS->Set(1, outMaxIdx_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
@@ -13424,6 +13457,7 @@ void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outSlowK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outSlowD_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outSlowK_JS);
         outAll_JS->Set(1, outSlowD_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -13493,6 +13527,7 @@ void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outSlowK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outSlowD_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outSlowK_JS);
         outAll_JS->Set(1, outSlowD_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -13520,6 +13555,7 @@ void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outAll_JS;
     v8::Local<v8::Array> outSlowK_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outSlowD_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(2);
     outAll_JS->Set(0, outSlowK_JS);
     outAll_JS->Set(1, outSlowD_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
@@ -13543,6 +13579,7 @@ void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outFastK_JS);
         outAll_JS->Set(1, outFastD_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -13606,6 +13643,7 @@ void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outFastK_JS);
         outAll_JS->Set(1, outFastD_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -13633,6 +13671,7 @@ void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outAll_JS;
     v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(2);
     outAll_JS->Set(0, outFastK_JS);
     outAll_JS->Set(1, outFastD_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
@@ -13656,6 +13695,7 @@ void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outFastK_JS);
         outAll_JS->Set(1, outFastD_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -13712,6 +13752,7 @@ void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAll_JS;
         v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
+        outAll_JS = Nan::New<v8::Array>(2);
         outAll_JS->Set(0, outFastK_JS);
         outAll_JS->Set(1, outFastD_JS);
         info.GetReturnValue().Set(outAll_JS);
@@ -13737,6 +13778,7 @@ void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outAll_JS;
     v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
+    outAll_JS = Nan::New<v8::Array>(2);
     outAll_JS->Set(0, outFastK_JS);
     outAll_JS->Set(1, outFastD_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
