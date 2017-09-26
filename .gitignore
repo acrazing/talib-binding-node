@@ -14,6 +14,7 @@ node/
 build/
 CMakeFiles/
 CMakeCache.txt
-Makefile
 cmake_install.cmake
 ta_config.h
+ta-lib/Makefile
+ta-lib/c/Makefile

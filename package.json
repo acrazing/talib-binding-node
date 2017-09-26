@@ -2,10 +2,10 @@
   "name": "talib-binding",
   "main": "./build/Release/talib_binding.node",
   "types": "./src/talib-binding.generated.d.ts",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "license": "MIT",
   "scripts": {
-    "install": "cd ta-lib && cmake ./ && make -j4 && cd .. && node-gyp configure build -j4"
+    "install": "cd ta-lib && cmake ./ && make -j4 && cd ./c/make/csr/linux/g++ && make -j4 && cd ../../../../../../ && node-gyp configure build -j4"
   },
   "description": "The [TA-Lib](http://ta-lib.org/) sync bindings.",
   "devDependencies": {

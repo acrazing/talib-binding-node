@@ -10,7 +10,7 @@
       ],
       "link_settings": {
         "libraries": [
-          "../ta-lib/lib/libta_lib.a"
+          "../ta-lib/c/lib/libta_libc_csr.a"
         ]
       }
     }
