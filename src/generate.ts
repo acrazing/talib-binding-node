@@ -393,7 +393,7 @@ export function generateBindings({_}: Arguments) {
             .normal('TA_RetCodeInfo retCodeInfo;')
             .normal('TA_SetRetCodeInfo(result, &retCodeInfo);')
             .normal('char error[100];')
-            .normal(`strcat(error, "TA_${name} ERROR: ");`)
+            .normal(`strcpy(error, "TA_${name} ERROR: ");`)
             .normal('strcat(error, retCodeInfo.enumStr);')
             .normal('strcat(error, " - ");')
             .normal('strcat(error, retCodeInfo.infoStr);')

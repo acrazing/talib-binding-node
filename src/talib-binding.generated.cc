@@ -95,7 +95,7 @@ void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ACCBANDS ERROR: ");
+        strcpy(error, "TA_ACCBANDS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -186,7 +186,7 @@ void TA_FUNC_ACOS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ACOS ERROR: ");
+        strcpy(error, "TA_ACOS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -284,7 +284,7 @@ void TA_FUNC_AD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_AD ERROR: ");
+        strcpy(error, "TA_AD ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -373,7 +373,7 @@ void TA_FUNC_ADD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ADD ERROR: ");
+        strcpy(error, "TA_ADD ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -478,7 +478,7 @@ void TA_FUNC_ADOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ADOSC ERROR: ");
+        strcpy(error, "TA_ADOSC ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -576,7 +576,7 @@ void TA_FUNC_ADX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ADX ERROR: ");
+        strcpy(error, "TA_ADX ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -673,7 +673,7 @@ void TA_FUNC_ADXR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ADXR ERROR: ");
+        strcpy(error, "TA_ADXR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -764,7 +764,7 @@ void TA_FUNC_APO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_APO ERROR: ");
+        strcpy(error, "TA_APO ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -861,7 +861,7 @@ void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_AROON ERROR: ");
+        strcpy(error, "TA_AROON ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -956,7 +956,7 @@ void TA_FUNC_AROONOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_AROONOSC ERROR: ");
+        strcpy(error, "TA_AROONOSC ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -1037,7 +1037,7 @@ void TA_FUNC_ASIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ASIN ERROR: ");
+        strcpy(error, "TA_ASIN ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -1117,7 +1117,7 @@ void TA_FUNC_ATAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ATAN ERROR: ");
+        strcpy(error, "TA_ATAN ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -1212,7 +1212,7 @@ void TA_FUNC_ATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ATR ERROR: ");
+        strcpy(error, "TA_ATR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -1312,7 +1312,7 @@ void TA_FUNC_AVGPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_AVGPRICE ERROR: ");
+        strcpy(error, "TA_AVGPRICE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -1398,7 +1398,7 @@ void TA_FUNC_AVGDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_AVGDEV ERROR: ");
+        strcpy(error, "TA_AVGDEV ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -1504,7 +1504,7 @@ void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_BBANDS ERROR: ");
+        strcpy(error, "TA_BBANDS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -1602,7 +1602,7 @@ void TA_FUNC_BETA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_BETA ERROR: ");
+        strcpy(error, "TA_BETA ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -1701,7 +1701,7 @@ void TA_FUNC_BOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_BOP ERROR: ");
+        strcpy(error, "TA_BOP ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -1799,7 +1799,7 @@ void TA_FUNC_CCI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CCI ERROR: ");
+        strcpy(error, "TA_CCI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -1899,7 +1899,7 @@ void TA_FUNC_CDL2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDL2CROWS ERROR: ");
+        strcpy(error, "TA_CDL2CROWS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -2000,7 +2000,7 @@ void TA_FUNC_CDL3BLACKCROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDL3BLACKCROWS ERROR: ");
+        strcpy(error, "TA_CDL3BLACKCROWS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -2101,7 +2101,7 @@ void TA_FUNC_CDL3INSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDL3INSIDE ERROR: ");
+        strcpy(error, "TA_CDL3INSIDE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -2202,7 +2202,7 @@ void TA_FUNC_CDL3LINESTRIKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDL3LINESTRIKE ERROR: ");
+        strcpy(error, "TA_CDL3LINESTRIKE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -2303,7 +2303,7 @@ void TA_FUNC_CDL3OUTSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDL3OUTSIDE ERROR: ");
+        strcpy(error, "TA_CDL3OUTSIDE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -2404,7 +2404,7 @@ void TA_FUNC_CDL3STARSINSOUTH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDL3STARSINSOUTH ERROR: ");
+        strcpy(error, "TA_CDL3STARSINSOUTH ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -2505,7 +2505,7 @@ void TA_FUNC_CDL3WHITESOLDIERS(const Nan::FunctionCallbackInfo<v8::Value> &info)
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDL3WHITESOLDIERS ERROR: ");
+        strcpy(error, "TA_CDL3WHITESOLDIERS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -2609,7 +2609,7 @@ void TA_FUNC_CDLABANDONEDBABY(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLABANDONEDBABY ERROR: ");
+        strcpy(error, "TA_CDLABANDONEDBABY ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -2710,7 +2710,7 @@ void TA_FUNC_CDLADVANCEBLOCK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLADVANCEBLOCK ERROR: ");
+        strcpy(error, "TA_CDLADVANCEBLOCK ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -2811,7 +2811,7 @@ void TA_FUNC_CDLBELTHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLBELTHOLD ERROR: ");
+        strcpy(error, "TA_CDLBELTHOLD ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -2912,7 +2912,7 @@ void TA_FUNC_CDLBREAKAWAY(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLBREAKAWAY ERROR: ");
+        strcpy(error, "TA_CDLBREAKAWAY ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -3013,7 +3013,7 @@ void TA_FUNC_CDLCLOSINGMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLCLOSINGMARUBOZU ERROR: ");
+        strcpy(error, "TA_CDLCLOSINGMARUBOZU ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -3114,7 +3114,7 @@ void TA_FUNC_CDLCONCEALBABYSWALL(const Nan::FunctionCallbackInfo<v8::Value> &inf
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLCONCEALBABYSWALL ERROR: ");
+        strcpy(error, "TA_CDLCONCEALBABYSWALL ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -3215,7 +3215,7 @@ void TA_FUNC_CDLCOUNTERATTACK(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLCOUNTERATTACK ERROR: ");
+        strcpy(error, "TA_CDLCOUNTERATTACK ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -3319,7 +3319,7 @@ void TA_FUNC_CDLDARKCLOUDCOVER(const Nan::FunctionCallbackInfo<v8::Value> &info)
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLDARKCLOUDCOVER ERROR: ");
+        strcpy(error, "TA_CDLDARKCLOUDCOVER ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -3420,7 +3420,7 @@ void TA_FUNC_CDLDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLDOJI ERROR: ");
+        strcpy(error, "TA_CDLDOJI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -3521,7 +3521,7 @@ void TA_FUNC_CDLDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLDOJISTAR ERROR: ");
+        strcpy(error, "TA_CDLDOJISTAR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -3622,7 +3622,7 @@ void TA_FUNC_CDLDRAGONFLYDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLDRAGONFLYDOJI ERROR: ");
+        strcpy(error, "TA_CDLDRAGONFLYDOJI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -3723,7 +3723,7 @@ void TA_FUNC_CDLENGULFING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLENGULFING ERROR: ");
+        strcpy(error, "TA_CDLENGULFING ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -3827,7 +3827,7 @@ void TA_FUNC_CDLEVENINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLEVENINGDOJISTAR ERROR: ");
+        strcpy(error, "TA_CDLEVENINGDOJISTAR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -3931,7 +3931,7 @@ void TA_FUNC_CDLEVENINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLEVENINGSTAR ERROR: ");
+        strcpy(error, "TA_CDLEVENINGSTAR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -4032,7 +4032,7 @@ void TA_FUNC_CDLGAPSIDESIDEWHITE(const Nan::FunctionCallbackInfo<v8::Value> &inf
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLGAPSIDESIDEWHITE ERROR: ");
+        strcpy(error, "TA_CDLGAPSIDESIDEWHITE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -4133,7 +4133,7 @@ void TA_FUNC_CDLGRAVESTONEDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLGRAVESTONEDOJI ERROR: ");
+        strcpy(error, "TA_CDLGRAVESTONEDOJI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -4234,7 +4234,7 @@ void TA_FUNC_CDLHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLHAMMER ERROR: ");
+        strcpy(error, "TA_CDLHAMMER ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -4335,7 +4335,7 @@ void TA_FUNC_CDLHANGINGMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLHANGINGMAN ERROR: ");
+        strcpy(error, "TA_CDLHANGINGMAN ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -4436,7 +4436,7 @@ void TA_FUNC_CDLHARAMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLHARAMI ERROR: ");
+        strcpy(error, "TA_CDLHARAMI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -4537,7 +4537,7 @@ void TA_FUNC_CDLHARAMICROSS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLHARAMICROSS ERROR: ");
+        strcpy(error, "TA_CDLHARAMICROSS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -4638,7 +4638,7 @@ void TA_FUNC_CDLHIGHWAVE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLHIGHWAVE ERROR: ");
+        strcpy(error, "TA_CDLHIGHWAVE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -4739,7 +4739,7 @@ void TA_FUNC_CDLHIKKAKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLHIKKAKE ERROR: ");
+        strcpy(error, "TA_CDLHIKKAKE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -4840,7 +4840,7 @@ void TA_FUNC_CDLHIKKAKEMOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLHIKKAKEMOD ERROR: ");
+        strcpy(error, "TA_CDLHIKKAKEMOD ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -4941,7 +4941,7 @@ void TA_FUNC_CDLHOMINGPIGEON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLHOMINGPIGEON ERROR: ");
+        strcpy(error, "TA_CDLHOMINGPIGEON ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -5042,7 +5042,7 @@ void TA_FUNC_CDLIDENTICAL3CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLIDENTICAL3CROWS ERROR: ");
+        strcpy(error, "TA_CDLIDENTICAL3CROWS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -5143,7 +5143,7 @@ void TA_FUNC_CDLINNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLINNECK ERROR: ");
+        strcpy(error, "TA_CDLINNECK ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -5244,7 +5244,7 @@ void TA_FUNC_CDLINVERTEDHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info)
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLINVERTEDHAMMER ERROR: ");
+        strcpy(error, "TA_CDLINVERTEDHAMMER ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -5345,7 +5345,7 @@ void TA_FUNC_CDLKICKING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLKICKING ERROR: ");
+        strcpy(error, "TA_CDLKICKING ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -5446,7 +5446,7 @@ void TA_FUNC_CDLKICKINGBYLENGTH(const Nan::FunctionCallbackInfo<v8::Value> &info
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLKICKINGBYLENGTH ERROR: ");
+        strcpy(error, "TA_CDLKICKINGBYLENGTH ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -5547,7 +5547,7 @@ void TA_FUNC_CDLLADDERBOTTOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLLADDERBOTTOM ERROR: ");
+        strcpy(error, "TA_CDLLADDERBOTTOM ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -5648,7 +5648,7 @@ void TA_FUNC_CDLLONGLEGGEDDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLLONGLEGGEDDOJI ERROR: ");
+        strcpy(error, "TA_CDLLONGLEGGEDDOJI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -5749,7 +5749,7 @@ void TA_FUNC_CDLLONGLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLLONGLINE ERROR: ");
+        strcpy(error, "TA_CDLLONGLINE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -5850,7 +5850,7 @@ void TA_FUNC_CDLMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLMARUBOZU ERROR: ");
+        strcpy(error, "TA_CDLMARUBOZU ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -5951,7 +5951,7 @@ void TA_FUNC_CDLMATCHINGLOW(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLMATCHINGLOW ERROR: ");
+        strcpy(error, "TA_CDLMATCHINGLOW ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -6055,7 +6055,7 @@ void TA_FUNC_CDLMATHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLMATHOLD ERROR: ");
+        strcpy(error, "TA_CDLMATHOLD ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -6159,7 +6159,7 @@ void TA_FUNC_CDLMORNINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLMORNINGDOJISTAR ERROR: ");
+        strcpy(error, "TA_CDLMORNINGDOJISTAR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -6263,7 +6263,7 @@ void TA_FUNC_CDLMORNINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLMORNINGSTAR ERROR: ");
+        strcpy(error, "TA_CDLMORNINGSTAR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -6364,7 +6364,7 @@ void TA_FUNC_CDLONNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLONNECK ERROR: ");
+        strcpy(error, "TA_CDLONNECK ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -6465,7 +6465,7 @@ void TA_FUNC_CDLPIERCING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLPIERCING ERROR: ");
+        strcpy(error, "TA_CDLPIERCING ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -6566,7 +6566,7 @@ void TA_FUNC_CDLRICKSHAWMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLRICKSHAWMAN ERROR: ");
+        strcpy(error, "TA_CDLRICKSHAWMAN ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -6667,7 +6667,7 @@ void TA_FUNC_CDLRISEFALL3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLRISEFALL3METHODS ERROR: ");
+        strcpy(error, "TA_CDLRISEFALL3METHODS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -6768,7 +6768,7 @@ void TA_FUNC_CDLSEPARATINGLINES(const Nan::FunctionCallbackInfo<v8::Value> &info
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLSEPARATINGLINES ERROR: ");
+        strcpy(error, "TA_CDLSEPARATINGLINES ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -6869,7 +6869,7 @@ void TA_FUNC_CDLSHOOTINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLSHOOTINGSTAR ERROR: ");
+        strcpy(error, "TA_CDLSHOOTINGSTAR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -6970,7 +6970,7 @@ void TA_FUNC_CDLSHORTLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLSHORTLINE ERROR: ");
+        strcpy(error, "TA_CDLSHORTLINE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -7071,7 +7071,7 @@ void TA_FUNC_CDLSPINNINGTOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLSPINNINGTOP ERROR: ");
+        strcpy(error, "TA_CDLSPINNINGTOP ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -7172,7 +7172,7 @@ void TA_FUNC_CDLSTALLEDPATTERN(const Nan::FunctionCallbackInfo<v8::Value> &info)
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLSTALLEDPATTERN ERROR: ");
+        strcpy(error, "TA_CDLSTALLEDPATTERN ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -7273,7 +7273,7 @@ void TA_FUNC_CDLSTICKSANDWICH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLSTICKSANDWICH ERROR: ");
+        strcpy(error, "TA_CDLSTICKSANDWICH ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -7374,7 +7374,7 @@ void TA_FUNC_CDLTAKURI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLTAKURI ERROR: ");
+        strcpy(error, "TA_CDLTAKURI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -7475,7 +7475,7 @@ void TA_FUNC_CDLTASUKIGAP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLTASUKIGAP ERROR: ");
+        strcpy(error, "TA_CDLTASUKIGAP ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -7576,7 +7576,7 @@ void TA_FUNC_CDLTHRUSTING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLTHRUSTING ERROR: ");
+        strcpy(error, "TA_CDLTHRUSTING ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -7677,7 +7677,7 @@ void TA_FUNC_CDLTRISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLTRISTAR ERROR: ");
+        strcpy(error, "TA_CDLTRISTAR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -7778,7 +7778,7 @@ void TA_FUNC_CDLUNIQUE3RIVER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLUNIQUE3RIVER ERROR: ");
+        strcpy(error, "TA_CDLUNIQUE3RIVER ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -7879,7 +7879,7 @@ void TA_FUNC_CDLUPSIDEGAP2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLUPSIDEGAP2CROWS ERROR: ");
+        strcpy(error, "TA_CDLUPSIDEGAP2CROWS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -7980,7 +7980,7 @@ void TA_FUNC_CDLXSIDEGAP3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CDLXSIDEGAP3METHODS ERROR: ");
+        strcpy(error, "TA_CDLXSIDEGAP3METHODS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8063,7 +8063,7 @@ void TA_FUNC_CEIL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CEIL ERROR: ");
+        strcpy(error, "TA_CEIL ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8146,7 +8146,7 @@ void TA_FUNC_CMO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CMO ERROR: ");
+        strcpy(error, "TA_CMO ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8235,7 +8235,7 @@ void TA_FUNC_CORREL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_CORREL ERROR: ");
+        strcpy(error, "TA_CORREL ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8316,7 +8316,7 @@ void TA_FUNC_COS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_COS ERROR: ");
+        strcpy(error, "TA_COS ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8396,7 +8396,7 @@ void TA_FUNC_COSH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_COSH ERROR: ");
+        strcpy(error, "TA_COSH ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8479,7 +8479,7 @@ void TA_FUNC_DEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_DEMA ERROR: ");
+        strcpy(error, "TA_DEMA ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8565,7 +8565,7 @@ void TA_FUNC_DIV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_DIV ERROR: ");
+        strcpy(error, "TA_DIV ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8661,7 +8661,7 @@ void TA_FUNC_DX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_DX ERROR: ");
+        strcpy(error, "TA_DX ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8746,7 +8746,7 @@ void TA_FUNC_EMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_EMA ERROR: ");
+        strcpy(error, "TA_EMA ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8826,7 +8826,7 @@ void TA_FUNC_EXP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_EXP ERROR: ");
+        strcpy(error, "TA_EXP ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8906,7 +8906,7 @@ void TA_FUNC_FLOOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_FLOOR ERROR: ");
+        strcpy(error, "TA_FLOOR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -8986,7 +8986,7 @@ void TA_FUNC_HT_DCPERIOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_HT_DCPERIOD ERROR: ");
+        strcpy(error, "TA_HT_DCPERIOD ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9066,7 +9066,7 @@ void TA_FUNC_HT_DCPHASE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_HT_DCPHASE ERROR: ");
+        strcpy(error, "TA_HT_DCPHASE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9154,7 +9154,7 @@ void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_HT_PHASOR ERROR: ");
+        strcpy(error, "TA_HT_PHASOR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9247,7 +9247,7 @@ void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_HT_SINE ERROR: ");
+        strcpy(error, "TA_HT_SINE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9332,7 +9332,7 @@ void TA_FUNC_HT_TRENDLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_HT_TRENDLINE ERROR: ");
+        strcpy(error, "TA_HT_TRENDLINE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9412,7 +9412,7 @@ void TA_FUNC_HT_TRENDMODE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_HT_TRENDMODE ERROR: ");
+        strcpy(error, "TA_HT_TRENDMODE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9501,7 +9501,7 @@ void TA_FUNC_IMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_IMI ERROR: ");
+        strcpy(error, "TA_IMI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9585,7 +9585,7 @@ void TA_FUNC_KAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_KAMA ERROR: ");
+        strcpy(error, "TA_KAMA ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9668,7 +9668,7 @@ void TA_FUNC_LINEARREG(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_LINEARREG ERROR: ");
+        strcpy(error, "TA_LINEARREG ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9751,7 +9751,7 @@ void TA_FUNC_LINEARREG_ANGLE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_LINEARREG_ANGLE ERROR: ");
+        strcpy(error, "TA_LINEARREG_ANGLE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9834,7 +9834,7 @@ void TA_FUNC_LINEARREG_INTERCEPT(const Nan::FunctionCallbackInfo<v8::Value> &inf
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_LINEARREG_INTERCEPT ERROR: ");
+        strcpy(error, "TA_LINEARREG_INTERCEPT ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9917,7 +9917,7 @@ void TA_FUNC_LINEARREG_SLOPE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_LINEARREG_SLOPE ERROR: ");
+        strcpy(error, "TA_LINEARREG_SLOPE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -9997,7 +9997,7 @@ void TA_FUNC_LN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_LN ERROR: ");
+        strcpy(error, "TA_LN ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -10077,7 +10077,7 @@ void TA_FUNC_LOG10(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_LOG10 ERROR: ");
+        strcpy(error, "TA_LOG10 ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -10163,7 +10163,7 @@ void TA_FUNC_MA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MA ERROR: ");
+        strcpy(error, "TA_MA ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -10266,7 +10266,7 @@ void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MACD ERROR: ");
+        strcpy(error, "TA_MACD ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -10387,7 +10387,7 @@ void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MACDEXT ERROR: ");
+        strcpy(error, "TA_MACDEXT ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -10493,7 +10493,7 @@ void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MACDFIX ERROR: ");
+        strcpy(error, "TA_MACDFIX ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -10596,7 +10596,7 @@ void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MAMA ERROR: ");
+        strcpy(error, "TA_MAMA ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -10696,7 +10696,7 @@ void TA_FUNC_MAVP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MAVP ERROR: ");
+        strcpy(error, "TA_MAVP ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -10780,7 +10780,7 @@ void TA_FUNC_MAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MAX ERROR: ");
+        strcpy(error, "TA_MAX ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -10863,7 +10863,7 @@ void TA_FUNC_MAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MAXINDEX ERROR: ");
+        strcpy(error, "TA_MAXINDEX ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -10949,7 +10949,7 @@ void TA_FUNC_MEDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MEDPRICE ERROR: ");
+        strcpy(error, "TA_MEDPRICE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -11051,7 +11051,7 @@ void TA_FUNC_MFI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MFI ERROR: ");
+        strcpy(error, "TA_MFI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -11137,7 +11137,7 @@ void TA_FUNC_MIDPOINT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MIDPOINT ERROR: ");
+        strcpy(error, "TA_MIDPOINT ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -11226,7 +11226,7 @@ void TA_FUNC_MIDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MIDPRICE ERROR: ");
+        strcpy(error, "TA_MIDPRICE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -11310,7 +11310,7 @@ void TA_FUNC_MIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MIN ERROR: ");
+        strcpy(error, "TA_MIN ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -11393,7 +11393,7 @@ void TA_FUNC_MININDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MININDEX ERROR: ");
+        strcpy(error, "TA_MININDEX ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -11484,7 +11484,7 @@ void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MINMAX ERROR: ");
+        strcpy(error, "TA_MINMAX ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -11580,7 +11580,7 @@ void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MINMAXINDEX ERROR: ");
+        strcpy(error, "TA_MINMAXINDEX ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -11680,7 +11680,7 @@ void TA_FUNC_MINUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MINUS_DI ERROR: ");
+        strcpy(error, "TA_MINUS_DI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -11771,7 +11771,7 @@ void TA_FUNC_MINUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MINUS_DM ERROR: ");
+        strcpy(error, "TA_MINUS_DM ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -11855,7 +11855,7 @@ void TA_FUNC_MOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MOM ERROR: ");
+        strcpy(error, "TA_MOM ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -11941,7 +11941,7 @@ void TA_FUNC_MULT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_MULT ERROR: ");
+        strcpy(error, "TA_MULT ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -12037,7 +12037,7 @@ void TA_FUNC_NATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_NATR ERROR: ");
+        strcpy(error, "TA_NATR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -12125,7 +12125,7 @@ void TA_FUNC_OBV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_OBV ERROR: ");
+        strcpy(error, "TA_OBV ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -12221,7 +12221,7 @@ void TA_FUNC_PLUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_PLUS_DI ERROR: ");
+        strcpy(error, "TA_PLUS_DI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -12312,7 +12312,7 @@ void TA_FUNC_PLUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_PLUS_DM ERROR: ");
+        strcpy(error, "TA_PLUS_DM ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -12402,7 +12402,7 @@ void TA_FUNC_PPO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_PPO ERROR: ");
+        strcpy(error, "TA_PPO ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -12485,7 +12485,7 @@ void TA_FUNC_ROC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ROC ERROR: ");
+        strcpy(error, "TA_ROC ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -12568,7 +12568,7 @@ void TA_FUNC_ROCP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ROCP ERROR: ");
+        strcpy(error, "TA_ROCP ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -12651,7 +12651,7 @@ void TA_FUNC_ROCR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ROCR ERROR: ");
+        strcpy(error, "TA_ROCR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -12734,7 +12734,7 @@ void TA_FUNC_ROCR100(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ROCR100 ERROR: ");
+        strcpy(error, "TA_ROCR100 ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -12817,7 +12817,7 @@ void TA_FUNC_RSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_RSI ERROR: ");
+        strcpy(error, "TA_RSI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -12909,7 +12909,7 @@ void TA_FUNC_SAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_SAR ERROR: ");
+        strcpy(error, "TA_SAR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -13020,7 +13020,7 @@ void TA_FUNC_SAREXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_SAREXT ERROR: ");
+        strcpy(error, "TA_SAREXT ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -13101,7 +13101,7 @@ void TA_FUNC_SIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_SIN ERROR: ");
+        strcpy(error, "TA_SIN ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -13181,7 +13181,7 @@ void TA_FUNC_SINH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_SINH ERROR: ");
+        strcpy(error, "TA_SINH ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -13264,7 +13264,7 @@ void TA_FUNC_SMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_SMA ERROR: ");
+        strcpy(error, "TA_SMA ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -13344,7 +13344,7 @@ void TA_FUNC_SQRT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_SQRT ERROR: ");
+        strcpy(error, "TA_SQRT ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -13430,7 +13430,7 @@ void TA_FUNC_STDDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_STDDEV ERROR: ");
+        strcpy(error, "TA_STDDEV ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -13545,7 +13545,7 @@ void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_STOCH ERROR: ");
+        strcpy(error, "TA_STOCH ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -13661,7 +13661,7 @@ void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_STOCHF ERROR: ");
+        strcpy(error, "TA_STOCHF ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -13768,7 +13768,7 @@ void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_STOCHRSI ERROR: ");
+        strcpy(error, "TA_STOCHRSI ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -13859,7 +13859,7 @@ void TA_FUNC_SUB(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_SUB ERROR: ");
+        strcpy(error, "TA_SUB ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -13943,7 +13943,7 @@ void TA_FUNC_SUM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_SUM ERROR: ");
+        strcpy(error, "TA_SUM ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14029,7 +14029,7 @@ void TA_FUNC_T3(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_T3 ERROR: ");
+        strcpy(error, "TA_T3 ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14109,7 +14109,7 @@ void TA_FUNC_TAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_TAN ERROR: ");
+        strcpy(error, "TA_TAN ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14189,7 +14189,7 @@ void TA_FUNC_TANH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_TANH ERROR: ");
+        strcpy(error, "TA_TANH ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14272,7 +14272,7 @@ void TA_FUNC_TEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_TEMA ERROR: ");
+        strcpy(error, "TA_TEMA ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14364,7 +14364,7 @@ void TA_FUNC_TRANGE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_TRANGE ERROR: ");
+        strcpy(error, "TA_TRANGE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14449,7 +14449,7 @@ void TA_FUNC_TRIMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_TRIMA ERROR: ");
+        strcpy(error, "TA_TRIMA ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14532,7 +14532,7 @@ void TA_FUNC_TRIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_TRIX ERROR: ");
+        strcpy(error, "TA_TRIX ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14615,7 +14615,7 @@ void TA_FUNC_TSF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_TSF ERROR: ");
+        strcpy(error, "TA_TSF ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14707,7 +14707,7 @@ void TA_FUNC_TYPPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_TYPPRICE ERROR: ");
+        strcpy(error, "TA_TYPPRICE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14810,7 +14810,7 @@ void TA_FUNC_ULTOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_ULTOSC ERROR: ");
+        strcpy(error, "TA_ULTOSC ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14898,7 +14898,7 @@ void TA_FUNC_VAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_VAR ERROR: ");
+        strcpy(error, "TA_VAR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -14990,7 +14990,7 @@ void TA_FUNC_WCLPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_WCLPRICE ERROR: ");
+        strcpy(error, "TA_WCLPRICE ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -15087,7 +15087,7 @@ void TA_FUNC_WILLR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_WILLR ERROR: ");
+        strcpy(error, "TA_WILLR ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);
@@ -15172,7 +15172,7 @@ void TA_FUNC_WMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         TA_RetCodeInfo retCodeInfo;
         TA_SetRetCodeInfo(result, &retCodeInfo);
         char error[100];
-        strcat(error, "TA_WMA ERROR: ");
+        strcpy(error, "TA_WMA ERROR: ");
         strcat(error, retCodeInfo.enumStr);
         strcat(error, " - ");
         strcat(error, retCodeInfo.infoStr);

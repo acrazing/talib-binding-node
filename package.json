@@ -2,7 +2,7 @@
   "name": "talib-binding",
   "main": "./build/Release/talib_binding.node",
   "types": "./src/talib-binding.generated.d.ts",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "scripts": {
     "install": "node-gyp configure build -j4"
