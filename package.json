@@ -2,12 +2,12 @@
   "name": "talib-binding",
   "main": "./build/Release/talib_binding.node",
   "types": "./src/talib-binding.generated.d.ts",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "license": "MIT",
   "scripts": {
     "install": "node-gyp configure build -j4"
   },
-  "description": "The [TA-Lib](http://ta-lib.org/) sync bindings.",
+  "description": "A synchronous [TA-Lib](http://ta-lib.org/) bindings for Node.js & TypeScript.",
   "devDependencies": {
     "@types/glob": "^5.0.32",
     "@types/node": "^8.0.30",
@@ -29,7 +29,8 @@
     "talib",
     "binding",
     "node",
-    "sync"
+    "synchronous",
+    "ta-lib"
   ],
   "author": "acrazing",
   "bugs": {

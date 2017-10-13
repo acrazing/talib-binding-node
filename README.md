@@ -4,8 +4,24 @@ A synchronous [TA-Lib](http://ta-lib.org/) bindings for Node.js & TypeScript.
 
 ## Install
 
+var yarn:
+
 ```bash
 yarn add talib-binding
+```
+
+var npm:
+
+```bash
+npm install talib-binding --save
+```
+
+### Install on Windows system
+
+Before install this module, you may need to install `windows-build-tools` by run:
+
+```bash
+npm install --global --production windows-build-tools
 ```
 
 ## Usage
@@ -21,8 +37,7 @@ yarn add talib-binding
 
 - call in the same form of `TA-Lib`:
     ```typescript
-    // import * as talib from 'talib-binding'
-    import * as talib from './src/talib-binding.generated'
+    import * as talib from 'talib-binding'
     
     talib.SAR(
         [2, 3, 4, 5], /* inHigh */
@@ -35,26 +50,24 @@ yarn add talib-binding
     ```
 - pass a `Record` array as the first parameter, the library will extract the field value automatically, if the function contains some implicit parameter name, you need to pass the name string to extract it. The implicit parameter means that the param is not one of `High`, `Low`, `Open`, `Close`, and `Volume`, just like `inReal`, more detailed information could be found in the TypeScript function signatures.
     ```typescript
-    // import * as talib from 'talib-binding'
-    import * as talib from './src/talib-binding.generated'
-    talib.SAR([
+    import * as talib from 'talib-binding'
+
+    const records = [
       {Time: 0, Open: 1, High: 2, Low: 1, Close: 2, Volume: 1},
       {Time: 0, Open: 2, High: 3, Low: 2, Close: 3, Volume: 1},
       {Time: 0, Open: 3, High: 4, Low: 3, Close: 4, Volume: 1},
       {Time: 0, Open: 4, High: 5, Low: 4, Close: 5, Volume: 1},
-    ])
+    ]
+
+    talib.SAR(records)
+
     // The COS function contains implicit parameter name, you need to call it as follow:
-    talib.COS([
-      {Time: 0, Open: 1, High: 2, Low: 1, Close: 2, Volume: 1},
-      {Time: 0, Open: 2, High: 3, Low: 2, Close: 3, Volume: 1},
-      {Time: 0, Open: 3, High: 4, Low: 3, Close: 4, Volume: 1},
-      {Time: 0, Open: 4, High: 5, Low: 4, Close: 5, Volume: 1},
-    ], 'Volume')
+    talib.COS(records, 'Volume')
     ```
 - if function return a single array, the return value will be it, else will be a nested array.
     ```typescript
-    // import * as talib from 'talib-binding'
-    import * as talib from './src/talib-binding.generated'
+    import * as talib from 'talib-binding'
+
     const outReal = talib.SAR([2, 3, 4, 5], [1, 2, 3, 4])
     console.log(outReal)
     // [ 1, 1.04, 1.1584 ]
@@ -67,9 +80,9 @@ yarn add talib-binding
     ```
 - **if TA function returns a error, OR startIdx/endIdx out of range, will throw it**:
     ```typescript
-    // import * as talib from 'talib-binding'
-    import * as talib from './src/talib-binding.generated'
-    talib.ACCBANDS([2, 3, 4, 5], [1, 2, 3, 4], [2, 3, 4, 5], 3)
+    import * as talib from 'talib-binding'
+
+    talib.ACCBANDS([2, 3, 4, 5], [1, 2, 3, 4], [2, 3, 4, 5], 10)
     // throw RangeError: `startIdx` or `endIdx` out of range
     ```
 
@@ -77,7 +90,8 @@ yarn add talib-binding
 
 - Some API need to use `TA_MAType`, which is exported as `MATypes` in the binding. For example:
     ```typescript
-    import * as talib from './src/talib-binding.generated'
+    import * as talib from 'talib-binding'
+
     talib.MA([1, 2, 3], void 0, talib.MATypes.SMA)
     ```
 
