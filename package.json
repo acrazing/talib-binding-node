@@ -2,10 +2,10 @@
   "name": "talib-binding",
   "main": "./build/Release/talib_binding.node",
   "types": "./src/talib-binding.generated.d.ts",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "license": "MIT",
   "scripts": {
-    "install": "node-gyp configure build -j4"
+    "install": "./node_modules/.bin/node-gyp configure build -j4"
   },
   "description": "A synchronous [TA-Lib](http://ta-lib.org/) bindings for Node.js & TypeScript.",
   "devDependencies": {
@@ -19,7 +19,8 @@
     "xml2js": "^0.4.19"
   },
   "dependencies": {
-    "nan": "^2.7.0"
+    "nan": "^2.7.0",
+    "node-gyp": "^3.6.2"
   },
   "repository": {
     "type": "git",
