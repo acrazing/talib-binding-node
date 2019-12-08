@@ -3,24 +3,24 @@
  */
 
 export declare enum MATypes {
-    SMA = 0,
-    EMA = 1,
-    WMA = 2,
-    DEMA = 3,
-    TEMA = 4,
-    TRIMA = 5,
-    KAMA = 6,
-    MAMA = 7,
-    T3 = 8,
+  SMA = 0,
+  EMA = 1,
+  WMA = 2,
+  DEMA = 3,
+  TEMA = 4,
+  TRIMA = 5,
+  KAMA = 6,
+  MAMA = 7,
+  T3 = 8
 }
 
 export declare interface Record {
-    Time: number;
-    Open: number;
-    High: number;
-    Low: number;
-    Close: number;
-    Volume: number;
+  Time: number;
+  Open: number;
+  High: number;
+  Low: number;
+  Close: number;
+  Volume: number;
 }
 
 /**
@@ -34,7 +34,14 @@ export declare interface Record {
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[], number[]]} - [outRealUpperBand, outRealMiddleBand, outRealLowerBand]
  */
-export declare function ACCBANDS(inHigh: number[], inLow: number[], inClose: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): [number[], number[], number[]];
+export declare function ACCBANDS(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[], number[]];
 /**
  * ACCBANDS - Acceleration Bands
  *
@@ -44,7 +51,12 @@ export declare function ACCBANDS(inHigh: number[], inLow: number[], inClose: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[], number[]]} - [outRealUpperBand, outRealMiddleBand, outRealLowerBand]
  */
-export declare function ACCBANDS(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): [number[], number[], number[]];
+export declare function ACCBANDS(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[], number[]];
 
 /**
  * ACOS - Vector Trigonometric ACos
@@ -54,7 +66,11 @@ export declare function ACCBANDS(inRecords: Record[], optTime_Period?: number, s
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ACOS(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function ACOS(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ACOS - Vector Trigonometric ACos
  *
@@ -64,7 +80,12 @@ export declare function ACOS(inReal: number[], startIdx?: number, endIdx?: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ACOS(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function ACOS(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * AD - Chaikin A/D Line
@@ -77,7 +98,14 @@ export declare function ACOS(inRecords: Record[], inRealName: string, startIdx?:
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function AD(inHigh: number[], inLow: number[], inClose: number[], inVolume: number[], startIdx?: number, endIdx?: number): number[];
+export declare function AD(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  inVolume: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * AD - Chaikin A/D Line
  *
@@ -86,7 +114,11 @@ export declare function AD(inHigh: number[], inLow: number[], inClose: number[],
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function AD(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function AD(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ADD - Vector Arithmetic Add
@@ -97,7 +129,12 @@ export declare function AD(inRecords: Record[], startIdx?: number, endIdx?: numb
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ADD(inReal0: number[], inReal1: number[], startIdx?: number, endIdx?: number): number[];
+export declare function ADD(
+  inReal0: number[],
+  inReal1: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ADD - Vector Arithmetic Add
  *
@@ -108,7 +145,13 @@ export declare function ADD(inReal0: number[], inReal1: number[], startIdx?: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ADD(inRecords: Record[], inReal0Name: string, inReal1Name: string, startIdx?: number, endIdx?: number): number[];
+export declare function ADD(
+  inRecords: Record[],
+  inReal0Name: string,
+  inReal1Name: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ADOSC - Chaikin A/D Oscillator
@@ -123,7 +166,16 @@ export declare function ADD(inRecords: Record[], inReal0Name: string, inReal1Nam
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ADOSC(inHigh: number[], inLow: number[], inClose: number[], inVolume: number[], optFast_Period?: number, optSlow_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ADOSC(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  inVolume: number[],
+  optFast_Period?: number,
+  optSlow_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ADOSC - Chaikin A/D Oscillator
  *
@@ -134,7 +186,13 @@ export declare function ADOSC(inHigh: number[], inLow: number[], inClose: number
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ADOSC(inRecords: Record[], optFast_Period?: number, optSlow_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ADOSC(
+  inRecords: Record[],
+  optFast_Period?: number,
+  optSlow_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ADX - Average Directional Movement Index
@@ -147,7 +205,14 @@ export declare function ADOSC(inRecords: Record[], optFast_Period?: number, optS
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ADX(inHigh: number[], inLow: number[], inClose: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ADX(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ADX - Average Directional Movement Index
  *
@@ -157,7 +222,12 @@ export declare function ADX(inHigh: number[], inLow: number[], inClose: number[]
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ADX(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ADX(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ADXR - Average Directional Movement Index Rating
@@ -170,7 +240,14 @@ export declare function ADX(inRecords: Record[], optTime_Period?: number, startI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ADXR(inHigh: number[], inLow: number[], inClose: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ADXR(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ADXR - Average Directional Movement Index Rating
  *
@@ -180,7 +257,12 @@ export declare function ADXR(inHigh: number[], inLow: number[], inClose: number[
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ADXR(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ADXR(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * APO - Absolute Price Oscillator
@@ -193,7 +275,14 @@ export declare function ADXR(inRecords: Record[], optTime_Period?: number, start
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function APO(inReal: number[], optFast_Period?: number, optSlow_Period?: number, optMA_Type?: MATypes, startIdx?: number, endIdx?: number): number[];
+export declare function APO(
+  inReal: number[],
+  optFast_Period?: number,
+  optSlow_Period?: number,
+  optMA_Type?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * APO - Absolute Price Oscillator
  *
@@ -206,7 +295,15 @@ export declare function APO(inReal: number[], optFast_Period?: number, optSlow_P
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function APO(inRecords: Record[], inRealName: string, optFast_Period?: number, optSlow_Period?: number, optMA_Type?: MATypes, startIdx?: number, endIdx?: number): number[];
+export declare function APO(
+  inRecords: Record[],
+  inRealName: string,
+  optFast_Period?: number,
+  optSlow_Period?: number,
+  optMA_Type?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * AROON - Aroon
@@ -218,7 +315,13 @@ export declare function APO(inRecords: Record[], inRealName: string, optFast_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outAroonDown, outAroonUp]
  */
-export declare function AROON(inHigh: number[], inLow: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function AROON(
+  inHigh: number[],
+  inLow: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 /**
  * AROON - Aroon
  *
@@ -228,7 +331,12 @@ export declare function AROON(inHigh: number[], inLow: number[], optTime_Period?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outAroonDown, outAroonUp]
  */
-export declare function AROON(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function AROON(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 
 /**
  * AROONOSC - Aroon Oscillator
@@ -240,7 +348,13 @@ export declare function AROON(inRecords: Record[], optTime_Period?: number, star
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function AROONOSC(inHigh: number[], inLow: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function AROONOSC(
+  inHigh: number[],
+  inLow: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * AROONOSC - Aroon Oscillator
  *
@@ -250,7 +364,12 @@ export declare function AROONOSC(inHigh: number[], inLow: number[], optTime_Peri
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function AROONOSC(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function AROONOSC(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ASIN - Vector Trigonometric ASin
@@ -260,7 +379,11 @@ export declare function AROONOSC(inRecords: Record[], optTime_Period?: number, s
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ASIN(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function ASIN(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ASIN - Vector Trigonometric ASin
  *
@@ -270,7 +393,12 @@ export declare function ASIN(inReal: number[], startIdx?: number, endIdx?: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ASIN(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function ASIN(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ATAN - Vector Trigonometric ATan
@@ -280,7 +408,11 @@ export declare function ASIN(inRecords: Record[], inRealName: string, startIdx?:
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ATAN(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function ATAN(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ATAN - Vector Trigonometric ATan
  *
@@ -290,7 +422,12 @@ export declare function ATAN(inReal: number[], startIdx?: number, endIdx?: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ATAN(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function ATAN(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ATR - Average True Range
@@ -303,7 +440,14 @@ export declare function ATAN(inRecords: Record[], inRealName: string, startIdx?:
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ATR(inHigh: number[], inLow: number[], inClose: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ATR(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ATR - Average True Range
  *
@@ -313,7 +457,12 @@ export declare function ATR(inHigh: number[], inLow: number[], inClose: number[]
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ATR(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ATR(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * AVGPRICE - Average Price
@@ -326,7 +475,14 @@ export declare function ATR(inRecords: Record[], optTime_Period?: number, startI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function AVGPRICE(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function AVGPRICE(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * AVGPRICE - Average Price
  *
@@ -335,7 +491,11 @@ export declare function AVGPRICE(inOpen: number[], inHigh: number[], inLow: numb
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function AVGPRICE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function AVGPRICE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * AVGDEV - Average Deviation
@@ -346,7 +506,12 @@ export declare function AVGPRICE(inRecords: Record[], startIdx?: number, endIdx?
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function AVGDEV(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function AVGDEV(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * AVGDEV - Average Deviation
  *
@@ -357,7 +522,13 @@ export declare function AVGDEV(inReal: number[], optTime_Period?: number, startI
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function AVGDEV(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function AVGDEV(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * BBANDS - Bollinger Bands
@@ -371,7 +542,15 @@ export declare function AVGDEV(inRecords: Record[], inRealName: string, optTime_
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[], number[]]} - [outRealUpperBand, outRealMiddleBand, outRealLowerBand]
  */
-export declare function BBANDS(inReal: number[], optTime_Period?: number, optDeviations_up?: number, optDeviations_down?: number, optMA_Type?: MATypes, startIdx?: number, endIdx?: number): [number[], number[], number[]];
+export declare function BBANDS(
+  inReal: number[],
+  optTime_Period?: number,
+  optDeviations_up?: number,
+  optDeviations_down?: number,
+  optMA_Type?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[], number[]];
 /**
  * BBANDS - Bollinger Bands
  *
@@ -385,7 +564,16 @@ export declare function BBANDS(inReal: number[], optTime_Period?: number, optDev
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[], number[]]} - [outRealUpperBand, outRealMiddleBand, outRealLowerBand]
  */
-export declare function BBANDS(inRecords: Record[], inRealName: string, optTime_Period?: number, optDeviations_up?: number, optDeviations_down?: number, optMA_Type?: MATypes, startIdx?: number, endIdx?: number): [number[], number[], number[]];
+export declare function BBANDS(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  optDeviations_up?: number,
+  optDeviations_down?: number,
+  optMA_Type?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[], number[]];
 
 /**
  * BETA - Beta
@@ -397,7 +585,13 @@ export declare function BBANDS(inRecords: Record[], inRealName: string, optTime_
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function BETA(inReal0: number[], inReal1: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function BETA(
+  inReal0: number[],
+  inReal1: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * BETA - Beta
  *
@@ -409,7 +603,14 @@ export declare function BETA(inReal0: number[], inReal1: number[], optTime_Perio
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function BETA(inRecords: Record[], inReal0Name: string, inReal1Name: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function BETA(
+  inRecords: Record[],
+  inReal0Name: string,
+  inReal1Name: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * BOP - Balance Of Power
@@ -422,7 +623,14 @@ export declare function BETA(inRecords: Record[], inReal0Name: string, inReal1Na
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function BOP(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function BOP(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * BOP - Balance Of Power
  *
@@ -431,7 +639,11 @@ export declare function BOP(inOpen: number[], inHigh: number[], inLow: number[],
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function BOP(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function BOP(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CCI - Commodity Channel Index
@@ -444,7 +656,14 @@ export declare function BOP(inRecords: Record[], startIdx?: number, endIdx?: num
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function CCI(inHigh: number[], inLow: number[], inClose: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CCI(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CCI - Commodity Channel Index
  *
@@ -454,7 +673,12 @@ export declare function CCI(inHigh: number[], inLow: number[], inClose: number[]
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function CCI(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CCI(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDL2CROWS - Two Crows
@@ -467,7 +691,14 @@ export declare function CCI(inRecords: Record[], optTime_Period?: number, startI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL2CROWS(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL2CROWS(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDL2CROWS - Two Crows
  *
@@ -476,7 +707,11 @@ export declare function CDL2CROWS(inOpen: number[], inHigh: number[], inLow: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL2CROWS(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL2CROWS(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDL3BLACKCROWS - Three Black Crows
@@ -489,7 +724,14 @@ export declare function CDL2CROWS(inRecords: Record[], startIdx?: number, endIdx
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3BLACKCROWS(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3BLACKCROWS(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDL3BLACKCROWS - Three Black Crows
  *
@@ -498,7 +740,11 @@ export declare function CDL3BLACKCROWS(inOpen: number[], inHigh: number[], inLow
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3BLACKCROWS(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3BLACKCROWS(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDL3INSIDE - Three Inside Up/Down
@@ -511,7 +757,14 @@ export declare function CDL3BLACKCROWS(inRecords: Record[], startIdx?: number, e
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3INSIDE(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3INSIDE(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDL3INSIDE - Three Inside Up/Down
  *
@@ -520,10 +773,14 @@ export declare function CDL3INSIDE(inOpen: number[], inHigh: number[], inLow: nu
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3INSIDE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3INSIDE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
- * CDL3LINESTRIKE - Three-Line Strike 
+ * CDL3LINESTRIKE - Three-Line Strike
  *
  * @param {number[]} inOpen - Open
  * @param {number[]} inHigh - High
@@ -533,16 +790,27 @@ export declare function CDL3INSIDE(inRecords: Record[], startIdx?: number, endId
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3LINESTRIKE(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3LINESTRIKE(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
- * CDL3LINESTRIKE - Three-Line Strike 
+ * CDL3LINESTRIKE - Three-Line Strike
  *
  * @param {Record[]} inRecords - The records to extract data
  * @param {number} [startIdx=0] - The start index to process
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3LINESTRIKE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3LINESTRIKE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDL3OUTSIDE - Three Outside Up/Down
@@ -555,7 +823,14 @@ export declare function CDL3LINESTRIKE(inRecords: Record[], startIdx?: number, e
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3OUTSIDE(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3OUTSIDE(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDL3OUTSIDE - Three Outside Up/Down
  *
@@ -564,7 +839,11 @@ export declare function CDL3OUTSIDE(inOpen: number[], inHigh: number[], inLow: n
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3OUTSIDE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3OUTSIDE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDL3STARSINSOUTH - Three Stars In The South
@@ -577,7 +856,14 @@ export declare function CDL3OUTSIDE(inRecords: Record[], startIdx?: number, endI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3STARSINSOUTH(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3STARSINSOUTH(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDL3STARSINSOUTH - Three Stars In The South
  *
@@ -586,7 +872,11 @@ export declare function CDL3STARSINSOUTH(inOpen: number[], inHigh: number[], inL
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3STARSINSOUTH(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3STARSINSOUTH(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDL3WHITESOLDIERS - Three Advancing White Soldiers
@@ -599,7 +889,14 @@ export declare function CDL3STARSINSOUTH(inRecords: Record[], startIdx?: number,
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3WHITESOLDIERS(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3WHITESOLDIERS(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDL3WHITESOLDIERS - Three Advancing White Soldiers
  *
@@ -608,7 +905,11 @@ export declare function CDL3WHITESOLDIERS(inOpen: number[], inHigh: number[], in
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDL3WHITESOLDIERS(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDL3WHITESOLDIERS(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLABANDONEDBABY - Abandoned Baby
@@ -622,7 +923,15 @@ export declare function CDL3WHITESOLDIERS(inRecords: Record[], startIdx?: number
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLABANDONEDBABY(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLABANDONEDBABY(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLABANDONEDBABY - Abandoned Baby
  *
@@ -632,7 +941,12 @@ export declare function CDLABANDONEDBABY(inOpen: number[], inHigh: number[], inL
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLABANDONEDBABY(inRecords: Record[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLABANDONEDBABY(
+  inRecords: Record[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLADVANCEBLOCK - Advance Block
@@ -645,7 +959,14 @@ export declare function CDLABANDONEDBABY(inRecords: Record[], optPenetration?: n
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLADVANCEBLOCK(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLADVANCEBLOCK(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLADVANCEBLOCK - Advance Block
  *
@@ -654,7 +975,11 @@ export declare function CDLADVANCEBLOCK(inOpen: number[], inHigh: number[], inLo
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLADVANCEBLOCK(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLADVANCEBLOCK(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLBELTHOLD - Belt-hold
@@ -667,7 +992,14 @@ export declare function CDLADVANCEBLOCK(inRecords: Record[], startIdx?: number, 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLBELTHOLD(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLBELTHOLD(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLBELTHOLD - Belt-hold
  *
@@ -676,7 +1008,11 @@ export declare function CDLBELTHOLD(inOpen: number[], inHigh: number[], inLow: n
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLBELTHOLD(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLBELTHOLD(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLBREAKAWAY - Breakaway
@@ -689,7 +1025,14 @@ export declare function CDLBELTHOLD(inRecords: Record[], startIdx?: number, endI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLBREAKAWAY(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLBREAKAWAY(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLBREAKAWAY - Breakaway
  *
@@ -698,7 +1041,11 @@ export declare function CDLBREAKAWAY(inOpen: number[], inHigh: number[], inLow: 
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLBREAKAWAY(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLBREAKAWAY(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLCLOSINGMARUBOZU - Closing Marubozu
@@ -711,7 +1058,14 @@ export declare function CDLBREAKAWAY(inRecords: Record[], startIdx?: number, end
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLCLOSINGMARUBOZU(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLCLOSINGMARUBOZU(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLCLOSINGMARUBOZU - Closing Marubozu
  *
@@ -720,7 +1074,11 @@ export declare function CDLCLOSINGMARUBOZU(inOpen: number[], inHigh: number[], i
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLCLOSINGMARUBOZU(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLCLOSINGMARUBOZU(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLCONCEALBABYSWALL - Concealing Baby Swallow
@@ -733,7 +1091,14 @@ export declare function CDLCLOSINGMARUBOZU(inRecords: Record[], startIdx?: numbe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLCONCEALBABYSWALL(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLCONCEALBABYSWALL(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLCONCEALBABYSWALL - Concealing Baby Swallow
  *
@@ -742,7 +1107,11 @@ export declare function CDLCONCEALBABYSWALL(inOpen: number[], inHigh: number[], 
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLCONCEALBABYSWALL(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLCONCEALBABYSWALL(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLCOUNTERATTACK - Counterattack
@@ -755,7 +1124,14 @@ export declare function CDLCONCEALBABYSWALL(inRecords: Record[], startIdx?: numb
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLCOUNTERATTACK(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLCOUNTERATTACK(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLCOUNTERATTACK - Counterattack
  *
@@ -764,7 +1140,11 @@ export declare function CDLCOUNTERATTACK(inOpen: number[], inHigh: number[], inL
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLCOUNTERATTACK(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLCOUNTERATTACK(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLDARKCLOUDCOVER - Dark Cloud Cover
@@ -778,7 +1158,15 @@ export declare function CDLCOUNTERATTACK(inRecords: Record[], startIdx?: number,
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLDARKCLOUDCOVER(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLDARKCLOUDCOVER(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLDARKCLOUDCOVER - Dark Cloud Cover
  *
@@ -788,7 +1176,12 @@ export declare function CDLDARKCLOUDCOVER(inOpen: number[], inHigh: number[], in
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLDARKCLOUDCOVER(inRecords: Record[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLDARKCLOUDCOVER(
+  inRecords: Record[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLDOJI - Doji
@@ -801,7 +1194,14 @@ export declare function CDLDARKCLOUDCOVER(inRecords: Record[], optPenetration?: 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLDOJI(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLDOJI(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLDOJI - Doji
  *
@@ -810,7 +1210,11 @@ export declare function CDLDOJI(inOpen: number[], inHigh: number[], inLow: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLDOJI(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLDOJI(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLDOJISTAR - Doji Star
@@ -823,7 +1227,14 @@ export declare function CDLDOJI(inRecords: Record[], startIdx?: number, endIdx?:
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLDOJISTAR(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLDOJISTAR(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLDOJISTAR - Doji Star
  *
@@ -832,7 +1243,11 @@ export declare function CDLDOJISTAR(inOpen: number[], inHigh: number[], inLow: n
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLDOJISTAR(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLDOJISTAR(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLDRAGONFLYDOJI - Dragonfly Doji
@@ -845,7 +1260,14 @@ export declare function CDLDOJISTAR(inRecords: Record[], startIdx?: number, endI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLDRAGONFLYDOJI(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLDRAGONFLYDOJI(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLDRAGONFLYDOJI - Dragonfly Doji
  *
@@ -854,7 +1276,11 @@ export declare function CDLDRAGONFLYDOJI(inOpen: number[], inHigh: number[], inL
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLDRAGONFLYDOJI(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLDRAGONFLYDOJI(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLENGULFING - Engulfing Pattern
@@ -867,7 +1293,14 @@ export declare function CDLDRAGONFLYDOJI(inRecords: Record[], startIdx?: number,
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLENGULFING(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLENGULFING(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLENGULFING - Engulfing Pattern
  *
@@ -876,7 +1309,11 @@ export declare function CDLENGULFING(inOpen: number[], inHigh: number[], inLow: 
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLENGULFING(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLENGULFING(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLEVENINGDOJISTAR - Evening Doji Star
@@ -890,7 +1327,15 @@ export declare function CDLENGULFING(inRecords: Record[], startIdx?: number, end
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLEVENINGDOJISTAR(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLEVENINGDOJISTAR(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLEVENINGDOJISTAR - Evening Doji Star
  *
@@ -900,7 +1345,12 @@ export declare function CDLEVENINGDOJISTAR(inOpen: number[], inHigh: number[], i
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLEVENINGDOJISTAR(inRecords: Record[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLEVENINGDOJISTAR(
+  inRecords: Record[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLEVENINGSTAR - Evening Star
@@ -914,7 +1364,15 @@ export declare function CDLEVENINGDOJISTAR(inRecords: Record[], optPenetration?:
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLEVENINGSTAR(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLEVENINGSTAR(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLEVENINGSTAR - Evening Star
  *
@@ -924,7 +1382,12 @@ export declare function CDLEVENINGSTAR(inOpen: number[], inHigh: number[], inLow
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLEVENINGSTAR(inRecords: Record[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLEVENINGSTAR(
+  inRecords: Record[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLGAPSIDESIDEWHITE - Up/Down-gap side-by-side white lines
@@ -937,7 +1400,14 @@ export declare function CDLEVENINGSTAR(inRecords: Record[], optPenetration?: num
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLGAPSIDESIDEWHITE(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLGAPSIDESIDEWHITE(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLGAPSIDESIDEWHITE - Up/Down-gap side-by-side white lines
  *
@@ -946,7 +1416,11 @@ export declare function CDLGAPSIDESIDEWHITE(inOpen: number[], inHigh: number[], 
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLGAPSIDESIDEWHITE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLGAPSIDESIDEWHITE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLGRAVESTONEDOJI - Gravestone Doji
@@ -959,7 +1433,14 @@ export declare function CDLGAPSIDESIDEWHITE(inRecords: Record[], startIdx?: numb
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLGRAVESTONEDOJI(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLGRAVESTONEDOJI(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLGRAVESTONEDOJI - Gravestone Doji
  *
@@ -968,7 +1449,11 @@ export declare function CDLGRAVESTONEDOJI(inOpen: number[], inHigh: number[], in
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLGRAVESTONEDOJI(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLGRAVESTONEDOJI(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLHAMMER - Hammer
@@ -981,7 +1466,14 @@ export declare function CDLGRAVESTONEDOJI(inRecords: Record[], startIdx?: number
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHAMMER(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHAMMER(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLHAMMER - Hammer
  *
@@ -990,7 +1482,11 @@ export declare function CDLHAMMER(inOpen: number[], inHigh: number[], inLow: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHAMMER(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHAMMER(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLHANGINGMAN - Hanging Man
@@ -1003,7 +1499,14 @@ export declare function CDLHAMMER(inRecords: Record[], startIdx?: number, endIdx
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHANGINGMAN(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHANGINGMAN(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLHANGINGMAN - Hanging Man
  *
@@ -1012,7 +1515,11 @@ export declare function CDLHANGINGMAN(inOpen: number[], inHigh: number[], inLow:
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHANGINGMAN(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHANGINGMAN(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLHARAMI - Harami Pattern
@@ -1025,7 +1532,14 @@ export declare function CDLHANGINGMAN(inRecords: Record[], startIdx?: number, en
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHARAMI(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHARAMI(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLHARAMI - Harami Pattern
  *
@@ -1034,7 +1548,11 @@ export declare function CDLHARAMI(inOpen: number[], inHigh: number[], inLow: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHARAMI(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHARAMI(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLHARAMICROSS - Harami Cross Pattern
@@ -1047,7 +1565,14 @@ export declare function CDLHARAMI(inRecords: Record[], startIdx?: number, endIdx
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHARAMICROSS(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHARAMICROSS(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLHARAMICROSS - Harami Cross Pattern
  *
@@ -1056,7 +1581,11 @@ export declare function CDLHARAMICROSS(inOpen: number[], inHigh: number[], inLow
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHARAMICROSS(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHARAMICROSS(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLHIGHWAVE - High-Wave Candle
@@ -1069,7 +1598,14 @@ export declare function CDLHARAMICROSS(inRecords: Record[], startIdx?: number, e
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHIGHWAVE(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHIGHWAVE(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLHIGHWAVE - High-Wave Candle
  *
@@ -1078,7 +1614,11 @@ export declare function CDLHIGHWAVE(inOpen: number[], inHigh: number[], inLow: n
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHIGHWAVE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHIGHWAVE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLHIKKAKE - Hikkake Pattern
@@ -1091,7 +1631,14 @@ export declare function CDLHIGHWAVE(inRecords: Record[], startIdx?: number, endI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHIKKAKE(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHIKKAKE(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLHIKKAKE - Hikkake Pattern
  *
@@ -1100,7 +1647,11 @@ export declare function CDLHIKKAKE(inOpen: number[], inHigh: number[], inLow: nu
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHIKKAKE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHIKKAKE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLHIKKAKEMOD - Modified Hikkake Pattern
@@ -1113,7 +1664,14 @@ export declare function CDLHIKKAKE(inRecords: Record[], startIdx?: number, endId
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHIKKAKEMOD(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHIKKAKEMOD(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLHIKKAKEMOD - Modified Hikkake Pattern
  *
@@ -1122,7 +1680,11 @@ export declare function CDLHIKKAKEMOD(inOpen: number[], inHigh: number[], inLow:
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHIKKAKEMOD(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHIKKAKEMOD(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLHOMINGPIGEON - Homing Pigeon
@@ -1135,7 +1697,14 @@ export declare function CDLHIKKAKEMOD(inRecords: Record[], startIdx?: number, en
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHOMINGPIGEON(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHOMINGPIGEON(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLHOMINGPIGEON - Homing Pigeon
  *
@@ -1144,7 +1713,11 @@ export declare function CDLHOMINGPIGEON(inOpen: number[], inHigh: number[], inLo
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLHOMINGPIGEON(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLHOMINGPIGEON(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLIDENTICAL3CROWS - Identical Three Crows
@@ -1157,7 +1730,14 @@ export declare function CDLHOMINGPIGEON(inRecords: Record[], startIdx?: number, 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLIDENTICAL3CROWS(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLIDENTICAL3CROWS(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLIDENTICAL3CROWS - Identical Three Crows
  *
@@ -1166,7 +1746,11 @@ export declare function CDLIDENTICAL3CROWS(inOpen: number[], inHigh: number[], i
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLIDENTICAL3CROWS(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLIDENTICAL3CROWS(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLINNECK - In-Neck Pattern
@@ -1179,7 +1763,14 @@ export declare function CDLIDENTICAL3CROWS(inRecords: Record[], startIdx?: numbe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLINNECK(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLINNECK(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLINNECK - In-Neck Pattern
  *
@@ -1188,7 +1779,11 @@ export declare function CDLINNECK(inOpen: number[], inHigh: number[], inLow: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLINNECK(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLINNECK(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLINVERTEDHAMMER - Inverted Hammer
@@ -1201,7 +1796,14 @@ export declare function CDLINNECK(inRecords: Record[], startIdx?: number, endIdx
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLINVERTEDHAMMER(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLINVERTEDHAMMER(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLINVERTEDHAMMER - Inverted Hammer
  *
@@ -1210,7 +1812,11 @@ export declare function CDLINVERTEDHAMMER(inOpen: number[], inHigh: number[], in
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLINVERTEDHAMMER(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLINVERTEDHAMMER(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLKICKING - Kicking
@@ -1223,7 +1829,14 @@ export declare function CDLINVERTEDHAMMER(inRecords: Record[], startIdx?: number
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLKICKING(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLKICKING(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLKICKING - Kicking
  *
@@ -1232,7 +1845,11 @@ export declare function CDLKICKING(inOpen: number[], inHigh: number[], inLow: nu
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLKICKING(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLKICKING(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLKICKINGBYLENGTH - Kicking - bull/bear determined by the longer marubozu
@@ -1245,7 +1862,14 @@ export declare function CDLKICKING(inRecords: Record[], startIdx?: number, endId
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLKICKINGBYLENGTH(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLKICKINGBYLENGTH(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLKICKINGBYLENGTH - Kicking - bull/bear determined by the longer marubozu
  *
@@ -1254,7 +1878,11 @@ export declare function CDLKICKINGBYLENGTH(inOpen: number[], inHigh: number[], i
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLKICKINGBYLENGTH(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLKICKINGBYLENGTH(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLLADDERBOTTOM - Ladder Bottom
@@ -1267,7 +1895,14 @@ export declare function CDLKICKINGBYLENGTH(inRecords: Record[], startIdx?: numbe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLLADDERBOTTOM(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLLADDERBOTTOM(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLLADDERBOTTOM - Ladder Bottom
  *
@@ -1276,7 +1911,11 @@ export declare function CDLLADDERBOTTOM(inOpen: number[], inHigh: number[], inLo
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLLADDERBOTTOM(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLLADDERBOTTOM(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLLONGLEGGEDDOJI - Long Legged Doji
@@ -1289,7 +1928,14 @@ export declare function CDLLADDERBOTTOM(inRecords: Record[], startIdx?: number, 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLLONGLEGGEDDOJI(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLLONGLEGGEDDOJI(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLLONGLEGGEDDOJI - Long Legged Doji
  *
@@ -1298,7 +1944,11 @@ export declare function CDLLONGLEGGEDDOJI(inOpen: number[], inHigh: number[], in
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLLONGLEGGEDDOJI(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLLONGLEGGEDDOJI(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLLONGLINE - Long Line Candle
@@ -1311,7 +1961,14 @@ export declare function CDLLONGLEGGEDDOJI(inRecords: Record[], startIdx?: number
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLLONGLINE(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLLONGLINE(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLLONGLINE - Long Line Candle
  *
@@ -1320,7 +1977,11 @@ export declare function CDLLONGLINE(inOpen: number[], inHigh: number[], inLow: n
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLLONGLINE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLLONGLINE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLMARUBOZU - Marubozu
@@ -1333,7 +1994,14 @@ export declare function CDLLONGLINE(inRecords: Record[], startIdx?: number, endI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLMARUBOZU(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLMARUBOZU(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLMARUBOZU - Marubozu
  *
@@ -1342,7 +2010,11 @@ export declare function CDLMARUBOZU(inOpen: number[], inHigh: number[], inLow: n
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLMARUBOZU(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLMARUBOZU(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLMATCHINGLOW - Matching Low
@@ -1355,7 +2027,14 @@ export declare function CDLMARUBOZU(inRecords: Record[], startIdx?: number, endI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLMATCHINGLOW(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLMATCHINGLOW(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLMATCHINGLOW - Matching Low
  *
@@ -1364,7 +2043,11 @@ export declare function CDLMATCHINGLOW(inOpen: number[], inHigh: number[], inLow
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLMATCHINGLOW(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLMATCHINGLOW(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLMATHOLD - Mat Hold
@@ -1378,7 +2061,15 @@ export declare function CDLMATCHINGLOW(inRecords: Record[], startIdx?: number, e
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLMATHOLD(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLMATHOLD(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLMATHOLD - Mat Hold
  *
@@ -1388,7 +2079,12 @@ export declare function CDLMATHOLD(inOpen: number[], inHigh: number[], inLow: nu
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLMATHOLD(inRecords: Record[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLMATHOLD(
+  inRecords: Record[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLMORNINGDOJISTAR - Morning Doji Star
@@ -1402,7 +2098,15 @@ export declare function CDLMATHOLD(inRecords: Record[], optPenetration?: number,
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLMORNINGDOJISTAR(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLMORNINGDOJISTAR(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLMORNINGDOJISTAR - Morning Doji Star
  *
@@ -1412,7 +2116,12 @@ export declare function CDLMORNINGDOJISTAR(inOpen: number[], inHigh: number[], i
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLMORNINGDOJISTAR(inRecords: Record[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLMORNINGDOJISTAR(
+  inRecords: Record[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLMORNINGSTAR - Morning Star
@@ -1426,7 +2135,15 @@ export declare function CDLMORNINGDOJISTAR(inRecords: Record[], optPenetration?:
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLMORNINGSTAR(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLMORNINGSTAR(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLMORNINGSTAR - Morning Star
  *
@@ -1436,7 +2153,12 @@ export declare function CDLMORNINGSTAR(inOpen: number[], inHigh: number[], inLow
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLMORNINGSTAR(inRecords: Record[], optPenetration?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CDLMORNINGSTAR(
+  inRecords: Record[],
+  optPenetration?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLONNECK - On-Neck Pattern
@@ -1449,7 +2171,14 @@ export declare function CDLMORNINGSTAR(inRecords: Record[], optPenetration?: num
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLONNECK(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLONNECK(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLONNECK - On-Neck Pattern
  *
@@ -1458,7 +2187,11 @@ export declare function CDLONNECK(inOpen: number[], inHigh: number[], inLow: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLONNECK(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLONNECK(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLPIERCING - Piercing Pattern
@@ -1471,7 +2204,14 @@ export declare function CDLONNECK(inRecords: Record[], startIdx?: number, endIdx
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLPIERCING(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLPIERCING(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLPIERCING - Piercing Pattern
  *
@@ -1480,7 +2220,11 @@ export declare function CDLPIERCING(inOpen: number[], inHigh: number[], inLow: n
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLPIERCING(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLPIERCING(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLRICKSHAWMAN - Rickshaw Man
@@ -1493,7 +2237,14 @@ export declare function CDLPIERCING(inRecords: Record[], startIdx?: number, endI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLRICKSHAWMAN(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLRICKSHAWMAN(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLRICKSHAWMAN - Rickshaw Man
  *
@@ -1502,7 +2253,11 @@ export declare function CDLRICKSHAWMAN(inOpen: number[], inHigh: number[], inLow
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLRICKSHAWMAN(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLRICKSHAWMAN(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLRISEFALL3METHODS - Rising/Falling Three Methods
@@ -1515,7 +2270,14 @@ export declare function CDLRICKSHAWMAN(inRecords: Record[], startIdx?: number, e
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLRISEFALL3METHODS(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLRISEFALL3METHODS(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLRISEFALL3METHODS - Rising/Falling Three Methods
  *
@@ -1524,7 +2286,11 @@ export declare function CDLRISEFALL3METHODS(inOpen: number[], inHigh: number[], 
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLRISEFALL3METHODS(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLRISEFALL3METHODS(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLSEPARATINGLINES - Separating Lines
@@ -1537,7 +2303,14 @@ export declare function CDLRISEFALL3METHODS(inRecords: Record[], startIdx?: numb
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSEPARATINGLINES(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSEPARATINGLINES(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLSEPARATINGLINES - Separating Lines
  *
@@ -1546,7 +2319,11 @@ export declare function CDLSEPARATINGLINES(inOpen: number[], inHigh: number[], i
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSEPARATINGLINES(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSEPARATINGLINES(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLSHOOTINGSTAR - Shooting Star
@@ -1559,7 +2336,14 @@ export declare function CDLSEPARATINGLINES(inRecords: Record[], startIdx?: numbe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSHOOTINGSTAR(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSHOOTINGSTAR(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLSHOOTINGSTAR - Shooting Star
  *
@@ -1568,7 +2352,11 @@ export declare function CDLSHOOTINGSTAR(inOpen: number[], inHigh: number[], inLo
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSHOOTINGSTAR(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSHOOTINGSTAR(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLSHORTLINE - Short Line Candle
@@ -1581,7 +2369,14 @@ export declare function CDLSHOOTINGSTAR(inRecords: Record[], startIdx?: number, 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSHORTLINE(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSHORTLINE(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLSHORTLINE - Short Line Candle
  *
@@ -1590,7 +2385,11 @@ export declare function CDLSHORTLINE(inOpen: number[], inHigh: number[], inLow: 
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSHORTLINE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSHORTLINE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLSPINNINGTOP - Spinning Top
@@ -1603,7 +2402,14 @@ export declare function CDLSHORTLINE(inRecords: Record[], startIdx?: number, end
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSPINNINGTOP(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSPINNINGTOP(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLSPINNINGTOP - Spinning Top
  *
@@ -1612,7 +2418,11 @@ export declare function CDLSPINNINGTOP(inOpen: number[], inHigh: number[], inLow
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSPINNINGTOP(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSPINNINGTOP(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLSTALLEDPATTERN - Stalled Pattern
@@ -1625,7 +2435,14 @@ export declare function CDLSPINNINGTOP(inRecords: Record[], startIdx?: number, e
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSTALLEDPATTERN(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSTALLEDPATTERN(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLSTALLEDPATTERN - Stalled Pattern
  *
@@ -1634,7 +2451,11 @@ export declare function CDLSTALLEDPATTERN(inOpen: number[], inHigh: number[], in
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSTALLEDPATTERN(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSTALLEDPATTERN(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLSTICKSANDWICH - Stick Sandwich
@@ -1647,7 +2468,14 @@ export declare function CDLSTALLEDPATTERN(inRecords: Record[], startIdx?: number
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSTICKSANDWICH(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSTICKSANDWICH(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLSTICKSANDWICH - Stick Sandwich
  *
@@ -1656,7 +2484,11 @@ export declare function CDLSTICKSANDWICH(inOpen: number[], inHigh: number[], inL
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLSTICKSANDWICH(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLSTICKSANDWICH(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLTAKURI - Takuri (Dragonfly Doji with very long lower shadow)
@@ -1669,7 +2501,14 @@ export declare function CDLSTICKSANDWICH(inRecords: Record[], startIdx?: number,
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLTAKURI(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLTAKURI(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLTAKURI - Takuri (Dragonfly Doji with very long lower shadow)
  *
@@ -1678,7 +2517,11 @@ export declare function CDLTAKURI(inOpen: number[], inHigh: number[], inLow: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLTAKURI(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLTAKURI(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLTASUKIGAP - Tasuki Gap
@@ -1691,7 +2534,14 @@ export declare function CDLTAKURI(inRecords: Record[], startIdx?: number, endIdx
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLTASUKIGAP(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLTASUKIGAP(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLTASUKIGAP - Tasuki Gap
  *
@@ -1700,7 +2550,11 @@ export declare function CDLTASUKIGAP(inOpen: number[], inHigh: number[], inLow: 
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLTASUKIGAP(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLTASUKIGAP(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLTHRUSTING - Thrusting Pattern
@@ -1713,7 +2567,14 @@ export declare function CDLTASUKIGAP(inRecords: Record[], startIdx?: number, end
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLTHRUSTING(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLTHRUSTING(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLTHRUSTING - Thrusting Pattern
  *
@@ -1722,7 +2583,11 @@ export declare function CDLTHRUSTING(inOpen: number[], inHigh: number[], inLow: 
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLTHRUSTING(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLTHRUSTING(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLTRISTAR - Tristar Pattern
@@ -1735,7 +2600,14 @@ export declare function CDLTHRUSTING(inRecords: Record[], startIdx?: number, end
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLTRISTAR(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLTRISTAR(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLTRISTAR - Tristar Pattern
  *
@@ -1744,7 +2616,11 @@ export declare function CDLTRISTAR(inOpen: number[], inHigh: number[], inLow: nu
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLTRISTAR(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLTRISTAR(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLUNIQUE3RIVER - Unique 3 River
@@ -1757,7 +2633,14 @@ export declare function CDLTRISTAR(inRecords: Record[], startIdx?: number, endId
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLUNIQUE3RIVER(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLUNIQUE3RIVER(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLUNIQUE3RIVER - Unique 3 River
  *
@@ -1766,7 +2649,11 @@ export declare function CDLUNIQUE3RIVER(inOpen: number[], inHigh: number[], inLo
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLUNIQUE3RIVER(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLUNIQUE3RIVER(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLUPSIDEGAP2CROWS - Upside Gap Two Crows
@@ -1779,7 +2666,14 @@ export declare function CDLUNIQUE3RIVER(inRecords: Record[], startIdx?: number, 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLUPSIDEGAP2CROWS(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLUPSIDEGAP2CROWS(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLUPSIDEGAP2CROWS - Upside Gap Two Crows
  *
@@ -1788,7 +2682,11 @@ export declare function CDLUPSIDEGAP2CROWS(inOpen: number[], inHigh: number[], i
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLUPSIDEGAP2CROWS(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLUPSIDEGAP2CROWS(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CDLXSIDEGAP3METHODS - Upside/Downside Gap Three Methods
@@ -1801,7 +2699,14 @@ export declare function CDLUPSIDEGAP2CROWS(inRecords: Record[], startIdx?: numbe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLXSIDEGAP3METHODS(inOpen: number[], inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLXSIDEGAP3METHODS(
+  inOpen: number[],
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CDLXSIDEGAP3METHODS - Upside/Downside Gap Three Methods
  *
@@ -1810,7 +2715,11 @@ export declare function CDLXSIDEGAP3METHODS(inOpen: number[], inHigh: number[], 
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function CDLXSIDEGAP3METHODS(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function CDLXSIDEGAP3METHODS(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CEIL - Vector Ceil
@@ -1820,7 +2729,11 @@ export declare function CDLXSIDEGAP3METHODS(inRecords: Record[], startIdx?: numb
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function CEIL(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function CEIL(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CEIL - Vector Ceil
  *
@@ -1830,7 +2743,12 @@ export declare function CEIL(inReal: number[], startIdx?: number, endIdx?: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function CEIL(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function CEIL(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CMO - Chande Momentum Oscillator
@@ -1841,7 +2759,12 @@ export declare function CEIL(inRecords: Record[], inRealName: string, startIdx?:
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function CMO(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CMO(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CMO - Chande Momentum Oscillator
  *
@@ -1852,7 +2775,13 @@ export declare function CMO(inReal: number[], optTime_Period?: number, startIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function CMO(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CMO(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * CORREL - Pearson's Correlation Coefficient (r)
@@ -1864,7 +2793,13 @@ export declare function CMO(inRecords: Record[], inRealName: string, optTime_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function CORREL(inReal0: number[], inReal1: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CORREL(
+  inReal0: number[],
+  inReal1: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * CORREL - Pearson's Correlation Coefficient (r)
  *
@@ -1876,7 +2811,14 @@ export declare function CORREL(inReal0: number[], inReal1: number[], optTime_Per
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function CORREL(inRecords: Record[], inReal0Name: string, inReal1Name: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function CORREL(
+  inRecords: Record[],
+  inReal0Name: string,
+  inReal1Name: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * COS - Vector Trigonometric Cos
@@ -1886,7 +2828,11 @@ export declare function CORREL(inRecords: Record[], inReal0Name: string, inReal1
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function COS(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function COS(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * COS - Vector Trigonometric Cos
  *
@@ -1896,7 +2842,12 @@ export declare function COS(inReal: number[], startIdx?: number, endIdx?: number
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function COS(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function COS(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * COSH - Vector Trigonometric Cosh
@@ -1906,7 +2857,11 @@ export declare function COS(inRecords: Record[], inRealName: string, startIdx?: 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function COSH(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function COSH(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * COSH - Vector Trigonometric Cosh
  *
@@ -1916,7 +2871,12 @@ export declare function COSH(inReal: number[], startIdx?: number, endIdx?: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function COSH(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function COSH(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * DEMA - Double Exponential Moving Average
@@ -1927,7 +2887,12 @@ export declare function COSH(inRecords: Record[], inRealName: string, startIdx?:
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function DEMA(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function DEMA(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * DEMA - Double Exponential Moving Average
  *
@@ -1938,7 +2903,13 @@ export declare function DEMA(inReal: number[], optTime_Period?: number, startIdx
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function DEMA(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function DEMA(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * DIV - Vector Arithmetic Div
@@ -1949,7 +2920,12 @@ export declare function DEMA(inRecords: Record[], inRealName: string, optTime_Pe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function DIV(inReal0: number[], inReal1: number[], startIdx?: number, endIdx?: number): number[];
+export declare function DIV(
+  inReal0: number[],
+  inReal1: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * DIV - Vector Arithmetic Div
  *
@@ -1960,7 +2936,13 @@ export declare function DIV(inReal0: number[], inReal1: number[], startIdx?: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function DIV(inRecords: Record[], inReal0Name: string, inReal1Name: string, startIdx?: number, endIdx?: number): number[];
+export declare function DIV(
+  inRecords: Record[],
+  inReal0Name: string,
+  inReal1Name: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * DX - Directional Movement Index
@@ -1973,7 +2955,14 @@ export declare function DIV(inRecords: Record[], inReal0Name: string, inReal1Nam
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function DX(inHigh: number[], inLow: number[], inClose: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function DX(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * DX - Directional Movement Index
  *
@@ -1983,7 +2972,12 @@ export declare function DX(inHigh: number[], inLow: number[], inClose: number[],
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function DX(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function DX(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * EMA - Exponential Moving Average
@@ -1994,7 +2988,12 @@ export declare function DX(inRecords: Record[], optTime_Period?: number, startId
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function EMA(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function EMA(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * EMA - Exponential Moving Average
  *
@@ -2005,7 +3004,13 @@ export declare function EMA(inReal: number[], optTime_Period?: number, startIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function EMA(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function EMA(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * EXP - Vector Arithmetic Exp
@@ -2015,7 +3020,11 @@ export declare function EMA(inRecords: Record[], inRealName: string, optTime_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function EXP(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function EXP(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * EXP - Vector Arithmetic Exp
  *
@@ -2025,7 +3034,12 @@ export declare function EXP(inReal: number[], startIdx?: number, endIdx?: number
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function EXP(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function EXP(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * FLOOR - Vector Floor
@@ -2035,7 +3049,11 @@ export declare function EXP(inRecords: Record[], inRealName: string, startIdx?: 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function FLOOR(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function FLOOR(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * FLOOR - Vector Floor
  *
@@ -2045,7 +3063,12 @@ export declare function FLOOR(inReal: number[], startIdx?: number, endIdx?: numb
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function FLOOR(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function FLOOR(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * HT_DCPERIOD - Hilbert Transform - Dominant Cycle Period
@@ -2055,7 +3078,11 @@ export declare function FLOOR(inRecords: Record[], inRealName: string, startIdx?
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function HT_DCPERIOD(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function HT_DCPERIOD(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * HT_DCPERIOD - Hilbert Transform - Dominant Cycle Period
  *
@@ -2065,7 +3092,12 @@ export declare function HT_DCPERIOD(inReal: number[], startIdx?: number, endIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function HT_DCPERIOD(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function HT_DCPERIOD(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * HT_DCPHASE - Hilbert Transform - Dominant Cycle Phase
@@ -2075,7 +3107,11 @@ export declare function HT_DCPERIOD(inRecords: Record[], inRealName: string, sta
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function HT_DCPHASE(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function HT_DCPHASE(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * HT_DCPHASE - Hilbert Transform - Dominant Cycle Phase
  *
@@ -2085,7 +3121,12 @@ export declare function HT_DCPHASE(inReal: number[], startIdx?: number, endIdx?:
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function HT_DCPHASE(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function HT_DCPHASE(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * HT_PHASOR - Hilbert Transform - Phasor Components
@@ -2095,7 +3136,11 @@ export declare function HT_DCPHASE(inRecords: Record[], inRealName: string, star
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outInPhase, outQuadrature]
  */
-export declare function HT_PHASOR(inReal: number[], startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function HT_PHASOR(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 /**
  * HT_PHASOR - Hilbert Transform - Phasor Components
  *
@@ -2105,7 +3150,12 @@ export declare function HT_PHASOR(inReal: number[], startIdx?: number, endIdx?: 
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outInPhase, outQuadrature]
  */
-export declare function HT_PHASOR(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function HT_PHASOR(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 
 /**
  * HT_SINE - Hilbert Transform - SineWave
@@ -2115,7 +3165,11 @@ export declare function HT_PHASOR(inRecords: Record[], inRealName: string, start
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outSine, outLeadSine]
  */
-export declare function HT_SINE(inReal: number[], startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function HT_SINE(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 /**
  * HT_SINE - Hilbert Transform - SineWave
  *
@@ -2125,7 +3179,12 @@ export declare function HT_SINE(inReal: number[], startIdx?: number, endIdx?: nu
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outSine, outLeadSine]
  */
-export declare function HT_SINE(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function HT_SINE(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 
 /**
  * HT_TRENDLINE - Hilbert Transform - Instantaneous Trendline
@@ -2135,7 +3194,11 @@ export declare function HT_SINE(inRecords: Record[], inRealName: string, startId
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function HT_TRENDLINE(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function HT_TRENDLINE(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * HT_TRENDLINE - Hilbert Transform - Instantaneous Trendline
  *
@@ -2145,7 +3208,12 @@ export declare function HT_TRENDLINE(inReal: number[], startIdx?: number, endIdx
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function HT_TRENDLINE(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function HT_TRENDLINE(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * HT_TRENDMODE - Hilbert Transform - Trend vs Cycle Mode
@@ -2155,7 +3223,11 @@ export declare function HT_TRENDLINE(inRecords: Record[], inRealName: string, st
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function HT_TRENDMODE(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function HT_TRENDMODE(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * HT_TRENDMODE - Hilbert Transform - Trend vs Cycle Mode
  *
@@ -2165,7 +3237,12 @@ export declare function HT_TRENDMODE(inReal: number[], startIdx?: number, endIdx
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function HT_TRENDMODE(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function HT_TRENDMODE(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * IMI - Intraday Momentum Index
@@ -2177,7 +3254,13 @@ export declare function HT_TRENDMODE(inRecords: Record[], inRealName: string, st
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function IMI(inOpen: number[], inClose: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function IMI(
+  inOpen: number[],
+  inClose: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * IMI - Intraday Momentum Index
  *
@@ -2187,7 +3270,12 @@ export declare function IMI(inOpen: number[], inClose: number[], optTime_Period?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function IMI(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function IMI(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * KAMA - Kaufman Adaptive Moving Average
@@ -2198,7 +3286,12 @@ export declare function IMI(inRecords: Record[], optTime_Period?: number, startI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function KAMA(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function KAMA(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * KAMA - Kaufman Adaptive Moving Average
  *
@@ -2209,7 +3302,13 @@ export declare function KAMA(inReal: number[], optTime_Period?: number, startIdx
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function KAMA(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function KAMA(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * LINEARREG - Linear Regression
@@ -2220,7 +3319,12 @@ export declare function KAMA(inRecords: Record[], inRealName: string, optTime_Pe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LINEARREG(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function LINEARREG(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * LINEARREG - Linear Regression
  *
@@ -2231,7 +3335,13 @@ export declare function LINEARREG(inReal: number[], optTime_Period?: number, sta
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LINEARREG(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function LINEARREG(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * LINEARREG_ANGLE - Linear Regression Angle
@@ -2242,7 +3352,12 @@ export declare function LINEARREG(inRecords: Record[], inRealName: string, optTi
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LINEARREG_ANGLE(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function LINEARREG_ANGLE(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * LINEARREG_ANGLE - Linear Regression Angle
  *
@@ -2253,7 +3368,13 @@ export declare function LINEARREG_ANGLE(inReal: number[], optTime_Period?: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LINEARREG_ANGLE(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function LINEARREG_ANGLE(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * LINEARREG_INTERCEPT - Linear Regression Intercept
@@ -2264,7 +3385,12 @@ export declare function LINEARREG_ANGLE(inRecords: Record[], inRealName: string,
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LINEARREG_INTERCEPT(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function LINEARREG_INTERCEPT(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * LINEARREG_INTERCEPT - Linear Regression Intercept
  *
@@ -2275,7 +3401,13 @@ export declare function LINEARREG_INTERCEPT(inReal: number[], optTime_Period?: n
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LINEARREG_INTERCEPT(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function LINEARREG_INTERCEPT(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * LINEARREG_SLOPE - Linear Regression Slope
@@ -2286,7 +3418,12 @@ export declare function LINEARREG_INTERCEPT(inRecords: Record[], inRealName: str
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LINEARREG_SLOPE(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function LINEARREG_SLOPE(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * LINEARREG_SLOPE - Linear Regression Slope
  *
@@ -2297,7 +3434,13 @@ export declare function LINEARREG_SLOPE(inReal: number[], optTime_Period?: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LINEARREG_SLOPE(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function LINEARREG_SLOPE(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * LN - Vector Log Natural
@@ -2307,7 +3450,11 @@ export declare function LINEARREG_SLOPE(inRecords: Record[], inRealName: string,
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LN(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function LN(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * LN - Vector Log Natural
  *
@@ -2317,7 +3464,12 @@ export declare function LN(inReal: number[], startIdx?: number, endIdx?: number)
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LN(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function LN(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * LOG10 - Vector Log10
@@ -2327,7 +3479,11 @@ export declare function LN(inRecords: Record[], inRealName: string, startIdx?: n
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LOG10(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function LOG10(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * LOG10 - Vector Log10
  *
@@ -2337,7 +3493,12 @@ export declare function LOG10(inReal: number[], startIdx?: number, endIdx?: numb
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function LOG10(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function LOG10(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MA - Moving average
@@ -2349,7 +3510,13 @@ export declare function LOG10(inRecords: Record[], inRealName: string, startIdx?
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MA(inReal: number[], optTime_Period?: number, optMA_Type?: MATypes, startIdx?: number, endIdx?: number): number[];
+export declare function MA(
+  inReal: number[],
+  optTime_Period?: number,
+  optMA_Type?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MA - Moving average
  *
@@ -2361,7 +3528,14 @@ export declare function MA(inReal: number[], optTime_Period?: number, optMA_Type
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MA(inRecords: Record[], inRealName: string, optTime_Period?: number, optMA_Type?: MATypes, startIdx?: number, endIdx?: number): number[];
+export declare function MA(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  optMA_Type?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MACD - Moving Average Convergence/Divergence
@@ -2374,7 +3548,14 @@ export declare function MA(inRecords: Record[], inRealName: string, optTime_Peri
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[], number[]]} - [outMACD, outMACDSignal, outMACDHist]
  */
-export declare function MACD(inReal: number[], optFast_Period?: number, optSlow_Period?: number, optSignal_Period?: number, startIdx?: number, endIdx?: number): [number[], number[], number[]];
+export declare function MACD(
+  inReal: number[],
+  optFast_Period?: number,
+  optSlow_Period?: number,
+  optSignal_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[], number[]];
 /**
  * MACD - Moving Average Convergence/Divergence
  *
@@ -2387,7 +3568,15 @@ export declare function MACD(inReal: number[], optFast_Period?: number, optSlow_
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[], number[]]} - [outMACD, outMACDSignal, outMACDHist]
  */
-export declare function MACD(inRecords: Record[], inRealName: string, optFast_Period?: number, optSlow_Period?: number, optSignal_Period?: number, startIdx?: number, endIdx?: number): [number[], number[], number[]];
+export declare function MACD(
+  inRecords: Record[],
+  inRealName: string,
+  optFast_Period?: number,
+  optSlow_Period?: number,
+  optSignal_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[], number[]];
 
 /**
  * MACDEXT - MACD with controllable MA type
@@ -2403,7 +3592,17 @@ export declare function MACD(inRecords: Record[], inRealName: string, optFast_Pe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[], number[]]} - [outMACD, outMACDSignal, outMACDHist]
  */
-export declare function MACDEXT(inReal: number[], optFast_Period?: number, optFast_MA?: MATypes, optSlow_Period?: number, optSlow_MA?: MATypes, optSignal_Period?: number, optSignal_MA?: MATypes, startIdx?: number, endIdx?: number): [number[], number[], number[]];
+export declare function MACDEXT(
+  inReal: number[],
+  optFast_Period?: number,
+  optFast_MA?: MATypes,
+  optSlow_Period?: number,
+  optSlow_MA?: MATypes,
+  optSignal_Period?: number,
+  optSignal_MA?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[], number[]];
 /**
  * MACDEXT - MACD with controllable MA type
  *
@@ -2419,7 +3618,18 @@ export declare function MACDEXT(inReal: number[], optFast_Period?: number, optFa
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[], number[]]} - [outMACD, outMACDSignal, outMACDHist]
  */
-export declare function MACDEXT(inRecords: Record[], inRealName: string, optFast_Period?: number, optFast_MA?: MATypes, optSlow_Period?: number, optSlow_MA?: MATypes, optSignal_Period?: number, optSignal_MA?: MATypes, startIdx?: number, endIdx?: number): [number[], number[], number[]];
+export declare function MACDEXT(
+  inRecords: Record[],
+  inRealName: string,
+  optFast_Period?: number,
+  optFast_MA?: MATypes,
+  optSlow_Period?: number,
+  optSlow_MA?: MATypes,
+  optSignal_Period?: number,
+  optSignal_MA?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[], number[]];
 
 /**
  * MACDFIX - Moving Average Convergence/Divergence Fix 12/26
@@ -2430,7 +3640,12 @@ export declare function MACDEXT(inRecords: Record[], inRealName: string, optFast
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[], number[]]} - [outMACD, outMACDSignal, outMACDHist]
  */
-export declare function MACDFIX(inReal: number[], optSignal_Period?: number, startIdx?: number, endIdx?: number): [number[], number[], number[]];
+export declare function MACDFIX(
+  inReal: number[],
+  optSignal_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[], number[]];
 /**
  * MACDFIX - Moving Average Convergence/Divergence Fix 12/26
  *
@@ -2441,7 +3656,13 @@ export declare function MACDFIX(inReal: number[], optSignal_Period?: number, sta
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[], number[]]} - [outMACD, outMACDSignal, outMACDHist]
  */
-export declare function MACDFIX(inRecords: Record[], inRealName: string, optSignal_Period?: number, startIdx?: number, endIdx?: number): [number[], number[], number[]];
+export declare function MACDFIX(
+  inRecords: Record[],
+  inRealName: string,
+  optSignal_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[], number[]];
 
 /**
  * MAMA - MESA Adaptive Moving Average
@@ -2453,7 +3674,13 @@ export declare function MACDFIX(inRecords: Record[], inRealName: string, optSign
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outMAMA, outFAMA]
  */
-export declare function MAMA(inReal: number[], optFast_Limit?: number, optSlow_Limit?: number, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function MAMA(
+  inReal: number[],
+  optFast_Limit?: number,
+  optSlow_Limit?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 /**
  * MAMA - MESA Adaptive Moving Average
  *
@@ -2465,7 +3692,14 @@ export declare function MAMA(inReal: number[], optFast_Limit?: number, optSlow_L
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outMAMA, outFAMA]
  */
-export declare function MAMA(inRecords: Record[], inRealName: string, optFast_Limit?: number, optSlow_Limit?: number, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function MAMA(
+  inRecords: Record[],
+  inRealName: string,
+  optFast_Limit?: number,
+  optSlow_Limit?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 
 /**
  * MAVP - Moving average with variable period
@@ -2479,7 +3713,15 @@ export declare function MAMA(inRecords: Record[], inRealName: string, optFast_Li
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MAVP(inReal: number[], inPeriods: number[], optMinimum_Period?: number, optMaximum_Period?: number, optMA_Type?: MATypes, startIdx?: number, endIdx?: number): number[];
+export declare function MAVP(
+  inReal: number[],
+  inPeriods: number[],
+  optMinimum_Period?: number,
+  optMaximum_Period?: number,
+  optMA_Type?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MAVP - Moving average with variable period
  *
@@ -2493,7 +3735,16 @@ export declare function MAVP(inReal: number[], inPeriods: number[], optMinimum_P
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MAVP(inRecords: Record[], inRealName: string, inPeriodsName: string, optMinimum_Period?: number, optMaximum_Period?: number, optMA_Type?: MATypes, startIdx?: number, endIdx?: number): number[];
+export declare function MAVP(
+  inRecords: Record[],
+  inRealName: string,
+  inPeriodsName: string,
+  optMinimum_Period?: number,
+  optMaximum_Period?: number,
+  optMA_Type?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MAX - Highest value over a specified period
@@ -2504,7 +3755,12 @@ export declare function MAVP(inRecords: Record[], inRealName: string, inPeriodsN
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MAX(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MAX(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MAX - Highest value over a specified period
  *
@@ -2515,7 +3771,13 @@ export declare function MAX(inReal: number[], optTime_Period?: number, startIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MAX(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MAX(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MAXINDEX - Index of highest value over a specified period
@@ -2526,7 +3788,12 @@ export declare function MAX(inRecords: Record[], inRealName: string, optTime_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function MAXINDEX(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MAXINDEX(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MAXINDEX - Index of highest value over a specified period
  *
@@ -2537,7 +3804,13 @@ export declare function MAXINDEX(inReal: number[], optTime_Period?: number, star
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function MAXINDEX(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MAXINDEX(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MEDPRICE - Median Price
@@ -2548,7 +3821,12 @@ export declare function MAXINDEX(inRecords: Record[], inRealName: string, optTim
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MEDPRICE(inHigh: number[], inLow: number[], startIdx?: number, endIdx?: number): number[];
+export declare function MEDPRICE(
+  inHigh: number[],
+  inLow: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MEDPRICE - Median Price
  *
@@ -2557,7 +3835,11 @@ export declare function MEDPRICE(inHigh: number[], inLow: number[], startIdx?: n
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MEDPRICE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function MEDPRICE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MFI - Money Flow Index
@@ -2571,7 +3853,15 @@ export declare function MEDPRICE(inRecords: Record[], startIdx?: number, endIdx?
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MFI(inHigh: number[], inLow: number[], inClose: number[], inVolume: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MFI(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  inVolume: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MFI - Money Flow Index
  *
@@ -2581,7 +3871,12 @@ export declare function MFI(inHigh: number[], inLow: number[], inClose: number[]
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MFI(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MFI(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MIDPOINT - MidPoint over period
@@ -2592,7 +3887,12 @@ export declare function MFI(inRecords: Record[], optTime_Period?: number, startI
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MIDPOINT(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MIDPOINT(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MIDPOINT - MidPoint over period
  *
@@ -2603,7 +3903,13 @@ export declare function MIDPOINT(inReal: number[], optTime_Period?: number, star
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MIDPOINT(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MIDPOINT(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MIDPRICE - Midpoint Price over period
@@ -2615,7 +3921,13 @@ export declare function MIDPOINT(inRecords: Record[], inRealName: string, optTim
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MIDPRICE(inHigh: number[], inLow: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MIDPRICE(
+  inHigh: number[],
+  inLow: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MIDPRICE - Midpoint Price over period
  *
@@ -2625,7 +3937,12 @@ export declare function MIDPRICE(inHigh: number[], inLow: number[], optTime_Peri
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MIDPRICE(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MIDPRICE(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MIN - Lowest value over a specified period
@@ -2636,7 +3953,12 @@ export declare function MIDPRICE(inRecords: Record[], optTime_Period?: number, s
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MIN(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MIN(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MIN - Lowest value over a specified period
  *
@@ -2647,7 +3969,13 @@ export declare function MIN(inReal: number[], optTime_Period?: number, startIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MIN(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MIN(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MININDEX - Index of lowest value over a specified period
@@ -2658,7 +3986,12 @@ export declare function MIN(inRecords: Record[], inRealName: string, optTime_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function MININDEX(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MININDEX(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MININDEX - Index of lowest value over a specified period
  *
@@ -2669,7 +4002,13 @@ export declare function MININDEX(inReal: number[], optTime_Period?: number, star
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outInteger (Integer Array)
  */
-export declare function MININDEX(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MININDEX(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MINMAX - Lowest and highest values over a specified period
@@ -2680,7 +4019,12 @@ export declare function MININDEX(inRecords: Record[], inRealName: string, optTim
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outMin, outMax]
  */
-export declare function MINMAX(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function MINMAX(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 /**
  * MINMAX - Lowest and highest values over a specified period
  *
@@ -2691,7 +4035,13 @@ export declare function MINMAX(inReal: number[], optTime_Period?: number, startI
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outMin, outMax]
  */
-export declare function MINMAX(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function MINMAX(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 
 /**
  * MINMAXINDEX - Indexes of lowest and highest values over a specified period
@@ -2702,7 +4052,12 @@ export declare function MINMAX(inRecords: Record[], inRealName: string, optTime_
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outMinIdx, outMaxIdx]
  */
-export declare function MINMAXINDEX(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function MINMAXINDEX(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 /**
  * MINMAXINDEX - Indexes of lowest and highest values over a specified period
  *
@@ -2713,7 +4068,13 @@ export declare function MINMAXINDEX(inReal: number[], optTime_Period?: number, s
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outMinIdx, outMaxIdx]
  */
-export declare function MINMAXINDEX(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function MINMAXINDEX(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 
 /**
  * MINUS_DI - Minus Directional Indicator
@@ -2726,7 +4087,14 @@ export declare function MINMAXINDEX(inRecords: Record[], inRealName: string, opt
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MINUS_DI(inHigh: number[], inLow: number[], inClose: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MINUS_DI(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MINUS_DI - Minus Directional Indicator
  *
@@ -2736,7 +4104,12 @@ export declare function MINUS_DI(inHigh: number[], inLow: number[], inClose: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MINUS_DI(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MINUS_DI(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MINUS_DM - Minus Directional Movement
@@ -2748,7 +4121,13 @@ export declare function MINUS_DI(inRecords: Record[], optTime_Period?: number, s
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MINUS_DM(inHigh: number[], inLow: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MINUS_DM(
+  inHigh: number[],
+  inLow: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MINUS_DM - Minus Directional Movement
  *
@@ -2758,7 +4137,12 @@ export declare function MINUS_DM(inHigh: number[], inLow: number[], optTime_Peri
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MINUS_DM(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MINUS_DM(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MOM - Momentum
@@ -2769,7 +4153,12 @@ export declare function MINUS_DM(inRecords: Record[], optTime_Period?: number, s
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MOM(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MOM(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MOM - Momentum
  *
@@ -2780,7 +4169,13 @@ export declare function MOM(inReal: number[], optTime_Period?: number, startIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MOM(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function MOM(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * MULT - Vector Arithmetic Mult
@@ -2791,7 +4186,12 @@ export declare function MOM(inRecords: Record[], inRealName: string, optTime_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MULT(inReal0: number[], inReal1: number[], startIdx?: number, endIdx?: number): number[];
+export declare function MULT(
+  inReal0: number[],
+  inReal1: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * MULT - Vector Arithmetic Mult
  *
@@ -2802,7 +4202,13 @@ export declare function MULT(inReal0: number[], inReal1: number[], startIdx?: nu
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function MULT(inRecords: Record[], inReal0Name: string, inReal1Name: string, startIdx?: number, endIdx?: number): number[];
+export declare function MULT(
+  inRecords: Record[],
+  inReal0Name: string,
+  inReal1Name: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * NATR - Normalized Average True Range
@@ -2815,7 +4221,14 @@ export declare function MULT(inRecords: Record[], inReal0Name: string, inReal1Na
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function NATR(inHigh: number[], inLow: number[], inClose: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function NATR(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * NATR - Normalized Average True Range
  *
@@ -2825,7 +4238,12 @@ export declare function NATR(inHigh: number[], inLow: number[], inClose: number[
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function NATR(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function NATR(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * OBV - On Balance Volume
@@ -2836,7 +4254,12 @@ export declare function NATR(inRecords: Record[], optTime_Period?: number, start
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function OBV(inReal: number[], inVolume: number[], startIdx?: number, endIdx?: number): number[];
+export declare function OBV(
+  inReal: number[],
+  inVolume: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * OBV - On Balance Volume
  *
@@ -2846,7 +4269,12 @@ export declare function OBV(inReal: number[], inVolume: number[], startIdx?: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function OBV(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function OBV(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * PLUS_DI - Plus Directional Indicator
@@ -2859,7 +4287,14 @@ export declare function OBV(inRecords: Record[], inRealName: string, startIdx?: 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function PLUS_DI(inHigh: number[], inLow: number[], inClose: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function PLUS_DI(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * PLUS_DI - Plus Directional Indicator
  *
@@ -2869,7 +4304,12 @@ export declare function PLUS_DI(inHigh: number[], inLow: number[], inClose: numb
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function PLUS_DI(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function PLUS_DI(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * PLUS_DM - Plus Directional Movement
@@ -2881,7 +4321,13 @@ export declare function PLUS_DI(inRecords: Record[], optTime_Period?: number, st
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function PLUS_DM(inHigh: number[], inLow: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function PLUS_DM(
+  inHigh: number[],
+  inLow: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * PLUS_DM - Plus Directional Movement
  *
@@ -2891,7 +4337,12 @@ export declare function PLUS_DM(inHigh: number[], inLow: number[], optTime_Perio
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function PLUS_DM(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function PLUS_DM(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * PPO - Percentage Price Oscillator
@@ -2904,7 +4355,14 @@ export declare function PLUS_DM(inRecords: Record[], optTime_Period?: number, st
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function PPO(inReal: number[], optFast_Period?: number, optSlow_Period?: number, optMA_Type?: MATypes, startIdx?: number, endIdx?: number): number[];
+export declare function PPO(
+  inReal: number[],
+  optFast_Period?: number,
+  optSlow_Period?: number,
+  optMA_Type?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * PPO - Percentage Price Oscillator
  *
@@ -2917,7 +4375,15 @@ export declare function PPO(inReal: number[], optFast_Period?: number, optSlow_P
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function PPO(inRecords: Record[], inRealName: string, optFast_Period?: number, optSlow_Period?: number, optMA_Type?: MATypes, startIdx?: number, endIdx?: number): number[];
+export declare function PPO(
+  inRecords: Record[],
+  inRealName: string,
+  optFast_Period?: number,
+  optSlow_Period?: number,
+  optMA_Type?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ROC - Rate of change : ((price/prevPrice)-1)*100
@@ -2928,7 +4394,12 @@ export declare function PPO(inRecords: Record[], inRealName: string, optFast_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ROC(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ROC(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ROC - Rate of change : ((price/prevPrice)-1)*100
  *
@@ -2939,7 +4410,13 @@ export declare function ROC(inReal: number[], optTime_Period?: number, startIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ROC(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ROC(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ROCP - Rate of change Percentage: (price-prevPrice)/prevPrice
@@ -2950,7 +4427,12 @@ export declare function ROC(inRecords: Record[], inRealName: string, optTime_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ROCP(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ROCP(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ROCP - Rate of change Percentage: (price-prevPrice)/prevPrice
  *
@@ -2961,7 +4443,13 @@ export declare function ROCP(inReal: number[], optTime_Period?: number, startIdx
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ROCP(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ROCP(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ROCR - Rate of change ratio: (price/prevPrice)
@@ -2972,7 +4460,12 @@ export declare function ROCP(inRecords: Record[], inRealName: string, optTime_Pe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ROCR(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ROCR(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ROCR - Rate of change ratio: (price/prevPrice)
  *
@@ -2983,7 +4476,13 @@ export declare function ROCR(inReal: number[], optTime_Period?: number, startIdx
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ROCR(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ROCR(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ROCR100 - Rate of change ratio 100 scale: (price/prevPrice)*100
@@ -2994,7 +4493,12 @@ export declare function ROCR(inRecords: Record[], inRealName: string, optTime_Pe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ROCR100(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ROCR100(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ROCR100 - Rate of change ratio 100 scale: (price/prevPrice)*100
  *
@@ -3005,7 +4509,13 @@ export declare function ROCR100(inReal: number[], optTime_Period?: number, start
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ROCR100(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ROCR100(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * RSI - Relative Strength Index
@@ -3016,7 +4526,12 @@ export declare function ROCR100(inRecords: Record[], inRealName: string, optTime
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function RSI(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function RSI(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * RSI - Relative Strength Index
  *
@@ -3027,7 +4542,13 @@ export declare function RSI(inReal: number[], optTime_Period?: number, startIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function RSI(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function RSI(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * SAR - Parabolic SAR
@@ -3040,7 +4561,14 @@ export declare function RSI(inRecords: Record[], inRealName: string, optTime_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SAR(inHigh: number[], inLow: number[], optAcceleration_Factor?: number, optAF_Maximum?: number, startIdx?: number, endIdx?: number): number[];
+export declare function SAR(
+  inHigh: number[],
+  inLow: number[],
+  optAcceleration_Factor?: number,
+  optAF_Maximum?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * SAR - Parabolic SAR
  *
@@ -3051,7 +4579,13 @@ export declare function SAR(inHigh: number[], inLow: number[], optAcceleration_F
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SAR(inRecords: Record[], optAcceleration_Factor?: number, optAF_Maximum?: number, startIdx?: number, endIdx?: number): number[];
+export declare function SAR(
+  inRecords: Record[],
+  optAcceleration_Factor?: number,
+  optAF_Maximum?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * SAREXT - Parabolic SAR - Extended
@@ -3070,7 +4604,20 @@ export declare function SAR(inRecords: Record[], optAcceleration_Factor?: number
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SAREXT(inHigh: number[], inLow: number[], optStart_Value?: number, optOffset_on_Reverse?: number, optAF_Init_Long?: number, optAF_Long?: number, optAF_Max_Long?: number, optAF_Init_Short?: number, optAF_Short?: number, optAF_Max_Short?: number, startIdx?: number, endIdx?: number): number[];
+export declare function SAREXT(
+  inHigh: number[],
+  inLow: number[],
+  optStart_Value?: number,
+  optOffset_on_Reverse?: number,
+  optAF_Init_Long?: number,
+  optAF_Long?: number,
+  optAF_Max_Long?: number,
+  optAF_Init_Short?: number,
+  optAF_Short?: number,
+  optAF_Max_Short?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * SAREXT - Parabolic SAR - Extended
  *
@@ -3087,7 +4634,19 @@ export declare function SAREXT(inHigh: number[], inLow: number[], optStart_Value
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SAREXT(inRecords: Record[], optStart_Value?: number, optOffset_on_Reverse?: number, optAF_Init_Long?: number, optAF_Long?: number, optAF_Max_Long?: number, optAF_Init_Short?: number, optAF_Short?: number, optAF_Max_Short?: number, startIdx?: number, endIdx?: number): number[];
+export declare function SAREXT(
+  inRecords: Record[],
+  optStart_Value?: number,
+  optOffset_on_Reverse?: number,
+  optAF_Init_Long?: number,
+  optAF_Long?: number,
+  optAF_Max_Long?: number,
+  optAF_Init_Short?: number,
+  optAF_Short?: number,
+  optAF_Max_Short?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * SIN - Vector Trigonometric Sin
@@ -3097,7 +4656,11 @@ export declare function SAREXT(inRecords: Record[], optStart_Value?: number, opt
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SIN(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function SIN(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * SIN - Vector Trigonometric Sin
  *
@@ -3107,7 +4670,12 @@ export declare function SIN(inReal: number[], startIdx?: number, endIdx?: number
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SIN(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function SIN(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * SINH - Vector Trigonometric Sinh
@@ -3117,7 +4685,11 @@ export declare function SIN(inRecords: Record[], inRealName: string, startIdx?: 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SINH(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function SINH(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * SINH - Vector Trigonometric Sinh
  *
@@ -3127,7 +4699,12 @@ export declare function SINH(inReal: number[], startIdx?: number, endIdx?: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SINH(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function SINH(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * SMA - Simple Moving Average
@@ -3138,7 +4715,12 @@ export declare function SINH(inRecords: Record[], inRealName: string, startIdx?:
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SMA(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function SMA(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * SMA - Simple Moving Average
  *
@@ -3149,7 +4731,13 @@ export declare function SMA(inReal: number[], optTime_Period?: number, startIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SMA(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function SMA(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * SQRT - Vector Square Root
@@ -3159,7 +4747,11 @@ export declare function SMA(inRecords: Record[], inRealName: string, optTime_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SQRT(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function SQRT(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * SQRT - Vector Square Root
  *
@@ -3169,7 +4761,12 @@ export declare function SQRT(inReal: number[], startIdx?: number, endIdx?: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SQRT(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function SQRT(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * STDDEV - Standard Deviation
@@ -3181,7 +4778,13 @@ export declare function SQRT(inRecords: Record[], inRealName: string, startIdx?:
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function STDDEV(inReal: number[], optTime_Period?: number, optDeviations?: number, startIdx?: number, endIdx?: number): number[];
+export declare function STDDEV(
+  inReal: number[],
+  optTime_Period?: number,
+  optDeviations?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * STDDEV - Standard Deviation
  *
@@ -3193,7 +4796,14 @@ export declare function STDDEV(inReal: number[], optTime_Period?: number, optDev
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function STDDEV(inRecords: Record[], inRealName: string, optTime_Period?: number, optDeviations?: number, startIdx?: number, endIdx?: number): number[];
+export declare function STDDEV(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  optDeviations?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * STOCH - Stochastic
@@ -3210,7 +4820,18 @@ export declare function STDDEV(inRecords: Record[], inRealName: string, optTime_
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outSlowK, outSlowD]
  */
-export declare function STOCH(inHigh: number[], inLow: number[], inClose: number[], optFastK_Period?: number, optSlowK_Period?: number, optSlowK_MA?: MATypes, optSlowD_Period?: number, optSlowD_MA?: MATypes, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function STOCH(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optFastK_Period?: number,
+  optSlowK_Period?: number,
+  optSlowK_MA?: MATypes,
+  optSlowD_Period?: number,
+  optSlowD_MA?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 /**
  * STOCH - Stochastic
  *
@@ -3224,7 +4845,16 @@ export declare function STOCH(inHigh: number[], inLow: number[], inClose: number
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outSlowK, outSlowD]
  */
-export declare function STOCH(inRecords: Record[], optFastK_Period?: number, optSlowK_Period?: number, optSlowK_MA?: MATypes, optSlowD_Period?: number, optSlowD_MA?: MATypes, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function STOCH(
+  inRecords: Record[],
+  optFastK_Period?: number,
+  optSlowK_Period?: number,
+  optSlowK_MA?: MATypes,
+  optSlowD_Period?: number,
+  optSlowD_MA?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 
 /**
  * STOCHF - Stochastic Fast
@@ -3239,7 +4869,16 @@ export declare function STOCH(inRecords: Record[], optFastK_Period?: number, opt
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outFastK, outFastD]
  */
-export declare function STOCHF(inHigh: number[], inLow: number[], inClose: number[], optFastK_Period?: number, optFastD_Period?: number, optFastD_MA?: MATypes, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function STOCHF(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optFastK_Period?: number,
+  optFastD_Period?: number,
+  optFastD_MA?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 /**
  * STOCHF - Stochastic Fast
  *
@@ -3251,7 +4890,14 @@ export declare function STOCHF(inHigh: number[], inLow: number[], inClose: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outFastK, outFastD]
  */
-export declare function STOCHF(inRecords: Record[], optFastK_Period?: number, optFastD_Period?: number, optFastD_MA?: MATypes, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function STOCHF(
+  inRecords: Record[],
+  optFastK_Period?: number,
+  optFastD_Period?: number,
+  optFastD_MA?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 
 /**
  * STOCHRSI - Stochastic Relative Strength Index
@@ -3265,7 +4911,15 @@ export declare function STOCHF(inRecords: Record[], optFastK_Period?: number, op
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outFastK, outFastD]
  */
-export declare function STOCHRSI(inReal: number[], optTime_Period?: number, optFastK_Period?: number, optFastD_Period?: number, optFastD_MA?: MATypes, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function STOCHRSI(
+  inReal: number[],
+  optTime_Period?: number,
+  optFastK_Period?: number,
+  optFastD_Period?: number,
+  optFastD_MA?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 /**
  * STOCHRSI - Stochastic Relative Strength Index
  *
@@ -3279,7 +4933,16 @@ export declare function STOCHRSI(inReal: number[], optTime_Period?: number, optF
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {[number[], number[]]} - [outFastK, outFastD]
  */
-export declare function STOCHRSI(inRecords: Record[], inRealName: string, optTime_Period?: number, optFastK_Period?: number, optFastD_Period?: number, optFastD_MA?: MATypes, startIdx?: number, endIdx?: number): [number[], number[]];
+export declare function STOCHRSI(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  optFastK_Period?: number,
+  optFastD_Period?: number,
+  optFastD_MA?: MATypes,
+  startIdx?: number,
+  endIdx?: number
+): [number[], number[]];
 
 /**
  * SUB - Vector Arithmetic Substraction
@@ -3290,7 +4953,12 @@ export declare function STOCHRSI(inRecords: Record[], inRealName: string, optTim
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SUB(inReal0: number[], inReal1: number[], startIdx?: number, endIdx?: number): number[];
+export declare function SUB(
+  inReal0: number[],
+  inReal1: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * SUB - Vector Arithmetic Substraction
  *
@@ -3301,7 +4969,13 @@ export declare function SUB(inReal0: number[], inReal1: number[], startIdx?: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SUB(inRecords: Record[], inReal0Name: string, inReal1Name: string, startIdx?: number, endIdx?: number): number[];
+export declare function SUB(
+  inRecords: Record[],
+  inReal0Name: string,
+  inReal1Name: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * SUM - Summation
@@ -3312,7 +4986,12 @@ export declare function SUB(inRecords: Record[], inReal0Name: string, inReal1Nam
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SUM(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function SUM(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * SUM - Summation
  *
@@ -3323,7 +5002,13 @@ export declare function SUM(inReal: number[], optTime_Period?: number, startIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function SUM(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function SUM(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * T3 - Triple Exponential Moving Average (T3)
@@ -3335,7 +5020,13 @@ export declare function SUM(inRecords: Record[], inRealName: string, optTime_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function T3(inReal: number[], optTime_Period?: number, optVolume_Factor?: number, startIdx?: number, endIdx?: number): number[];
+export declare function T3(
+  inReal: number[],
+  optTime_Period?: number,
+  optVolume_Factor?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * T3 - Triple Exponential Moving Average (T3)
  *
@@ -3347,7 +5038,14 @@ export declare function T3(inReal: number[], optTime_Period?: number, optVolume_
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function T3(inRecords: Record[], inRealName: string, optTime_Period?: number, optVolume_Factor?: number, startIdx?: number, endIdx?: number): number[];
+export declare function T3(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  optVolume_Factor?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * TAN - Vector Trigonometric Tan
@@ -3357,7 +5055,11 @@ export declare function T3(inRecords: Record[], inRealName: string, optTime_Peri
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TAN(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function TAN(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * TAN - Vector Trigonometric Tan
  *
@@ -3367,7 +5069,12 @@ export declare function TAN(inReal: number[], startIdx?: number, endIdx?: number
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TAN(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function TAN(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * TANH - Vector Trigonometric Tanh
@@ -3377,7 +5084,11 @@ export declare function TAN(inRecords: Record[], inRealName: string, startIdx?: 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TANH(inReal: number[], startIdx?: number, endIdx?: number): number[];
+export declare function TANH(
+  inReal: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * TANH - Vector Trigonometric Tanh
  *
@@ -3387,7 +5098,12 @@ export declare function TANH(inReal: number[], startIdx?: number, endIdx?: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TANH(inRecords: Record[], inRealName: string, startIdx?: number, endIdx?: number): number[];
+export declare function TANH(
+  inRecords: Record[],
+  inRealName: string,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * TEMA - Triple Exponential Moving Average
@@ -3398,7 +5114,12 @@ export declare function TANH(inRecords: Record[], inRealName: string, startIdx?:
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TEMA(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function TEMA(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * TEMA - Triple Exponential Moving Average
  *
@@ -3409,7 +5130,13 @@ export declare function TEMA(inReal: number[], optTime_Period?: number, startIdx
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TEMA(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function TEMA(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * TRANGE - True Range
@@ -3421,7 +5148,13 @@ export declare function TEMA(inRecords: Record[], inRealName: string, optTime_Pe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TRANGE(inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function TRANGE(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * TRANGE - True Range
  *
@@ -3430,7 +5163,11 @@ export declare function TRANGE(inHigh: number[], inLow: number[], inClose: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TRANGE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function TRANGE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * TRIMA - Triangular Moving Average
@@ -3441,7 +5178,12 @@ export declare function TRANGE(inRecords: Record[], startIdx?: number, endIdx?: 
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TRIMA(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function TRIMA(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * TRIMA - Triangular Moving Average
  *
@@ -3452,7 +5194,13 @@ export declare function TRIMA(inReal: number[], optTime_Period?: number, startId
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TRIMA(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function TRIMA(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * TRIX - 1-day Rate-Of-Change (ROC) of a Triple Smooth EMA
@@ -3463,7 +5211,12 @@ export declare function TRIMA(inRecords: Record[], inRealName: string, optTime_P
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TRIX(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function TRIX(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * TRIX - 1-day Rate-Of-Change (ROC) of a Triple Smooth EMA
  *
@@ -3474,7 +5227,13 @@ export declare function TRIX(inReal: number[], optTime_Period?: number, startIdx
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TRIX(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function TRIX(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * TSF - Time Series Forecast
@@ -3485,7 +5244,12 @@ export declare function TRIX(inRecords: Record[], inRealName: string, optTime_Pe
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TSF(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function TSF(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * TSF - Time Series Forecast
  *
@@ -3496,7 +5260,13 @@ export declare function TSF(inReal: number[], optTime_Period?: number, startIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TSF(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function TSF(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * TYPPRICE - Typical Price
@@ -3508,7 +5278,13 @@ export declare function TSF(inRecords: Record[], inRealName: string, optTime_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TYPPRICE(inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function TYPPRICE(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * TYPPRICE - Typical Price
  *
@@ -3517,7 +5293,11 @@ export declare function TYPPRICE(inHigh: number[], inLow: number[], inClose: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function TYPPRICE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function TYPPRICE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * ULTOSC - Ultimate Oscillator
@@ -3532,7 +5312,16 @@ export declare function TYPPRICE(inRecords: Record[], startIdx?: number, endIdx?
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ULTOSC(inHigh: number[], inLow: number[], inClose: number[], optFirst_Period?: number, optSecond_Period?: number, optThird_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ULTOSC(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optFirst_Period?: number,
+  optSecond_Period?: number,
+  optThird_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * ULTOSC - Ultimate Oscillator
  *
@@ -3544,7 +5333,14 @@ export declare function ULTOSC(inHigh: number[], inLow: number[], inClose: numbe
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function ULTOSC(inRecords: Record[], optFirst_Period?: number, optSecond_Period?: number, optThird_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function ULTOSC(
+  inRecords: Record[],
+  optFirst_Period?: number,
+  optSecond_Period?: number,
+  optThird_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * VAR - Variance
@@ -3556,7 +5352,13 @@ export declare function ULTOSC(inRecords: Record[], optFirst_Period?: number, op
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function VAR(inReal: number[], optTime_Period?: number, optDeviations?: number, startIdx?: number, endIdx?: number): number[];
+export declare function VAR(
+  inReal: number[],
+  optTime_Period?: number,
+  optDeviations?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * VAR - Variance
  *
@@ -3568,7 +5370,14 @@ export declare function VAR(inReal: number[], optTime_Period?: number, optDeviat
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function VAR(inRecords: Record[], inRealName: string, optTime_Period?: number, optDeviations?: number, startIdx?: number, endIdx?: number): number[];
+export declare function VAR(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  optDeviations?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * WCLPRICE - Weighted Close Price
@@ -3580,7 +5389,13 @@ export declare function VAR(inRecords: Record[], inRealName: string, optTime_Per
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function WCLPRICE(inHigh: number[], inLow: number[], inClose: number[], startIdx?: number, endIdx?: number): number[];
+export declare function WCLPRICE(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * WCLPRICE - Weighted Close Price
  *
@@ -3589,7 +5404,11 @@ export declare function WCLPRICE(inHigh: number[], inLow: number[], inClose: num
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function WCLPRICE(inRecords: Record[], startIdx?: number, endIdx?: number): number[];
+export declare function WCLPRICE(
+  inRecords: Record[],
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * WILLR - Williams' %R
@@ -3602,7 +5421,14 @@ export declare function WCLPRICE(inRecords: Record[], startIdx?: number, endIdx?
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function WILLR(inHigh: number[], inLow: number[], inClose: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function WILLR(
+  inHigh: number[],
+  inLow: number[],
+  inClose: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * WILLR - Williams' %R
  *
@@ -3612,7 +5438,12 @@ export declare function WILLR(inHigh: number[], inLow: number[], inClose: number
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function WILLR(inRecords: Record[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function WILLR(
+  inRecords: Record[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 
 /**
  * WMA - Weighted Moving Average
@@ -3623,7 +5454,12 @@ export declare function WILLR(inRecords: Record[], optTime_Period?: number, star
  * @param {number} [endIdx=inLength-1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function WMA(inReal: number[], optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function WMA(
+  inReal: number[],
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];
 /**
  * WMA - Weighted Moving Average
  *
@@ -3634,4 +5470,10 @@ export declare function WMA(inReal: number[], optTime_Period?: number, startIdx?
  * @param {number} [endIdx=inLength - 1] - The end index to process, please not that the value is included, default is the input records length - 1
  * @returns {number[]} - outReal (Double Array)
  */
-export declare function WMA(inRecords: Record[], inRealName: string, optTime_Period?: number, startIdx?: number, endIdx?: number): number[];
+export declare function WMA(
+  inRecords: Record[],
+  inRealName: string,
+  optTime_Period?: number,
+  startIdx?: number,
+  endIdx?: number
+): number[];

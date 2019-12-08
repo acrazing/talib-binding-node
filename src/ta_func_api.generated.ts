@@ -1,65 +1,65 @@
 export interface Flags {
-	Flag: string[];
+  Flag: string[];
 }
 
 export interface RequiredInputArgument {
-	Type: string[];
-	Name: string[];
+  Type: string[];
+  Name: string[];
 }
 
 export interface RequiredInputArguments {
-	RequiredInputArgument: RequiredInputArgument[];
+  RequiredInputArgument: RequiredInputArgument[];
 }
 
 export interface Range {
-	Minimum: string[];
-	Maximum: string[];
-	SuggestedStart: string[];
-	SuggestedEnd: string[];
-	SuggestedIncrement: string[];
+  Minimum: string[];
+  Maximum: string[];
+  SuggestedStart: string[];
+  SuggestedEnd: string[];
+  SuggestedIncrement: string[];
 }
 
 export interface OptionalInputArgument {
-	Name: string[];
-	ShortDescription: string[];
-	Type: string[];
-	Range: Range[];
-	DefaultValue: string[];
+  Name: string[];
+  ShortDescription: string[];
+  Type: string[];
+  Range: Range[];
+  DefaultValue: string[];
 }
 
 export interface OptionalInputArguments {
-	OptionalInputArgument: OptionalInputArgument[];
+  OptionalInputArgument: OptionalInputArgument[];
 }
 
 export interface Flags {
-	Flag: string[];
+  Flag: string[];
 }
 
 export interface OutputArgument {
-	Type: string[];
-	Name: string[];
-	Flags: Flags[];
+  Type: string[];
+  Name: string[];
+  Flags: Flags[];
 }
 
 export interface OutputArguments {
-	OutputArgument: OutputArgument[];
+  OutputArgument: OutputArgument[];
 }
 
 export interface FinancialFunction {
-	Abbreviation: string[];
-	CamelCaseName: string[];
-	ShortDescription: string[];
-	GroupId: string[];
-	Flags: Flags[];
-	RequiredInputArguments: RequiredInputArguments[];
-	OptionalInputArguments: OptionalInputArguments[];
-	OutputArguments: OutputArguments[];
+  Abbreviation: string[];
+  CamelCaseName: string[];
+  ShortDescription: string[];
+  GroupId: string[];
+  Flags: Flags[];
+  RequiredInputArguments: RequiredInputArguments[];
+  OptionalInputArguments: OptionalInputArguments[];
+  OutputArguments: OutputArguments[];
 }
 
 export interface FinancialFunctions {
-	FinancialFunction: FinancialFunction[];
+  FinancialFunction: FinancialFunction[];
 }
 
 export interface TaFuncApiXml {
-	FinancialFunctions: FinancialFunctions;
+  FinancialFunctions: FinancialFunctions;
 }
