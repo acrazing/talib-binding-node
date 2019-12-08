@@ -2,8 +2,14 @@
   "name": "talib-binding",
   "main": "./build/Release/talib_binding.node",
   "types": "./src/talib-binding.generated.d.ts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
+  "files": [
+    "binding.gyp",
+    "ta-lib/",
+    "src/talib-binding.generated.cc",
+    "src/talib-binding.generated.d.ts"
+  ],
   "scripts": {
     "install": "node-gyp configure build -j4"
   },
