@@ -72,8 +72,8 @@ export function displayTypes() {
         })
     })
     const result = {requiredNames, requiredTypes, optionalNames, optionalTypes, outputNames, outputTypes, outputFlags}
-    process.stdout.write(Object.keys(result).map((name: keyof typeof result) => {
-        return name + ': ' + Object.keys(result[name]).join(', ')
+    process.stdout.write(Object.keys(result).map((name) => {
+        return name + ': ' + Object.keys(result[name as keyof typeof result]).join(', ')
     }).join('\n'))
 }
 
@@ -251,7 +251,10 @@ export function generateBindings({_}: Arguments) {
     const config: TaFuncApiXml = require('./ta_func_api.generated.json')
     config.FinancialFunctions.FinancialFunction.filter(
         (func) => _.length === 0 || _.indexOf(func.Abbreviation[0]) > -1
-    ).forEach((func) => {
+    ).forEach((func, index) => {
+        if(index > 0) {
+            // return;
+        }
         const name = func.Abbreviation[0]
         const required: RequiredInputArgument[] = func.RequiredInputArguments
             ? func.RequiredInputArguments.reduce((prev, curr) => {
@@ -275,7 +278,7 @@ export function generateBindings({_}: Arguments) {
         } else {
             outInitJS.push(`outAll_JS = Nan::New<v8::Array>(${output.length});`)
             output.forEach((argv, index) => {
-                outInitJS.push(`outAll_JS->Set(${index}, ${jsOutName(argv)});`)
+                outInitJS.push(`Nan::Set(outAll_JS, ${index}, ${jsOutName(argv)});`)
             })
         }
         const returnStatement = `info.GetReturnValue().Set(outAll_JS);`
@@ -284,7 +287,8 @@ export function generateBindings({_}: Arguments) {
         // function declare
             .normal(`void TA_FUNC_${name}(const Nan::FunctionCallbackInfo<v8::Value> &info) {`)
             // first argument
-            .indent('v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);')
+            .indent('v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();')
+            .normal('v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);')
             // input length
             .normal('int inLength = inFirst->Length();')
             // output length
@@ -297,7 +301,7 @@ export function generateBindings({_}: Arguments) {
             .undent('}')
             // first input is Record[] or double[]
             .normal('int firstIsRecord = 0;')
-            .normal('if (inFirst->Get(0)->IsObject()) {')
+            .normal('if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {')
             .indent('firstIsRecord = 1;')
             .undent('}')
             // declare required input
@@ -322,7 +326,7 @@ export function generateBindings({_}: Arguments) {
             }))
             // init required
             .normal('for (i = 0; i < (uint32_t) inLength; i++) {')
-            .indent(...required.map((argv) => `${inName(argv)}[i] = ${jsInName(argv)}->Get(i)->NumberValue();`))
+            .indent(...required.map((argv) => `${inName(argv)}[i] = Nan::Get(${jsInName(argv)}, i).ToLocalChecked()->NumberValue(context).FromJust();`))
             .undent('}')
             // init optional
             .normal(...optional.map((argv, index) => {
@@ -331,24 +335,24 @@ export function generateBindings({_}: Arguments) {
                 const check = type === 'double' ? 'Number' : 'Int32'
                 const cast = type === 'TA_MAType' ? '(TA_MAType) ' : ''
                 return `${optName(argv)} = argc > ${index} && info[${index}]->Is${check}()`
-                    + ` ? ${cast} info[${index}]->${check}Value() : ${optName(argv)};`
+                    + ` ? ${cast} info[${index}]->${check}Value(context).FromJust() : ${optName(argv)};`
             }))
             .normal(...['startIdx', 'endIdx'].map((name, index) => {
                 index += required.length + optional.length
-                return `${name} = argc > ${index} && info[${index}]->IsInt32() ? info[${index}]->Int32Value() : ${name};`
+                return `${name} = argc > ${index} && info[${index}]->IsInt32() ? info[${index}]->Int32Value(context).FromJust() : ${name};`
             }))
             .undent('} else {')
             .indent(...required.map((argv, index) => {
                 const ctor = doubleRequired.indexOf(argv) === -1
                     ? `Nan::New("${argv.Type[0]}").ToLocalChecked()`
-                    : `info[${index + 1}]->ToString()`
+                    : `info[${index + 1}]->ToString(context).ToLocalChecked();`
                 return `v8::Local<v8::String> ${inName(argv)}Name = ${ctor};`
             }))
             .normal(`v8::Local<v8::Object> inObject;`)
             .normal('for (i = 0; i < (uint32_t) inLength; i++) {')
-            .indent('inObject = inFirst->Get(i)->ToObject();')
+            .indent('inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();')
             .normal(...required.map((argv) => {
-                return `${inName(argv)}[i] = inObject->Get(${inName(argv)}Name)->NumberValue();`
+                return `${inName(argv)}[i] = Nan::Get(inObject, ${inName(argv)}Name).ToLocalChecked()->NumberValue(context).FromJust();`
             }))
             .undent('}')
             .normal(...optional.map((argv, index) => {
@@ -357,11 +361,11 @@ export function generateBindings({_}: Arguments) {
                 const check = type === 'double' ? 'Number' : 'Int32'
                 const cast = type === 'TA_MAType' ? '(TA_MAType) ' : ''
                 return `${optName(argv)} = argc > ${index} && info[${index}]->Is${check}()`
-                    + ` ? ${cast} info[${index}]->${check}Value() : ${optName(argv)};`
+                    + ` ? ${cast} info[${index}]->${check}Value(context).FromJust() : ${optName(argv)};`
             }))
             .normal(...['startIdx', 'endIdx'].map((name, index) => {
                 index += 1 + doubleRequired.length + optional.length
-                return `${name} = argc > ${index} && info[${index}]->IsInt32() ? info[${index}]->Int32Value() : ${name};`
+                return `${name} = argc > ${index} && info[${index}]->IsInt32() ? info[${index}]->Int32Value(context).FromJust() : ${name};`
             }))
             .undent('}')
             .normal('if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {')
@@ -403,23 +407,23 @@ export function generateBindings({_}: Arguments) {
             .normal(...outInitJS)
             .normal('for (i = 0; i < (uint32_t) outLength; i++) {')
             .indent(...output.map((argv) => {
-                return `${jsOutName(argv)}->Set(i, Nan::New<v8::Number>(${outName(argv)}[i]));`
+                return `Nan::Set(${jsOutName(argv)}, i, Nan::New<v8::Number>(${outName(argv)}[i]));`
             }))
             .undent('}')
             .normal(returnStatement)
             .normal(...required.map((argv) => `delete[] ${inName(argv)};`))
             .normal(...output.map((argv) => `delete[] ${outName(argv)};`))
             .undent('}', '', '')
-        footer.normal(`exports->Set(Nan::New("${name}").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_${name})->GetFunction());`)
+        footer.normal(`Nan::Set(exports, Nan::New("${name}").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_${name})->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());`)
     })
 
     footer
         .normal('v8::Local<v8::Object> MATypes = Nan::New<v8::Object>();')
         .normal(...Object.keys(TA_MATypes).map((value) => {
             const [, , name] = TA_MATypes[value].split('_')
-            return `MATypes->Set(Nan::New("${name}").ToLocalChecked(), Nan::New<v8::Number>(${value}));`
+            return `Nan::Set(MATypes, Nan::New("${name}").ToLocalChecked(), Nan::New<v8::Number>(${value}));`;
         }))
-        .normal('exports->Set(Nan::New("MATypes").ToLocalChecked(), MATypes);')
+        .normal('Nan::Set(exports, Nan::New("MATypes").ToLocalChecked(), MATypes);')
         .undent('}')
         .normal('')
         .normal('NODE_MODULE(talib_binding, Init)', '')

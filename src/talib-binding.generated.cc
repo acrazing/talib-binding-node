@@ -6,6 +6,7 @@
 #include "../ta-lib/c/include/ta_libc.h"
 
 void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -15,14 +16,14 @@ void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(3);
-        outAll_JS->Set(0, outRealUpperBand_JS);
-        outAll_JS->Set(1, outRealMiddleBand_JS);
-        outAll_JS->Set(2, outRealLowerBand_JS);
+        Nan::Set(outAll_JS, 0, outRealUpperBand_JS);
+        Nan::Set(outAll_JS, 1, outRealMiddleBand_JS);
+        Nan::Set(outAll_JS, 2, outRealLowerBand_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -40,27 +41,27 @@ void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -75,9 +76,9 @@ void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(3);
-        outAll_JS->Set(0, outRealUpperBand_JS);
-        outAll_JS->Set(1, outRealMiddleBand_JS);
-        outAll_JS->Set(2, outRealLowerBand_JS);
+        Nan::Set(outAll_JS, 0, outRealUpperBand_JS);
+        Nan::Set(outAll_JS, 1, outRealMiddleBand_JS);
+        Nan::Set(outAll_JS, 2, outRealLowerBand_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -107,13 +108,13 @@ void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(3);
-    outAll_JS->Set(0, outRealUpperBand_JS);
-    outAll_JS->Set(1, outRealMiddleBand_JS);
-    outAll_JS->Set(2, outRealLowerBand_JS);
+    Nan::Set(outAll_JS, 0, outRealUpperBand_JS);
+    Nan::Set(outAll_JS, 1, outRealMiddleBand_JS);
+    Nan::Set(outAll_JS, 2, outRealLowerBand_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outRealUpperBand_JS->Set(i, Nan::New<v8::Number>(outRealUpperBand[i]));
-        outRealMiddleBand_JS->Set(i, Nan::New<v8::Number>(outRealMiddleBand[i]));
-        outRealLowerBand_JS->Set(i, Nan::New<v8::Number>(outRealLowerBand[i]));
+        Nan::Set(outRealUpperBand_JS, i, Nan::New<v8::Number>(outRealUpperBand[i]));
+        Nan::Set(outRealMiddleBand_JS, i, Nan::New<v8::Number>(outRealMiddleBand[i]));
+        Nan::Set(outRealLowerBand_JS, i, Nan::New<v8::Number>(outRealLowerBand[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -126,6 +127,7 @@ void TA_FUNC_ACCBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ACOS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -137,7 +139,7 @@ void TA_FUNC_ACOS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -150,19 +152,19 @@ void TA_FUNC_ACOS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -197,7 +199,7 @@ void TA_FUNC_ACOS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -206,6 +208,7 @@ void TA_FUNC_ACOS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_AD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -217,7 +220,7 @@ void TA_FUNC_AD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -236,13 +239,13 @@ void TA_FUNC_AD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inVolume_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
-            inVolume[i] = inVolume_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inVolume[i] = Nan::Get(inVolume_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
@@ -250,14 +253,14 @@ void TA_FUNC_AD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inVolumeName = Nan::New("Volume").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
-            inVolume[i] = inObject->Get(inVolumeName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
+            inVolume[i] = Nan::Get(inObject, inVolumeName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -295,7 +298,7 @@ void TA_FUNC_AD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -307,6 +310,7 @@ void TA_FUNC_AD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ADD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -318,7 +322,7 @@ void TA_FUNC_ADD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal0 = new double[inLength];
@@ -333,22 +337,22 @@ void TA_FUNC_ADD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inReal0[i] = Nan::Get(inReal0_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inReal1_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inReal0Name = info[1]->ToString();
-        v8::Local<v8::String> inReal1Name = info[2]->ToString();
+        v8::Local<v8::String> inReal0Name = info[1]->ToString(context).ToLocalChecked();;
+        v8::Local<v8::String> inReal1Name = info[2]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
-            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal0[i] = Nan::Get(inObject, inReal0Name).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inObject, inReal1Name).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -384,7 +388,7 @@ void TA_FUNC_ADD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal0;
@@ -394,6 +398,7 @@ void TA_FUNC_ADD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ADOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -405,7 +410,7 @@ void TA_FUNC_ADOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -426,15 +431,15 @@ void TA_FUNC_ADOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inVolume_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
-            inVolume[i] = inVolume_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inVolume[i] = Nan::Get(inVolume_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 5 && info[5]->IsInt32() ?  info[5]->Int32Value() : optSlow_Period;
-        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
-        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
+        optFast_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value(context).FromJust() : optFast_Period;
+        optSlow_Period = argc > 5 && info[5]->IsInt32() ?  info[5]->Int32Value(context).FromJust() : optSlow_Period;
+        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
@@ -442,16 +447,16 @@ void TA_FUNC_ADOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inVolumeName = Nan::New("Volume").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
-            inVolume[i] = inObject->Get(inVolumeName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
+            inVolume[i] = Nan::Get(inObject, inVolumeName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlow_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optFast_Period;
+        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optSlow_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -489,7 +494,7 @@ void TA_FUNC_ADOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -501,6 +506,7 @@ void TA_FUNC_ADOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ADX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -512,7 +518,7 @@ void TA_FUNC_ADX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -530,27 +536,27 @@ void TA_FUNC_ADX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -587,7 +593,7 @@ void TA_FUNC_ADX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -598,6 +604,7 @@ void TA_FUNC_ADX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ADXR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -609,7 +616,7 @@ void TA_FUNC_ADXR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -627,27 +634,27 @@ void TA_FUNC_ADXR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -684,7 +691,7 @@ void TA_FUNC_ADXR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -695,6 +702,7 @@ void TA_FUNC_ADXR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_APO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -706,7 +714,7 @@ void TA_FUNC_APO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -722,25 +730,25 @@ void TA_FUNC_APO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlow_Period;
-        optMA_Type = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optMA_Type;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optFast_Period;
+        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optSlow_Period;
+        optMA_Type = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value(context).FromJust() : optMA_Type;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optSlow_Period;
-        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optMA_Type;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optFast_Period;
+        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optSlow_Period;
+        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value(context).FromJust() : optMA_Type;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -775,7 +783,7 @@ void TA_FUNC_APO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -784,6 +792,7 @@ void TA_FUNC_APO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -792,13 +801,13 @@ void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAroonDown_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outAroonUp_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outAroonDown_JS);
-        outAll_JS->Set(1, outAroonUp_JS);
+        Nan::Set(outAll_JS, 0, outAroonDown_JS);
+        Nan::Set(outAll_JS, 1, outAroonUp_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -814,24 +823,24 @@ void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -845,8 +854,8 @@ void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outAroonDown_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outAroonUp_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outAroonDown_JS);
-        outAll_JS->Set(1, outAroonUp_JS);
+        Nan::Set(outAll_JS, 0, outAroonDown_JS);
+        Nan::Set(outAll_JS, 1, outAroonUp_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -872,11 +881,11 @@ void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outAroonDown_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outAroonUp_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(2);
-    outAll_JS->Set(0, outAroonDown_JS);
-    outAll_JS->Set(1, outAroonUp_JS);
+    Nan::Set(outAll_JS, 0, outAroonDown_JS);
+    Nan::Set(outAll_JS, 1, outAroonUp_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outAroonDown_JS->Set(i, Nan::New<v8::Number>(outAroonDown[i]));
-        outAroonUp_JS->Set(i, Nan::New<v8::Number>(outAroonUp[i]));
+        Nan::Set(outAroonDown_JS, i, Nan::New<v8::Number>(outAroonDown[i]));
+        Nan::Set(outAroonUp_JS, i, Nan::New<v8::Number>(outAroonUp[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -887,6 +896,7 @@ void TA_FUNC_AROON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_AROONOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -898,7 +908,7 @@ void TA_FUNC_AROONOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -914,24 +924,24 @@ void TA_FUNC_AROONOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -967,7 +977,7 @@ void TA_FUNC_AROONOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -977,6 +987,7 @@ void TA_FUNC_AROONOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ASIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -988,7 +999,7 @@ void TA_FUNC_ASIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -1001,19 +1012,19 @@ void TA_FUNC_ASIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -1048,7 +1059,7 @@ void TA_FUNC_ASIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -1057,6 +1068,7 @@ void TA_FUNC_ASIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ATAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -1068,7 +1080,7 @@ void TA_FUNC_ATAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -1081,19 +1093,19 @@ void TA_FUNC_ATAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -1128,7 +1140,7 @@ void TA_FUNC_ATAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -1137,6 +1149,7 @@ void TA_FUNC_ATAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -1148,7 +1161,7 @@ void TA_FUNC_ATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -1166,27 +1179,27 @@ void TA_FUNC_ATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -1223,7 +1236,7 @@ void TA_FUNC_ATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -1234,6 +1247,7 @@ void TA_FUNC_ATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_AVGPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -1245,7 +1259,7 @@ void TA_FUNC_AVGPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -1264,13 +1278,13 @@ void TA_FUNC_AVGPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -1278,14 +1292,14 @@ void TA_FUNC_AVGPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -1323,7 +1337,7 @@ void TA_FUNC_AVGPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -1335,6 +1349,7 @@ void TA_FUNC_AVGPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_AVGDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -1346,7 +1361,7 @@ void TA_FUNC_AVGDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -1360,21 +1375,21 @@ void TA_FUNC_AVGDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -1409,7 +1424,7 @@ void TA_FUNC_AVGDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -1418,6 +1433,7 @@ void TA_FUNC_AVGDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -1427,14 +1443,14 @@ void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(3);
-        outAll_JS->Set(0, outRealUpperBand_JS);
-        outAll_JS->Set(1, outRealMiddleBand_JS);
-        outAll_JS->Set(2, outRealLowerBand_JS);
+        Nan::Set(outAll_JS, 0, outRealUpperBand_JS);
+        Nan::Set(outAll_JS, 1, outRealMiddleBand_JS);
+        Nan::Set(outAll_JS, 2, outRealLowerBand_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -1451,27 +1467,27 @@ void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optDeviations_up = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optDeviations_up;
-        optDeviations_down = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optDeviations_down;
-        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optMA_Type;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        optDeviations_up = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue(context).FromJust() : optDeviations_up;
+        optDeviations_down = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue(context).FromJust() : optDeviations_down;
+        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value(context).FromJust() : optMA_Type;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        optDeviations_up = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optDeviations_up;
-        optDeviations_down = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optDeviations_down;
-        optMA_Type = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optMA_Type;
-        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
-        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        optDeviations_up = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue(context).FromJust() : optDeviations_up;
+        optDeviations_down = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue(context).FromJust() : optDeviations_down;
+        optMA_Type = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value(context).FromJust() : optMA_Type;
+        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -1486,9 +1502,9 @@ void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(3);
-        outAll_JS->Set(0, outRealUpperBand_JS);
-        outAll_JS->Set(1, outRealMiddleBand_JS);
-        outAll_JS->Set(2, outRealLowerBand_JS);
+        Nan::Set(outAll_JS, 0, outRealUpperBand_JS);
+        Nan::Set(outAll_JS, 1, outRealMiddleBand_JS);
+        Nan::Set(outAll_JS, 2, outRealLowerBand_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -1516,13 +1532,13 @@ void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outRealMiddleBand_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outRealLowerBand_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(3);
-    outAll_JS->Set(0, outRealUpperBand_JS);
-    outAll_JS->Set(1, outRealMiddleBand_JS);
-    outAll_JS->Set(2, outRealLowerBand_JS);
+    Nan::Set(outAll_JS, 0, outRealUpperBand_JS);
+    Nan::Set(outAll_JS, 1, outRealMiddleBand_JS);
+    Nan::Set(outAll_JS, 2, outRealLowerBand_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outRealUpperBand_JS->Set(i, Nan::New<v8::Number>(outRealUpperBand[i]));
-        outRealMiddleBand_JS->Set(i, Nan::New<v8::Number>(outRealMiddleBand[i]));
-        outRealLowerBand_JS->Set(i, Nan::New<v8::Number>(outRealLowerBand[i]));
+        Nan::Set(outRealUpperBand_JS, i, Nan::New<v8::Number>(outRealUpperBand[i]));
+        Nan::Set(outRealMiddleBand_JS, i, Nan::New<v8::Number>(outRealMiddleBand[i]));
+        Nan::Set(outRealLowerBand_JS, i, Nan::New<v8::Number>(outRealLowerBand[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -1533,6 +1549,7 @@ void TA_FUNC_BBANDS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_BETA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -1544,7 +1561,7 @@ void TA_FUNC_BETA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal0 = new double[inLength];
@@ -1560,24 +1577,24 @@ void TA_FUNC_BETA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inReal0[i] = Nan::Get(inReal0_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inReal1_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inReal0Name = info[1]->ToString();
-        v8::Local<v8::String> inReal1Name = info[2]->ToString();
+        v8::Local<v8::String> inReal0Name = info[1]->ToString(context).ToLocalChecked();;
+        v8::Local<v8::String> inReal1Name = info[2]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
-            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal0[i] = Nan::Get(inObject, inReal0Name).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inObject, inReal1Name).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -1613,7 +1630,7 @@ void TA_FUNC_BETA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal0;
@@ -1623,6 +1640,7 @@ void TA_FUNC_BETA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_BOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -1634,7 +1652,7 @@ void TA_FUNC_BOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -1653,13 +1671,13 @@ void TA_FUNC_BOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -1667,14 +1685,14 @@ void TA_FUNC_BOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -1712,7 +1730,7 @@ void TA_FUNC_BOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -1724,6 +1742,7 @@ void TA_FUNC_BOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CCI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -1735,7 +1754,7 @@ void TA_FUNC_CCI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -1753,27 +1772,27 @@ void TA_FUNC_CCI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -1810,7 +1829,7 @@ void TA_FUNC_CCI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -1821,6 +1840,7 @@ void TA_FUNC_CCI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDL2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -1832,7 +1852,7 @@ void TA_FUNC_CDL2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -1851,13 +1871,13 @@ void TA_FUNC_CDL2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -1865,14 +1885,14 @@ void TA_FUNC_CDL2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -1910,7 +1930,7 @@ void TA_FUNC_CDL2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -1922,6 +1942,7 @@ void TA_FUNC_CDL2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDL3BLACKCROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -1933,7 +1954,7 @@ void TA_FUNC_CDL3BLACKCROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -1952,13 +1973,13 @@ void TA_FUNC_CDL3BLACKCROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -1966,14 +1987,14 @@ void TA_FUNC_CDL3BLACKCROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -2011,7 +2032,7 @@ void TA_FUNC_CDL3BLACKCROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -2023,6 +2044,7 @@ void TA_FUNC_CDL3BLACKCROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDL3INSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -2034,7 +2056,7 @@ void TA_FUNC_CDL3INSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -2053,13 +2075,13 @@ void TA_FUNC_CDL3INSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -2067,14 +2089,14 @@ void TA_FUNC_CDL3INSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -2112,7 +2134,7 @@ void TA_FUNC_CDL3INSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -2124,6 +2146,7 @@ void TA_FUNC_CDL3INSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDL3LINESTRIKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -2135,7 +2158,7 @@ void TA_FUNC_CDL3LINESTRIKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -2154,13 +2177,13 @@ void TA_FUNC_CDL3LINESTRIKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -2168,14 +2191,14 @@ void TA_FUNC_CDL3LINESTRIKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -2213,7 +2236,7 @@ void TA_FUNC_CDL3LINESTRIKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -2225,6 +2248,7 @@ void TA_FUNC_CDL3LINESTRIKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDL3OUTSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -2236,7 +2260,7 @@ void TA_FUNC_CDL3OUTSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -2255,13 +2279,13 @@ void TA_FUNC_CDL3OUTSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -2269,14 +2293,14 @@ void TA_FUNC_CDL3OUTSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -2314,7 +2338,7 @@ void TA_FUNC_CDL3OUTSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -2326,6 +2350,7 @@ void TA_FUNC_CDL3OUTSIDE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDL3STARSINSOUTH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -2337,7 +2362,7 @@ void TA_FUNC_CDL3STARSINSOUTH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -2356,13 +2381,13 @@ void TA_FUNC_CDL3STARSINSOUTH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -2370,14 +2395,14 @@ void TA_FUNC_CDL3STARSINSOUTH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -2415,7 +2440,7 @@ void TA_FUNC_CDL3STARSINSOUTH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -2427,6 +2452,7 @@ void TA_FUNC_CDL3STARSINSOUTH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
 
 
 void TA_FUNC_CDL3WHITESOLDIERS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -2438,7 +2464,7 @@ void TA_FUNC_CDL3WHITESOLDIERS(const Nan::FunctionCallbackInfo<v8::Value> &info)
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -2457,13 +2483,13 @@ void TA_FUNC_CDL3WHITESOLDIERS(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -2471,14 +2497,14 @@ void TA_FUNC_CDL3WHITESOLDIERS(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -2516,7 +2542,7 @@ void TA_FUNC_CDL3WHITESOLDIERS(const Nan::FunctionCallbackInfo<v8::Value> &info)
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -2528,6 +2554,7 @@ void TA_FUNC_CDL3WHITESOLDIERS(const Nan::FunctionCallbackInfo<v8::Value> &info)
 
 
 void TA_FUNC_CDLABANDONEDBABY(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -2539,7 +2566,7 @@ void TA_FUNC_CDLABANDONEDBABY(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -2559,14 +2586,14 @@ void TA_FUNC_CDLABANDONEDBABY(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -2574,15 +2601,15 @@ void TA_FUNC_CDLABANDONEDBABY(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -2620,7 +2647,7 @@ void TA_FUNC_CDLABANDONEDBABY(const Nan::FunctionCallbackInfo<v8::Value> &info) 
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -2632,6 +2659,7 @@ void TA_FUNC_CDLABANDONEDBABY(const Nan::FunctionCallbackInfo<v8::Value> &info) 
 
 
 void TA_FUNC_CDLADVANCEBLOCK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -2643,7 +2671,7 @@ void TA_FUNC_CDLADVANCEBLOCK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -2662,13 +2690,13 @@ void TA_FUNC_CDLADVANCEBLOCK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -2676,14 +2704,14 @@ void TA_FUNC_CDLADVANCEBLOCK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -2721,7 +2749,7 @@ void TA_FUNC_CDLADVANCEBLOCK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -2733,6 +2761,7 @@ void TA_FUNC_CDLADVANCEBLOCK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLBELTHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -2744,7 +2773,7 @@ void TA_FUNC_CDLBELTHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -2763,13 +2792,13 @@ void TA_FUNC_CDLBELTHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -2777,14 +2806,14 @@ void TA_FUNC_CDLBELTHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -2822,7 +2851,7 @@ void TA_FUNC_CDLBELTHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -2834,6 +2863,7 @@ void TA_FUNC_CDLBELTHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLBREAKAWAY(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -2845,7 +2875,7 @@ void TA_FUNC_CDLBREAKAWAY(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -2864,13 +2894,13 @@ void TA_FUNC_CDLBREAKAWAY(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -2878,14 +2908,14 @@ void TA_FUNC_CDLBREAKAWAY(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -2923,7 +2953,7 @@ void TA_FUNC_CDLBREAKAWAY(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -2935,6 +2965,7 @@ void TA_FUNC_CDLBREAKAWAY(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLCLOSINGMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -2946,7 +2977,7 @@ void TA_FUNC_CDLCLOSINGMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -2965,13 +2996,13 @@ void TA_FUNC_CDLCLOSINGMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -2979,14 +3010,14 @@ void TA_FUNC_CDLCLOSINGMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -3024,7 +3055,7 @@ void TA_FUNC_CDLCLOSINGMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -3036,6 +3067,7 @@ void TA_FUNC_CDLCLOSINGMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info
 
 
 void TA_FUNC_CDLCONCEALBABYSWALL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -3047,7 +3079,7 @@ void TA_FUNC_CDLCONCEALBABYSWALL(const Nan::FunctionCallbackInfo<v8::Value> &inf
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -3066,13 +3098,13 @@ void TA_FUNC_CDLCONCEALBABYSWALL(const Nan::FunctionCallbackInfo<v8::Value> &inf
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -3080,14 +3112,14 @@ void TA_FUNC_CDLCONCEALBABYSWALL(const Nan::FunctionCallbackInfo<v8::Value> &inf
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -3125,7 +3157,7 @@ void TA_FUNC_CDLCONCEALBABYSWALL(const Nan::FunctionCallbackInfo<v8::Value> &inf
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -3137,6 +3169,7 @@ void TA_FUNC_CDLCONCEALBABYSWALL(const Nan::FunctionCallbackInfo<v8::Value> &inf
 
 
 void TA_FUNC_CDLCOUNTERATTACK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -3148,7 +3181,7 @@ void TA_FUNC_CDLCOUNTERATTACK(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -3167,13 +3200,13 @@ void TA_FUNC_CDLCOUNTERATTACK(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -3181,14 +3214,14 @@ void TA_FUNC_CDLCOUNTERATTACK(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -3226,7 +3259,7 @@ void TA_FUNC_CDLCOUNTERATTACK(const Nan::FunctionCallbackInfo<v8::Value> &info) 
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -3238,6 +3271,7 @@ void TA_FUNC_CDLCOUNTERATTACK(const Nan::FunctionCallbackInfo<v8::Value> &info) 
 
 
 void TA_FUNC_CDLDARKCLOUDCOVER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -3249,7 +3283,7 @@ void TA_FUNC_CDLDARKCLOUDCOVER(const Nan::FunctionCallbackInfo<v8::Value> &info)
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -3269,14 +3303,14 @@ void TA_FUNC_CDLDARKCLOUDCOVER(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -3284,15 +3318,15 @@ void TA_FUNC_CDLDARKCLOUDCOVER(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -3330,7 +3364,7 @@ void TA_FUNC_CDLDARKCLOUDCOVER(const Nan::FunctionCallbackInfo<v8::Value> &info)
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -3342,6 +3376,7 @@ void TA_FUNC_CDLDARKCLOUDCOVER(const Nan::FunctionCallbackInfo<v8::Value> &info)
 
 
 void TA_FUNC_CDLDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -3353,7 +3388,7 @@ void TA_FUNC_CDLDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -3372,13 +3407,13 @@ void TA_FUNC_CDLDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -3386,14 +3421,14 @@ void TA_FUNC_CDLDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -3431,7 +3466,7 @@ void TA_FUNC_CDLDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -3443,6 +3478,7 @@ void TA_FUNC_CDLDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -3454,7 +3490,7 @@ void TA_FUNC_CDLDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -3473,13 +3509,13 @@ void TA_FUNC_CDLDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -3487,14 +3523,14 @@ void TA_FUNC_CDLDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -3532,7 +3568,7 @@ void TA_FUNC_CDLDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -3544,6 +3580,7 @@ void TA_FUNC_CDLDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLDRAGONFLYDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -3555,7 +3592,7 @@ void TA_FUNC_CDLDRAGONFLYDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -3574,13 +3611,13 @@ void TA_FUNC_CDLDRAGONFLYDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -3588,14 +3625,14 @@ void TA_FUNC_CDLDRAGONFLYDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -3633,7 +3670,7 @@ void TA_FUNC_CDLDRAGONFLYDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) 
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -3645,6 +3682,7 @@ void TA_FUNC_CDLDRAGONFLYDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) 
 
 
 void TA_FUNC_CDLENGULFING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -3656,7 +3694,7 @@ void TA_FUNC_CDLENGULFING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -3675,13 +3713,13 @@ void TA_FUNC_CDLENGULFING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -3689,14 +3727,14 @@ void TA_FUNC_CDLENGULFING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -3734,7 +3772,7 @@ void TA_FUNC_CDLENGULFING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -3746,6 +3784,7 @@ void TA_FUNC_CDLENGULFING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLEVENINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -3757,7 +3796,7 @@ void TA_FUNC_CDLEVENINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -3777,14 +3816,14 @@ void TA_FUNC_CDLEVENINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -3792,15 +3831,15 @@ void TA_FUNC_CDLEVENINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -3838,7 +3877,7 @@ void TA_FUNC_CDLEVENINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -3850,6 +3889,7 @@ void TA_FUNC_CDLEVENINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
 
 
 void TA_FUNC_CDLEVENINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -3861,7 +3901,7 @@ void TA_FUNC_CDLEVENINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -3881,14 +3921,14 @@ void TA_FUNC_CDLEVENINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -3896,15 +3936,15 @@ void TA_FUNC_CDLEVENINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -3942,7 +3982,7 @@ void TA_FUNC_CDLEVENINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -3954,6 +3994,7 @@ void TA_FUNC_CDLEVENINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLGAPSIDESIDEWHITE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -3965,7 +4006,7 @@ void TA_FUNC_CDLGAPSIDESIDEWHITE(const Nan::FunctionCallbackInfo<v8::Value> &inf
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -3984,13 +4025,13 @@ void TA_FUNC_CDLGAPSIDESIDEWHITE(const Nan::FunctionCallbackInfo<v8::Value> &inf
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -3998,14 +4039,14 @@ void TA_FUNC_CDLGAPSIDESIDEWHITE(const Nan::FunctionCallbackInfo<v8::Value> &inf
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -4043,7 +4084,7 @@ void TA_FUNC_CDLGAPSIDESIDEWHITE(const Nan::FunctionCallbackInfo<v8::Value> &inf
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -4055,6 +4096,7 @@ void TA_FUNC_CDLGAPSIDESIDEWHITE(const Nan::FunctionCallbackInfo<v8::Value> &inf
 
 
 void TA_FUNC_CDLGRAVESTONEDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -4066,7 +4108,7 @@ void TA_FUNC_CDLGRAVESTONEDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -4085,13 +4127,13 @@ void TA_FUNC_CDLGRAVESTONEDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -4099,14 +4141,14 @@ void TA_FUNC_CDLGRAVESTONEDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -4144,7 +4186,7 @@ void TA_FUNC_CDLGRAVESTONEDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -4156,6 +4198,7 @@ void TA_FUNC_CDLGRAVESTONEDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
 
 
 void TA_FUNC_CDLHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -4167,7 +4210,7 @@ void TA_FUNC_CDLHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -4186,13 +4229,13 @@ void TA_FUNC_CDLHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -4200,14 +4243,14 @@ void TA_FUNC_CDLHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -4245,7 +4288,7 @@ void TA_FUNC_CDLHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -4257,6 +4300,7 @@ void TA_FUNC_CDLHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLHANGINGMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -4268,7 +4312,7 @@ void TA_FUNC_CDLHANGINGMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -4287,13 +4331,13 @@ void TA_FUNC_CDLHANGINGMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -4301,14 +4345,14 @@ void TA_FUNC_CDLHANGINGMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -4346,7 +4390,7 @@ void TA_FUNC_CDLHANGINGMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -4358,6 +4402,7 @@ void TA_FUNC_CDLHANGINGMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLHARAMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -4369,7 +4414,7 @@ void TA_FUNC_CDLHARAMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -4388,13 +4433,13 @@ void TA_FUNC_CDLHARAMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -4402,14 +4447,14 @@ void TA_FUNC_CDLHARAMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -4447,7 +4492,7 @@ void TA_FUNC_CDLHARAMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -4459,6 +4504,7 @@ void TA_FUNC_CDLHARAMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLHARAMICROSS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -4470,7 +4516,7 @@ void TA_FUNC_CDLHARAMICROSS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -4489,13 +4535,13 @@ void TA_FUNC_CDLHARAMICROSS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -4503,14 +4549,14 @@ void TA_FUNC_CDLHARAMICROSS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -4548,7 +4594,7 @@ void TA_FUNC_CDLHARAMICROSS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -4560,6 +4606,7 @@ void TA_FUNC_CDLHARAMICROSS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLHIGHWAVE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -4571,7 +4618,7 @@ void TA_FUNC_CDLHIGHWAVE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -4590,13 +4637,13 @@ void TA_FUNC_CDLHIGHWAVE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -4604,14 +4651,14 @@ void TA_FUNC_CDLHIGHWAVE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -4649,7 +4696,7 @@ void TA_FUNC_CDLHIGHWAVE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -4661,6 +4708,7 @@ void TA_FUNC_CDLHIGHWAVE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLHIKKAKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -4672,7 +4720,7 @@ void TA_FUNC_CDLHIKKAKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -4691,13 +4739,13 @@ void TA_FUNC_CDLHIKKAKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -4705,14 +4753,14 @@ void TA_FUNC_CDLHIKKAKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -4750,7 +4798,7 @@ void TA_FUNC_CDLHIKKAKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -4762,6 +4810,7 @@ void TA_FUNC_CDLHIKKAKE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLHIKKAKEMOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -4773,7 +4822,7 @@ void TA_FUNC_CDLHIKKAKEMOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -4792,13 +4841,13 @@ void TA_FUNC_CDLHIKKAKEMOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -4806,14 +4855,14 @@ void TA_FUNC_CDLHIKKAKEMOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -4851,7 +4900,7 @@ void TA_FUNC_CDLHIKKAKEMOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -4863,6 +4912,7 @@ void TA_FUNC_CDLHIKKAKEMOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLHOMINGPIGEON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -4874,7 +4924,7 @@ void TA_FUNC_CDLHOMINGPIGEON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -4893,13 +4943,13 @@ void TA_FUNC_CDLHOMINGPIGEON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -4907,14 +4957,14 @@ void TA_FUNC_CDLHOMINGPIGEON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -4952,7 +5002,7 @@ void TA_FUNC_CDLHOMINGPIGEON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -4964,6 +5014,7 @@ void TA_FUNC_CDLHOMINGPIGEON(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLIDENTICAL3CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -4975,7 +5026,7 @@ void TA_FUNC_CDLIDENTICAL3CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -4994,13 +5045,13 @@ void TA_FUNC_CDLIDENTICAL3CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -5008,14 +5059,14 @@ void TA_FUNC_CDLIDENTICAL3CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -5053,7 +5104,7 @@ void TA_FUNC_CDLIDENTICAL3CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -5065,6 +5116,7 @@ void TA_FUNC_CDLIDENTICAL3CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
 
 
 void TA_FUNC_CDLINNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -5076,7 +5128,7 @@ void TA_FUNC_CDLINNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -5095,13 +5147,13 @@ void TA_FUNC_CDLINNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -5109,14 +5161,14 @@ void TA_FUNC_CDLINNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -5154,7 +5206,7 @@ void TA_FUNC_CDLINNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -5166,6 +5218,7 @@ void TA_FUNC_CDLINNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLINVERTEDHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -5177,7 +5230,7 @@ void TA_FUNC_CDLINVERTEDHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info)
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -5196,13 +5249,13 @@ void TA_FUNC_CDLINVERTEDHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -5210,14 +5263,14 @@ void TA_FUNC_CDLINVERTEDHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -5255,7 +5308,7 @@ void TA_FUNC_CDLINVERTEDHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info)
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -5267,6 +5320,7 @@ void TA_FUNC_CDLINVERTEDHAMMER(const Nan::FunctionCallbackInfo<v8::Value> &info)
 
 
 void TA_FUNC_CDLKICKING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -5278,7 +5332,7 @@ void TA_FUNC_CDLKICKING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -5297,13 +5351,13 @@ void TA_FUNC_CDLKICKING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -5311,14 +5365,14 @@ void TA_FUNC_CDLKICKING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -5356,7 +5410,7 @@ void TA_FUNC_CDLKICKING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -5368,6 +5422,7 @@ void TA_FUNC_CDLKICKING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLKICKINGBYLENGTH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -5379,7 +5434,7 @@ void TA_FUNC_CDLKICKINGBYLENGTH(const Nan::FunctionCallbackInfo<v8::Value> &info
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -5398,13 +5453,13 @@ void TA_FUNC_CDLKICKINGBYLENGTH(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -5412,14 +5467,14 @@ void TA_FUNC_CDLKICKINGBYLENGTH(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -5457,7 +5512,7 @@ void TA_FUNC_CDLKICKINGBYLENGTH(const Nan::FunctionCallbackInfo<v8::Value> &info
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -5469,6 +5524,7 @@ void TA_FUNC_CDLKICKINGBYLENGTH(const Nan::FunctionCallbackInfo<v8::Value> &info
 
 
 void TA_FUNC_CDLLADDERBOTTOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -5480,7 +5536,7 @@ void TA_FUNC_CDLLADDERBOTTOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -5499,13 +5555,13 @@ void TA_FUNC_CDLLADDERBOTTOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -5513,14 +5569,14 @@ void TA_FUNC_CDLLADDERBOTTOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -5558,7 +5614,7 @@ void TA_FUNC_CDLLADDERBOTTOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -5570,6 +5626,7 @@ void TA_FUNC_CDLLADDERBOTTOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLLONGLEGGEDDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -5581,7 +5638,7 @@ void TA_FUNC_CDLLONGLEGGEDDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -5600,13 +5657,13 @@ void TA_FUNC_CDLLONGLEGGEDDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -5614,14 +5671,14 @@ void TA_FUNC_CDLLONGLEGGEDDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -5659,7 +5716,7 @@ void TA_FUNC_CDLLONGLEGGEDDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -5671,6 +5728,7 @@ void TA_FUNC_CDLLONGLEGGEDDOJI(const Nan::FunctionCallbackInfo<v8::Value> &info)
 
 
 void TA_FUNC_CDLLONGLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -5682,7 +5740,7 @@ void TA_FUNC_CDLLONGLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -5701,13 +5759,13 @@ void TA_FUNC_CDLLONGLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -5715,14 +5773,14 @@ void TA_FUNC_CDLLONGLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -5760,7 +5818,7 @@ void TA_FUNC_CDLLONGLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -5772,6 +5830,7 @@ void TA_FUNC_CDLLONGLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -5783,7 +5842,7 @@ void TA_FUNC_CDLMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -5802,13 +5861,13 @@ void TA_FUNC_CDLMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -5816,14 +5875,14 @@ void TA_FUNC_CDLMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -5861,7 +5920,7 @@ void TA_FUNC_CDLMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -5873,6 +5932,7 @@ void TA_FUNC_CDLMARUBOZU(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLMATCHINGLOW(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -5884,7 +5944,7 @@ void TA_FUNC_CDLMATCHINGLOW(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -5903,13 +5963,13 @@ void TA_FUNC_CDLMATCHINGLOW(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -5917,14 +5977,14 @@ void TA_FUNC_CDLMATCHINGLOW(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -5962,7 +6022,7 @@ void TA_FUNC_CDLMATCHINGLOW(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -5974,6 +6034,7 @@ void TA_FUNC_CDLMATCHINGLOW(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLMATHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -5985,7 +6046,7 @@ void TA_FUNC_CDLMATHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -6005,14 +6066,14 @@ void TA_FUNC_CDLMATHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -6020,15 +6081,15 @@ void TA_FUNC_CDLMATHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -6066,7 +6127,7 @@ void TA_FUNC_CDLMATHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -6078,6 +6139,7 @@ void TA_FUNC_CDLMATHOLD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLMORNINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -6089,7 +6151,7 @@ void TA_FUNC_CDLMORNINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -6109,14 +6171,14 @@ void TA_FUNC_CDLMORNINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -6124,15 +6186,15 @@ void TA_FUNC_CDLMORNINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -6170,7 +6232,7 @@ void TA_FUNC_CDLMORNINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -6182,6 +6244,7 @@ void TA_FUNC_CDLMORNINGDOJISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info
 
 
 void TA_FUNC_CDLMORNINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -6193,7 +6256,7 @@ void TA_FUNC_CDLMORNINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -6213,14 +6276,14 @@ void TA_FUNC_CDLMORNINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optPenetration;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optPenetration = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -6228,15 +6291,15 @@ void TA_FUNC_CDLMORNINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optPenetration;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optPenetration = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue(context).FromJust() : optPenetration;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -6274,7 +6337,7 @@ void TA_FUNC_CDLMORNINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -6286,6 +6349,7 @@ void TA_FUNC_CDLMORNINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLONNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -6297,7 +6361,7 @@ void TA_FUNC_CDLONNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -6316,13 +6380,13 @@ void TA_FUNC_CDLONNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -6330,14 +6394,14 @@ void TA_FUNC_CDLONNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -6375,7 +6439,7 @@ void TA_FUNC_CDLONNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -6387,6 +6451,7 @@ void TA_FUNC_CDLONNECK(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLPIERCING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -6398,7 +6463,7 @@ void TA_FUNC_CDLPIERCING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -6417,13 +6482,13 @@ void TA_FUNC_CDLPIERCING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -6431,14 +6496,14 @@ void TA_FUNC_CDLPIERCING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -6476,7 +6541,7 @@ void TA_FUNC_CDLPIERCING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -6488,6 +6553,7 @@ void TA_FUNC_CDLPIERCING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLRICKSHAWMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -6499,7 +6565,7 @@ void TA_FUNC_CDLRICKSHAWMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -6518,13 +6584,13 @@ void TA_FUNC_CDLRICKSHAWMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -6532,14 +6598,14 @@ void TA_FUNC_CDLRICKSHAWMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -6577,7 +6643,7 @@ void TA_FUNC_CDLRICKSHAWMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -6589,6 +6655,7 @@ void TA_FUNC_CDLRICKSHAWMAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLRISEFALL3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -6600,7 +6667,7 @@ void TA_FUNC_CDLRISEFALL3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -6619,13 +6686,13 @@ void TA_FUNC_CDLRISEFALL3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -6633,14 +6700,14 @@ void TA_FUNC_CDLRISEFALL3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -6678,7 +6745,7 @@ void TA_FUNC_CDLRISEFALL3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -6690,6 +6757,7 @@ void TA_FUNC_CDLRISEFALL3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
 
 
 void TA_FUNC_CDLSEPARATINGLINES(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -6701,7 +6769,7 @@ void TA_FUNC_CDLSEPARATINGLINES(const Nan::FunctionCallbackInfo<v8::Value> &info
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -6720,13 +6788,13 @@ void TA_FUNC_CDLSEPARATINGLINES(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -6734,14 +6802,14 @@ void TA_FUNC_CDLSEPARATINGLINES(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -6779,7 +6847,7 @@ void TA_FUNC_CDLSEPARATINGLINES(const Nan::FunctionCallbackInfo<v8::Value> &info
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -6791,6 +6859,7 @@ void TA_FUNC_CDLSEPARATINGLINES(const Nan::FunctionCallbackInfo<v8::Value> &info
 
 
 void TA_FUNC_CDLSHOOTINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -6802,7 +6871,7 @@ void TA_FUNC_CDLSHOOTINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -6821,13 +6890,13 @@ void TA_FUNC_CDLSHOOTINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -6835,14 +6904,14 @@ void TA_FUNC_CDLSHOOTINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -6880,7 +6949,7 @@ void TA_FUNC_CDLSHOOTINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -6892,6 +6961,7 @@ void TA_FUNC_CDLSHOOTINGSTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLSHORTLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -6903,7 +6973,7 @@ void TA_FUNC_CDLSHORTLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -6922,13 +6992,13 @@ void TA_FUNC_CDLSHORTLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -6936,14 +7006,14 @@ void TA_FUNC_CDLSHORTLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -6981,7 +7051,7 @@ void TA_FUNC_CDLSHORTLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -6993,6 +7063,7 @@ void TA_FUNC_CDLSHORTLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLSPINNINGTOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -7004,7 +7075,7 @@ void TA_FUNC_CDLSPINNINGTOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -7023,13 +7094,13 @@ void TA_FUNC_CDLSPINNINGTOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -7037,14 +7108,14 @@ void TA_FUNC_CDLSPINNINGTOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -7082,7 +7153,7 @@ void TA_FUNC_CDLSPINNINGTOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -7094,6 +7165,7 @@ void TA_FUNC_CDLSPINNINGTOP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLSTALLEDPATTERN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -7105,7 +7177,7 @@ void TA_FUNC_CDLSTALLEDPATTERN(const Nan::FunctionCallbackInfo<v8::Value> &info)
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -7124,13 +7196,13 @@ void TA_FUNC_CDLSTALLEDPATTERN(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -7138,14 +7210,14 @@ void TA_FUNC_CDLSTALLEDPATTERN(const Nan::FunctionCallbackInfo<v8::Value> &info)
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -7183,7 +7255,7 @@ void TA_FUNC_CDLSTALLEDPATTERN(const Nan::FunctionCallbackInfo<v8::Value> &info)
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -7195,6 +7267,7 @@ void TA_FUNC_CDLSTALLEDPATTERN(const Nan::FunctionCallbackInfo<v8::Value> &info)
 
 
 void TA_FUNC_CDLSTICKSANDWICH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -7206,7 +7279,7 @@ void TA_FUNC_CDLSTICKSANDWICH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -7225,13 +7298,13 @@ void TA_FUNC_CDLSTICKSANDWICH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -7239,14 +7312,14 @@ void TA_FUNC_CDLSTICKSANDWICH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -7284,7 +7357,7 @@ void TA_FUNC_CDLSTICKSANDWICH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -7296,6 +7369,7 @@ void TA_FUNC_CDLSTICKSANDWICH(const Nan::FunctionCallbackInfo<v8::Value> &info) 
 
 
 void TA_FUNC_CDLTAKURI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -7307,7 +7381,7 @@ void TA_FUNC_CDLTAKURI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -7326,13 +7400,13 @@ void TA_FUNC_CDLTAKURI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -7340,14 +7414,14 @@ void TA_FUNC_CDLTAKURI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -7385,7 +7459,7 @@ void TA_FUNC_CDLTAKURI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -7397,6 +7471,7 @@ void TA_FUNC_CDLTAKURI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLTASUKIGAP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -7408,7 +7483,7 @@ void TA_FUNC_CDLTASUKIGAP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -7427,13 +7502,13 @@ void TA_FUNC_CDLTASUKIGAP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -7441,14 +7516,14 @@ void TA_FUNC_CDLTASUKIGAP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -7486,7 +7561,7 @@ void TA_FUNC_CDLTASUKIGAP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -7498,6 +7573,7 @@ void TA_FUNC_CDLTASUKIGAP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLTHRUSTING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -7509,7 +7585,7 @@ void TA_FUNC_CDLTHRUSTING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -7528,13 +7604,13 @@ void TA_FUNC_CDLTHRUSTING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -7542,14 +7618,14 @@ void TA_FUNC_CDLTHRUSTING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -7587,7 +7663,7 @@ void TA_FUNC_CDLTHRUSTING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -7599,6 +7675,7 @@ void TA_FUNC_CDLTHRUSTING(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLTRISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -7610,7 +7687,7 @@ void TA_FUNC_CDLTRISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -7629,13 +7706,13 @@ void TA_FUNC_CDLTRISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -7643,14 +7720,14 @@ void TA_FUNC_CDLTRISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -7688,7 +7765,7 @@ void TA_FUNC_CDLTRISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -7700,6 +7777,7 @@ void TA_FUNC_CDLTRISTAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLUNIQUE3RIVER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -7711,7 +7789,7 @@ void TA_FUNC_CDLUNIQUE3RIVER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -7730,13 +7808,13 @@ void TA_FUNC_CDLUNIQUE3RIVER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -7744,14 +7822,14 @@ void TA_FUNC_CDLUNIQUE3RIVER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -7789,7 +7867,7 @@ void TA_FUNC_CDLUNIQUE3RIVER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -7801,6 +7879,7 @@ void TA_FUNC_CDLUNIQUE3RIVER(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CDLUPSIDEGAP2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -7812,7 +7891,7 @@ void TA_FUNC_CDLUPSIDEGAP2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -7831,13 +7910,13 @@ void TA_FUNC_CDLUPSIDEGAP2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -7845,14 +7924,14 @@ void TA_FUNC_CDLUPSIDEGAP2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -7890,7 +7969,7 @@ void TA_FUNC_CDLUPSIDEGAP2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -7902,6 +7981,7 @@ void TA_FUNC_CDLUPSIDEGAP2CROWS(const Nan::FunctionCallbackInfo<v8::Value> &info
 
 
 void TA_FUNC_CDLXSIDEGAP3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -7913,7 +7993,7 @@ void TA_FUNC_CDLXSIDEGAP3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -7932,13 +8012,13 @@ void TA_FUNC_CDLXSIDEGAP3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
@@ -7946,14 +8026,14 @@ void TA_FUNC_CDLXSIDEGAP3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -7991,7 +8071,7 @@ void TA_FUNC_CDLXSIDEGAP3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -8003,6 +8083,7 @@ void TA_FUNC_CDLXSIDEGAP3METHODS(const Nan::FunctionCallbackInfo<v8::Value> &inf
 
 
 void TA_FUNC_CEIL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8014,7 +8095,7 @@ void TA_FUNC_CEIL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -8027,19 +8108,19 @@ void TA_FUNC_CEIL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8074,7 +8155,7 @@ void TA_FUNC_CEIL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -8083,6 +8164,7 @@ void TA_FUNC_CEIL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CMO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8094,7 +8176,7 @@ void TA_FUNC_CMO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -8108,21 +8190,21 @@ void TA_FUNC_CMO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8157,7 +8239,7 @@ void TA_FUNC_CMO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -8166,6 +8248,7 @@ void TA_FUNC_CMO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_CORREL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8177,7 +8260,7 @@ void TA_FUNC_CORREL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal0 = new double[inLength];
@@ -8193,24 +8276,24 @@ void TA_FUNC_CORREL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inReal0[i] = Nan::Get(inReal0_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inReal1_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inReal0Name = info[1]->ToString();
-        v8::Local<v8::String> inReal1Name = info[2]->ToString();
+        v8::Local<v8::String> inReal0Name = info[1]->ToString(context).ToLocalChecked();;
+        v8::Local<v8::String> inReal1Name = info[2]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
-            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal0[i] = Nan::Get(inObject, inReal0Name).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inObject, inReal1Name).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8246,7 +8329,7 @@ void TA_FUNC_CORREL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal0;
@@ -8256,6 +8339,7 @@ void TA_FUNC_CORREL(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_COS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8267,7 +8351,7 @@ void TA_FUNC_COS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -8280,19 +8364,19 @@ void TA_FUNC_COS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8327,7 +8411,7 @@ void TA_FUNC_COS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -8336,6 +8420,7 @@ void TA_FUNC_COS(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_COSH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8347,7 +8432,7 @@ void TA_FUNC_COSH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -8360,19 +8445,19 @@ void TA_FUNC_COSH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8407,7 +8492,7 @@ void TA_FUNC_COSH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -8416,6 +8501,7 @@ void TA_FUNC_COSH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_DEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8427,7 +8513,7 @@ void TA_FUNC_DEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -8441,21 +8527,21 @@ void TA_FUNC_DEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8490,7 +8576,7 @@ void TA_FUNC_DEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -8499,6 +8585,7 @@ void TA_FUNC_DEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_DIV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8510,7 +8597,7 @@ void TA_FUNC_DIV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal0 = new double[inLength];
@@ -8525,22 +8612,22 @@ void TA_FUNC_DIV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inReal0[i] = Nan::Get(inReal0_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inReal1_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inReal0Name = info[1]->ToString();
-        v8::Local<v8::String> inReal1Name = info[2]->ToString();
+        v8::Local<v8::String> inReal0Name = info[1]->ToString(context).ToLocalChecked();;
+        v8::Local<v8::String> inReal1Name = info[2]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
-            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal0[i] = Nan::Get(inObject, inReal0Name).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inObject, inReal1Name).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8576,7 +8663,7 @@ void TA_FUNC_DIV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal0;
@@ -8586,6 +8673,7 @@ void TA_FUNC_DIV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_DX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8597,7 +8685,7 @@ void TA_FUNC_DX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -8615,27 +8703,27 @@ void TA_FUNC_DX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8672,7 +8760,7 @@ void TA_FUNC_DX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -8683,6 +8771,7 @@ void TA_FUNC_DX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_EMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8694,7 +8783,7 @@ void TA_FUNC_EMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -8708,21 +8797,21 @@ void TA_FUNC_EMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8757,7 +8846,7 @@ void TA_FUNC_EMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -8766,6 +8855,7 @@ void TA_FUNC_EMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_EXP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8777,7 +8867,7 @@ void TA_FUNC_EXP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -8790,19 +8880,19 @@ void TA_FUNC_EXP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8837,7 +8927,7 @@ void TA_FUNC_EXP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -8846,6 +8936,7 @@ void TA_FUNC_EXP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_FLOOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8857,7 +8948,7 @@ void TA_FUNC_FLOOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -8870,19 +8961,19 @@ void TA_FUNC_FLOOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8917,7 +9008,7 @@ void TA_FUNC_FLOOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -8926,6 +9017,7 @@ void TA_FUNC_FLOOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_HT_DCPERIOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -8937,7 +9029,7 @@ void TA_FUNC_HT_DCPERIOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -8950,19 +9042,19 @@ void TA_FUNC_HT_DCPERIOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -8997,7 +9089,7 @@ void TA_FUNC_HT_DCPERIOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -9006,6 +9098,7 @@ void TA_FUNC_HT_DCPERIOD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_HT_DCPHASE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9017,7 +9110,7 @@ void TA_FUNC_HT_DCPHASE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -9030,19 +9123,19 @@ void TA_FUNC_HT_DCPHASE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -9077,7 +9170,7 @@ void TA_FUNC_HT_DCPHASE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -9086,6 +9179,7 @@ void TA_FUNC_HT_DCPHASE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9094,13 +9188,13 @@ void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outInPhase_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outQuadrature_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outInPhase_JS);
-        outAll_JS->Set(1, outQuadrature_JS);
+        Nan::Set(outAll_JS, 0, outInPhase_JS);
+        Nan::Set(outAll_JS, 1, outQuadrature_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -9113,19 +9207,19 @@ void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -9139,8 +9233,8 @@ void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outInPhase_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outQuadrature_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outInPhase_JS);
-        outAll_JS->Set(1, outQuadrature_JS);
+        Nan::Set(outAll_JS, 0, outInPhase_JS);
+        Nan::Set(outAll_JS, 1, outQuadrature_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -9165,11 +9259,11 @@ void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInPhase_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outQuadrature_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(2);
-    outAll_JS->Set(0, outInPhase_JS);
-    outAll_JS->Set(1, outQuadrature_JS);
+    Nan::Set(outAll_JS, 0, outInPhase_JS);
+    Nan::Set(outAll_JS, 1, outQuadrature_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInPhase_JS->Set(i, Nan::New<v8::Number>(outInPhase[i]));
-        outQuadrature_JS->Set(i, Nan::New<v8::Number>(outQuadrature[i]));
+        Nan::Set(outInPhase_JS, i, Nan::New<v8::Number>(outInPhase[i]));
+        Nan::Set(outQuadrature_JS, i, Nan::New<v8::Number>(outQuadrature[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -9179,6 +9273,7 @@ void TA_FUNC_HT_PHASOR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9187,13 +9282,13 @@ void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outSine_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outLeadSine_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outSine_JS);
-        outAll_JS->Set(1, outLeadSine_JS);
+        Nan::Set(outAll_JS, 0, outSine_JS);
+        Nan::Set(outAll_JS, 1, outLeadSine_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -9206,19 +9301,19 @@ void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -9232,8 +9327,8 @@ void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outSine_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outLeadSine_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outSine_JS);
-        outAll_JS->Set(1, outLeadSine_JS);
+        Nan::Set(outAll_JS, 0, outSine_JS);
+        Nan::Set(outAll_JS, 1, outLeadSine_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -9258,11 +9353,11 @@ void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outSine_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outLeadSine_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(2);
-    outAll_JS->Set(0, outSine_JS);
-    outAll_JS->Set(1, outLeadSine_JS);
+    Nan::Set(outAll_JS, 0, outSine_JS);
+    Nan::Set(outAll_JS, 1, outLeadSine_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outSine_JS->Set(i, Nan::New<v8::Number>(outSine[i]));
-        outLeadSine_JS->Set(i, Nan::New<v8::Number>(outLeadSine[i]));
+        Nan::Set(outSine_JS, i, Nan::New<v8::Number>(outSine[i]));
+        Nan::Set(outLeadSine_JS, i, Nan::New<v8::Number>(outLeadSine[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -9272,6 +9367,7 @@ void TA_FUNC_HT_SINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_HT_TRENDLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9283,7 +9379,7 @@ void TA_FUNC_HT_TRENDLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -9296,19 +9392,19 @@ void TA_FUNC_HT_TRENDLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -9343,7 +9439,7 @@ void TA_FUNC_HT_TRENDLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -9352,6 +9448,7 @@ void TA_FUNC_HT_TRENDLINE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_HT_TRENDMODE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9363,7 +9460,7 @@ void TA_FUNC_HT_TRENDMODE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -9376,19 +9473,19 @@ void TA_FUNC_HT_TRENDMODE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -9423,7 +9520,7 @@ void TA_FUNC_HT_TRENDMODE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -9432,6 +9529,7 @@ void TA_FUNC_HT_TRENDMODE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_IMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9443,7 +9541,7 @@ void TA_FUNC_IMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inOpen = new double[inLength];
@@ -9459,24 +9557,24 @@ void TA_FUNC_IMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inOpen_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inOpen[i] = inOpen_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inOpen[i] = Nan::Get(inOpen_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inOpenName = Nan::New("Open").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inOpen[i] = inObject->Get(inOpenName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inOpen[i] = Nan::Get(inObject, inOpenName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -9512,7 +9610,7 @@ void TA_FUNC_IMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inOpen;
@@ -9522,6 +9620,7 @@ void TA_FUNC_IMI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_KAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9533,7 +9632,7 @@ void TA_FUNC_KAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -9547,21 +9646,21 @@ void TA_FUNC_KAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -9596,7 +9695,7 @@ void TA_FUNC_KAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -9605,6 +9704,7 @@ void TA_FUNC_KAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_LINEARREG(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9616,7 +9716,7 @@ void TA_FUNC_LINEARREG(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -9630,21 +9730,21 @@ void TA_FUNC_LINEARREG(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -9679,7 +9779,7 @@ void TA_FUNC_LINEARREG(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -9688,6 +9788,7 @@ void TA_FUNC_LINEARREG(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_LINEARREG_ANGLE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9699,7 +9800,7 @@ void TA_FUNC_LINEARREG_ANGLE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -9713,21 +9814,21 @@ void TA_FUNC_LINEARREG_ANGLE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -9762,7 +9863,7 @@ void TA_FUNC_LINEARREG_ANGLE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -9771,6 +9872,7 @@ void TA_FUNC_LINEARREG_ANGLE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_LINEARREG_INTERCEPT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9782,7 +9884,7 @@ void TA_FUNC_LINEARREG_INTERCEPT(const Nan::FunctionCallbackInfo<v8::Value> &inf
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -9796,21 +9898,21 @@ void TA_FUNC_LINEARREG_INTERCEPT(const Nan::FunctionCallbackInfo<v8::Value> &inf
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -9845,7 +9947,7 @@ void TA_FUNC_LINEARREG_INTERCEPT(const Nan::FunctionCallbackInfo<v8::Value> &inf
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -9854,6 +9956,7 @@ void TA_FUNC_LINEARREG_INTERCEPT(const Nan::FunctionCallbackInfo<v8::Value> &inf
 
 
 void TA_FUNC_LINEARREG_SLOPE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9865,7 +9968,7 @@ void TA_FUNC_LINEARREG_SLOPE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -9879,21 +9982,21 @@ void TA_FUNC_LINEARREG_SLOPE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -9928,7 +10031,7 @@ void TA_FUNC_LINEARREG_SLOPE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -9937,6 +10040,7 @@ void TA_FUNC_LINEARREG_SLOPE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_LN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -9948,7 +10052,7 @@ void TA_FUNC_LN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -9961,19 +10065,19 @@ void TA_FUNC_LN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -10008,7 +10112,7 @@ void TA_FUNC_LN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -10017,6 +10121,7 @@ void TA_FUNC_LN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_LOG10(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -10028,7 +10133,7 @@ void TA_FUNC_LOG10(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -10041,19 +10146,19 @@ void TA_FUNC_LOG10(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -10088,7 +10193,7 @@ void TA_FUNC_LOG10(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -10097,6 +10202,7 @@ void TA_FUNC_LOG10(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -10108,7 +10214,7 @@ void TA_FUNC_MA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -10123,23 +10229,23 @@ void TA_FUNC_MA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optMA_Type = argc > 2 && info[2]->IsInt32() ? (TA_MAType)  info[2]->Int32Value() : optMA_Type;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        optMA_Type = argc > 2 && info[2]->IsInt32() ? (TA_MAType)  info[2]->Int32Value(context).FromJust() : optMA_Type;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        optMA_Type = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optMA_Type;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        optMA_Type = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value(context).FromJust() : optMA_Type;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -10174,7 +10280,7 @@ void TA_FUNC_MA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -10183,6 +10289,7 @@ void TA_FUNC_MA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -10192,14 +10299,14 @@ void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(3);
-        outAll_JS->Set(0, outMACD_JS);
-        outAll_JS->Set(1, outMACDSignal_JS);
-        outAll_JS->Set(2, outMACDHist_JS);
+        Nan::Set(outAll_JS, 0, outMACD_JS);
+        Nan::Set(outAll_JS, 1, outMACDSignal_JS);
+        Nan::Set(outAll_JS, 2, outMACDHist_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -10215,25 +10322,25 @@ void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlow_Period;
-        optSignal_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optSignal_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optFast_Period;
+        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optSlow_Period;
+        optSignal_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optSignal_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optSlow_Period;
-        optSignal_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSignal_Period;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optFast_Period;
+        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optSlow_Period;
+        optSignal_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value(context).FromJust() : optSignal_Period;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -10248,9 +10355,9 @@ void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(3);
-        outAll_JS->Set(0, outMACD_JS);
-        outAll_JS->Set(1, outMACDSignal_JS);
-        outAll_JS->Set(2, outMACDHist_JS);
+        Nan::Set(outAll_JS, 0, outMACD_JS);
+        Nan::Set(outAll_JS, 1, outMACDSignal_JS);
+        Nan::Set(outAll_JS, 2, outMACDHist_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -10278,13 +10385,13 @@ void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(3);
-    outAll_JS->Set(0, outMACD_JS);
-    outAll_JS->Set(1, outMACDSignal_JS);
-    outAll_JS->Set(2, outMACDHist_JS);
+    Nan::Set(outAll_JS, 0, outMACD_JS);
+    Nan::Set(outAll_JS, 1, outMACDSignal_JS);
+    Nan::Set(outAll_JS, 2, outMACDHist_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outMACD_JS->Set(i, Nan::New<v8::Number>(outMACD[i]));
-        outMACDSignal_JS->Set(i, Nan::New<v8::Number>(outMACDSignal[i]));
-        outMACDHist_JS->Set(i, Nan::New<v8::Number>(outMACDHist[i]));
+        Nan::Set(outMACD_JS, i, Nan::New<v8::Number>(outMACD[i]));
+        Nan::Set(outMACDSignal_JS, i, Nan::New<v8::Number>(outMACDSignal[i]));
+        Nan::Set(outMACDHist_JS, i, Nan::New<v8::Number>(outMACDHist[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -10295,6 +10402,7 @@ void TA_FUNC_MACD(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -10304,14 +10412,14 @@ void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(3);
-        outAll_JS->Set(0, outMACD_JS);
-        outAll_JS->Set(1, outMACDSignal_JS);
-        outAll_JS->Set(2, outMACDHist_JS);
+        Nan::Set(outAll_JS, 0, outMACD_JS);
+        Nan::Set(outAll_JS, 1, outMACDSignal_JS);
+        Nan::Set(outAll_JS, 2, outMACDHist_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -10330,31 +10438,31 @@ void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
-        optFast_MA = argc > 2 && info[2]->IsInt32() ? (TA_MAType)  info[2]->Int32Value() : optFast_MA;
-        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optSlow_Period;
-        optSlow_MA = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optSlow_MA;
-        optSignal_Period = argc > 5 && info[5]->IsInt32() ?  info[5]->Int32Value() : optSignal_Period;
-        optSignal_MA = argc > 6 && info[6]->IsInt32() ? (TA_MAType)  info[6]->Int32Value() : optSignal_MA;
-        startIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : startIdx;
-        endIdx = argc > 8 && info[8]->IsInt32() ? info[8]->Int32Value() : endIdx;
+        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optFast_Period;
+        optFast_MA = argc > 2 && info[2]->IsInt32() ? (TA_MAType)  info[2]->Int32Value(context).FromJust() : optFast_MA;
+        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optSlow_Period;
+        optSlow_MA = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value(context).FromJust() : optSlow_MA;
+        optSignal_Period = argc > 5 && info[5]->IsInt32() ?  info[5]->Int32Value(context).FromJust() : optSignal_Period;
+        optSignal_MA = argc > 6 && info[6]->IsInt32() ? (TA_MAType)  info[6]->Int32Value(context).FromJust() : optSignal_MA;
+        startIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 8 && info[8]->IsInt32() ? info[8]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFast_Period;
-        optFast_MA = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optFast_MA;
-        optSlow_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSlow_Period;
-        optSlow_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optSlow_MA;
-        optSignal_Period = argc > 6 && info[6]->IsInt32() ?  info[6]->Int32Value() : optSignal_Period;
-        optSignal_MA = argc > 7 && info[7]->IsInt32() ? (TA_MAType)  info[7]->Int32Value() : optSignal_MA;
-        startIdx = argc > 8 && info[8]->IsInt32() ? info[8]->Int32Value() : startIdx;
-        endIdx = argc > 9 && info[9]->IsInt32() ? info[9]->Int32Value() : endIdx;
+        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optFast_Period;
+        optFast_MA = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value(context).FromJust() : optFast_MA;
+        optSlow_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value(context).FromJust() : optSlow_Period;
+        optSlow_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value(context).FromJust() : optSlow_MA;
+        optSignal_Period = argc > 6 && info[6]->IsInt32() ?  info[6]->Int32Value(context).FromJust() : optSignal_Period;
+        optSignal_MA = argc > 7 && info[7]->IsInt32() ? (TA_MAType)  info[7]->Int32Value(context).FromJust() : optSignal_MA;
+        startIdx = argc > 8 && info[8]->IsInt32() ? info[8]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 9 && info[9]->IsInt32() ? info[9]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -10369,9 +10477,9 @@ void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(3);
-        outAll_JS->Set(0, outMACD_JS);
-        outAll_JS->Set(1, outMACDSignal_JS);
-        outAll_JS->Set(2, outMACDHist_JS);
+        Nan::Set(outAll_JS, 0, outMACD_JS);
+        Nan::Set(outAll_JS, 1, outMACDSignal_JS);
+        Nan::Set(outAll_JS, 2, outMACDHist_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -10399,13 +10507,13 @@ void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(3);
-    outAll_JS->Set(0, outMACD_JS);
-    outAll_JS->Set(1, outMACDSignal_JS);
-    outAll_JS->Set(2, outMACDHist_JS);
+    Nan::Set(outAll_JS, 0, outMACD_JS);
+    Nan::Set(outAll_JS, 1, outMACDSignal_JS);
+    Nan::Set(outAll_JS, 2, outMACDHist_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outMACD_JS->Set(i, Nan::New<v8::Number>(outMACD[i]));
-        outMACDSignal_JS->Set(i, Nan::New<v8::Number>(outMACDSignal[i]));
-        outMACDHist_JS->Set(i, Nan::New<v8::Number>(outMACDHist[i]));
+        Nan::Set(outMACD_JS, i, Nan::New<v8::Number>(outMACD[i]));
+        Nan::Set(outMACDSignal_JS, i, Nan::New<v8::Number>(outMACDSignal[i]));
+        Nan::Set(outMACDHist_JS, i, Nan::New<v8::Number>(outMACDHist[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -10416,6 +10524,7 @@ void TA_FUNC_MACDEXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -10425,14 +10534,14 @@ void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(3);
-        outAll_JS->Set(0, outMACD_JS);
-        outAll_JS->Set(1, outMACDSignal_JS);
-        outAll_JS->Set(2, outMACDHist_JS);
+        Nan::Set(outAll_JS, 0, outMACD_JS);
+        Nan::Set(outAll_JS, 1, outMACDSignal_JS);
+        Nan::Set(outAll_JS, 2, outMACDHist_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -10446,21 +10555,21 @@ void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optSignal_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optSignal_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optSignal_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optSignal_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optSignal_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSignal_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optSignal_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optSignal_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -10475,9 +10584,9 @@ void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(3);
-        outAll_JS->Set(0, outMACD_JS);
-        outAll_JS->Set(1, outMACDSignal_JS);
-        outAll_JS->Set(2, outMACDHist_JS);
+        Nan::Set(outAll_JS, 0, outMACD_JS);
+        Nan::Set(outAll_JS, 1, outMACDSignal_JS);
+        Nan::Set(outAll_JS, 2, outMACDHist_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -10505,13 +10614,13 @@ void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outMACDSignal_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMACDHist_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(3);
-    outAll_JS->Set(0, outMACD_JS);
-    outAll_JS->Set(1, outMACDSignal_JS);
-    outAll_JS->Set(2, outMACDHist_JS);
+    Nan::Set(outAll_JS, 0, outMACD_JS);
+    Nan::Set(outAll_JS, 1, outMACDSignal_JS);
+    Nan::Set(outAll_JS, 2, outMACDHist_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outMACD_JS->Set(i, Nan::New<v8::Number>(outMACD[i]));
-        outMACDSignal_JS->Set(i, Nan::New<v8::Number>(outMACDSignal[i]));
-        outMACDHist_JS->Set(i, Nan::New<v8::Number>(outMACDHist[i]));
+        Nan::Set(outMACD_JS, i, Nan::New<v8::Number>(outMACD[i]));
+        Nan::Set(outMACDSignal_JS, i, Nan::New<v8::Number>(outMACDSignal[i]));
+        Nan::Set(outMACDHist_JS, i, Nan::New<v8::Number>(outMACDHist[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -10522,6 +10631,7 @@ void TA_FUNC_MACDFIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -10530,13 +10640,13 @@ void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMAMA_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFAMA_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outMAMA_JS);
-        outAll_JS->Set(1, outFAMA_JS);
+        Nan::Set(outAll_JS, 0, outMAMA_JS);
+        Nan::Set(outAll_JS, 1, outFAMA_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -10551,23 +10661,23 @@ void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Limit = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optFast_Limit;
-        optSlow_Limit = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optSlow_Limit;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optFast_Limit = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue(context).FromJust() : optFast_Limit;
+        optSlow_Limit = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue(context).FromJust() : optSlow_Limit;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Limit = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optFast_Limit;
-        optSlow_Limit = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optSlow_Limit;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optFast_Limit = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue(context).FromJust() : optFast_Limit;
+        optSlow_Limit = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue(context).FromJust() : optSlow_Limit;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -10581,8 +10691,8 @@ void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMAMA_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFAMA_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outMAMA_JS);
-        outAll_JS->Set(1, outFAMA_JS);
+        Nan::Set(outAll_JS, 0, outMAMA_JS);
+        Nan::Set(outAll_JS, 1, outFAMA_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -10607,11 +10717,11 @@ void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outMAMA_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outFAMA_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(2);
-    outAll_JS->Set(0, outMAMA_JS);
-    outAll_JS->Set(1, outFAMA_JS);
+    Nan::Set(outAll_JS, 0, outMAMA_JS);
+    Nan::Set(outAll_JS, 1, outFAMA_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outMAMA_JS->Set(i, Nan::New<v8::Number>(outMAMA[i]));
-        outFAMA_JS->Set(i, Nan::New<v8::Number>(outFAMA[i]));
+        Nan::Set(outMAMA_JS, i, Nan::New<v8::Number>(outMAMA[i]));
+        Nan::Set(outFAMA_JS, i, Nan::New<v8::Number>(outFAMA[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -10621,6 +10731,7 @@ void TA_FUNC_MAMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MAVP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -10632,7 +10743,7 @@ void TA_FUNC_MAVP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -10650,28 +10761,28 @@ void TA_FUNC_MAVP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inPeriods_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
-            inPeriods[i] = inPeriods_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inPeriods[i] = Nan::Get(inPeriods_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optMinimum_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optMinimum_Period;
-        optMaximum_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optMaximum_Period;
-        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optMA_Type;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optMinimum_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optMinimum_Period;
+        optMaximum_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optMaximum_Period;
+        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value(context).FromJust() : optMA_Type;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
-        v8::Local<v8::String> inPeriodsName = info[2]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
+        v8::Local<v8::String> inPeriodsName = info[2]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
-            inPeriods[i] = inObject->Get(inPeriodsName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
+            inPeriods[i] = Nan::Get(inObject, inPeriodsName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optMinimum_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optMinimum_Period;
-        optMaximum_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optMaximum_Period;
-        optMA_Type = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optMA_Type;
-        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
-        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
+        optMinimum_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optMinimum_Period;
+        optMaximum_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value(context).FromJust() : optMaximum_Period;
+        optMA_Type = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value(context).FromJust() : optMA_Type;
+        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -10707,7 +10818,7 @@ void TA_FUNC_MAVP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -10717,6 +10828,7 @@ void TA_FUNC_MAVP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -10728,7 +10840,7 @@ void TA_FUNC_MAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -10742,21 +10854,21 @@ void TA_FUNC_MAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -10791,7 +10903,7 @@ void TA_FUNC_MAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -10800,6 +10912,7 @@ void TA_FUNC_MAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -10811,7 +10924,7 @@ void TA_FUNC_MAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -10825,21 +10938,21 @@ void TA_FUNC_MAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -10874,7 +10987,7 @@ void TA_FUNC_MAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -10883,6 +10996,7 @@ void TA_FUNC_MAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MEDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -10894,7 +11008,7 @@ void TA_FUNC_MEDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -10909,22 +11023,22 @@ void TA_FUNC_MEDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -10960,7 +11074,7 @@ void TA_FUNC_MEDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -10970,6 +11084,7 @@ void TA_FUNC_MEDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MFI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -10981,7 +11096,7 @@ void TA_FUNC_MFI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -11001,14 +11116,14 @@ void TA_FUNC_MFI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         v8::Local<v8::Array> inVolume_JS = v8::Local<v8::Array>::Cast(info[3]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
-            inVolume[i] = inVolume_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inVolume[i] = Nan::Get(inVolume_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optTime_Period;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optTime_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
@@ -11016,15 +11131,15 @@ void TA_FUNC_MFI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::String> inVolumeName = Nan::New("Volume").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
-            inVolume[i] = inObject->Get(inVolumeName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
+            inVolume[i] = Nan::Get(inObject, inVolumeName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -11062,7 +11177,7 @@ void TA_FUNC_MFI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -11074,6 +11189,7 @@ void TA_FUNC_MFI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MIDPOINT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -11085,7 +11201,7 @@ void TA_FUNC_MIDPOINT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -11099,21 +11215,21 @@ void TA_FUNC_MIDPOINT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -11148,7 +11264,7 @@ void TA_FUNC_MIDPOINT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -11157,6 +11273,7 @@ void TA_FUNC_MIDPOINT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MIDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -11168,7 +11285,7 @@ void TA_FUNC_MIDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -11184,24 +11301,24 @@ void TA_FUNC_MIDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -11237,7 +11354,7 @@ void TA_FUNC_MIDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -11247,6 +11364,7 @@ void TA_FUNC_MIDPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -11258,7 +11376,7 @@ void TA_FUNC_MIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -11272,21 +11390,21 @@ void TA_FUNC_MIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -11321,7 +11439,7 @@ void TA_FUNC_MIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -11330,6 +11448,7 @@ void TA_FUNC_MIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MININDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -11341,7 +11460,7 @@ void TA_FUNC_MININDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -11355,21 +11474,21 @@ void TA_FUNC_MININDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -11404,7 +11523,7 @@ void TA_FUNC_MININDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outInteger_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outInteger_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outInteger_JS->Set(i, Nan::New<v8::Number>(outInteger[i]));
+        Nan::Set(outInteger_JS, i, Nan::New<v8::Number>(outInteger[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -11413,6 +11532,7 @@ void TA_FUNC_MININDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -11421,13 +11541,13 @@ void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMin_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMax_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outMin_JS);
-        outAll_JS->Set(1, outMax_JS);
+        Nan::Set(outAll_JS, 0, outMin_JS);
+        Nan::Set(outAll_JS, 1, outMax_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -11441,21 +11561,21 @@ void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -11469,8 +11589,8 @@ void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMin_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMax_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outMin_JS);
-        outAll_JS->Set(1, outMax_JS);
+        Nan::Set(outAll_JS, 0, outMin_JS);
+        Nan::Set(outAll_JS, 1, outMax_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -11495,11 +11615,11 @@ void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outMin_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMax_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(2);
-    outAll_JS->Set(0, outMin_JS);
-    outAll_JS->Set(1, outMax_JS);
+    Nan::Set(outAll_JS, 0, outMin_JS);
+    Nan::Set(outAll_JS, 1, outMax_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outMin_JS->Set(i, Nan::New<v8::Number>(outMin[i]));
-        outMax_JS->Set(i, Nan::New<v8::Number>(outMax[i]));
+        Nan::Set(outMin_JS, i, Nan::New<v8::Number>(outMin[i]));
+        Nan::Set(outMax_JS, i, Nan::New<v8::Number>(outMax[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -11509,6 +11629,7 @@ void TA_FUNC_MINMAX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -11517,13 +11638,13 @@ void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMinIdx_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMaxIdx_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outMinIdx_JS);
-        outAll_JS->Set(1, outMaxIdx_JS);
+        Nan::Set(outAll_JS, 0, outMinIdx_JS);
+        Nan::Set(outAll_JS, 1, outMaxIdx_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -11537,21 +11658,21 @@ void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -11565,8 +11686,8 @@ void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outMinIdx_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outMaxIdx_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outMinIdx_JS);
-        outAll_JS->Set(1, outMaxIdx_JS);
+        Nan::Set(outAll_JS, 0, outMinIdx_JS);
+        Nan::Set(outAll_JS, 1, outMaxIdx_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -11591,11 +11712,11 @@ void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outMinIdx_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outMaxIdx_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(2);
-    outAll_JS->Set(0, outMinIdx_JS);
-    outAll_JS->Set(1, outMaxIdx_JS);
+    Nan::Set(outAll_JS, 0, outMinIdx_JS);
+    Nan::Set(outAll_JS, 1, outMaxIdx_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outMinIdx_JS->Set(i, Nan::New<v8::Number>(outMinIdx[i]));
-        outMaxIdx_JS->Set(i, Nan::New<v8::Number>(outMaxIdx[i]));
+        Nan::Set(outMinIdx_JS, i, Nan::New<v8::Number>(outMinIdx[i]));
+        Nan::Set(outMaxIdx_JS, i, Nan::New<v8::Number>(outMaxIdx[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -11605,6 +11726,7 @@ void TA_FUNC_MINMAXINDEX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MINUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -11616,7 +11738,7 @@ void TA_FUNC_MINUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -11634,27 +11756,27 @@ void TA_FUNC_MINUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -11691,7 +11813,7 @@ void TA_FUNC_MINUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -11702,6 +11824,7 @@ void TA_FUNC_MINUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MINUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -11713,7 +11836,7 @@ void TA_FUNC_MINUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -11729,24 +11852,24 @@ void TA_FUNC_MINUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -11782,7 +11905,7 @@ void TA_FUNC_MINUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -11792,6 +11915,7 @@ void TA_FUNC_MINUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -11803,7 +11927,7 @@ void TA_FUNC_MOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -11817,21 +11941,21 @@ void TA_FUNC_MOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -11866,7 +11990,7 @@ void TA_FUNC_MOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -11875,6 +11999,7 @@ void TA_FUNC_MOM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_MULT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -11886,7 +12011,7 @@ void TA_FUNC_MULT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal0 = new double[inLength];
@@ -11901,22 +12026,22 @@ void TA_FUNC_MULT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inReal0[i] = Nan::Get(inReal0_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inReal1_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inReal0Name = info[1]->ToString();
-        v8::Local<v8::String> inReal1Name = info[2]->ToString();
+        v8::Local<v8::String> inReal0Name = info[1]->ToString(context).ToLocalChecked();;
+        v8::Local<v8::String> inReal1Name = info[2]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
-            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal0[i] = Nan::Get(inObject, inReal0Name).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inObject, inReal1Name).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -11952,7 +12077,7 @@ void TA_FUNC_MULT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal0;
@@ -11962,6 +12087,7 @@ void TA_FUNC_MULT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_NATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -11973,7 +12099,7 @@ void TA_FUNC_NATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -11991,27 +12117,27 @@ void TA_FUNC_NATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -12048,7 +12174,7 @@ void TA_FUNC_NATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -12059,6 +12185,7 @@ void TA_FUNC_NATR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_OBV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -12070,7 +12197,7 @@ void TA_FUNC_OBV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -12085,22 +12212,22 @@ void TA_FUNC_OBV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inVolume_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
-            inVolume[i] = inVolume_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inVolume[i] = Nan::Get(inVolume_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::String> inVolumeName = Nan::New("Volume").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
-            inVolume[i] = inObject->Get(inVolumeName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
+            inVolume[i] = Nan::Get(inObject, inVolumeName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -12136,7 +12263,7 @@ void TA_FUNC_OBV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -12146,6 +12273,7 @@ void TA_FUNC_OBV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_PLUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -12157,7 +12285,7 @@ void TA_FUNC_PLUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -12175,27 +12303,27 @@ void TA_FUNC_PLUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -12232,7 +12360,7 @@ void TA_FUNC_PLUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -12243,6 +12371,7 @@ void TA_FUNC_PLUS_DI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_PLUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -12254,7 +12383,7 @@ void TA_FUNC_PLUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -12270,24 +12399,24 @@ void TA_FUNC_PLUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -12323,7 +12452,7 @@ void TA_FUNC_PLUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -12333,6 +12462,7 @@ void TA_FUNC_PLUS_DM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_PPO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -12344,7 +12474,7 @@ void TA_FUNC_PPO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -12360,25 +12490,25 @@ void TA_FUNC_PPO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlow_Period;
-        optMA_Type = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optMA_Type;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optFast_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optFast_Period;
+        optSlow_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optSlow_Period;
+        optMA_Type = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value(context).FromJust() : optMA_Type;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFast_Period;
-        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optSlow_Period;
-        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optMA_Type;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optFast_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optFast_Period;
+        optSlow_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optSlow_Period;
+        optMA_Type = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value(context).FromJust() : optMA_Type;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -12413,7 +12543,7 @@ void TA_FUNC_PPO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -12422,6 +12552,7 @@ void TA_FUNC_PPO(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ROC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -12433,7 +12564,7 @@ void TA_FUNC_ROC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -12447,21 +12578,21 @@ void TA_FUNC_ROC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -12496,7 +12627,7 @@ void TA_FUNC_ROC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -12505,6 +12636,7 @@ void TA_FUNC_ROC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ROCP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -12516,7 +12648,7 @@ void TA_FUNC_ROCP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -12530,21 +12662,21 @@ void TA_FUNC_ROCP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -12579,7 +12711,7 @@ void TA_FUNC_ROCP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -12588,6 +12720,7 @@ void TA_FUNC_ROCP(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ROCR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -12599,7 +12732,7 @@ void TA_FUNC_ROCR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -12613,21 +12746,21 @@ void TA_FUNC_ROCR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -12662,7 +12795,7 @@ void TA_FUNC_ROCR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -12671,6 +12804,7 @@ void TA_FUNC_ROCR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ROCR100(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -12682,7 +12816,7 @@ void TA_FUNC_ROCR100(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -12696,21 +12830,21 @@ void TA_FUNC_ROCR100(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -12745,7 +12879,7 @@ void TA_FUNC_ROCR100(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -12754,6 +12888,7 @@ void TA_FUNC_ROCR100(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_RSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -12765,7 +12900,7 @@ void TA_FUNC_RSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -12779,21 +12914,21 @@ void TA_FUNC_RSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -12828,7 +12963,7 @@ void TA_FUNC_RSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -12837,6 +12972,7 @@ void TA_FUNC_RSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_SAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -12848,7 +12984,7 @@ void TA_FUNC_SAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -12865,26 +13001,26 @@ void TA_FUNC_SAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optAcceleration_Factor = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optAcceleration_Factor;
-        optAF_Maximum = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optAF_Maximum;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optAcceleration_Factor = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue(context).FromJust() : optAcceleration_Factor;
+        optAF_Maximum = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue(context).FromJust() : optAF_Maximum;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optAcceleration_Factor = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optAcceleration_Factor;
-        optAF_Maximum = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optAF_Maximum;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optAcceleration_Factor = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue(context).FromJust() : optAcceleration_Factor;
+        optAF_Maximum = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue(context).FromJust() : optAF_Maximum;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -12920,7 +13056,7 @@ void TA_FUNC_SAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -12930,6 +13066,7 @@ void TA_FUNC_SAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_SAREXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -12941,7 +13078,7 @@ void TA_FUNC_SAREXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -12964,38 +13101,38 @@ void TA_FUNC_SAREXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inHigh_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optStart_Value = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optStart_Value;
-        optOffset_on_Reverse = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optOffset_on_Reverse;
-        optAF_Init_Long = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optAF_Init_Long;
-        optAF_Long = argc > 5 && info[5]->IsNumber() ?  info[5]->NumberValue() : optAF_Long;
-        optAF_Max_Long = argc > 6 && info[6]->IsNumber() ?  info[6]->NumberValue() : optAF_Max_Long;
-        optAF_Init_Short = argc > 7 && info[7]->IsNumber() ?  info[7]->NumberValue() : optAF_Init_Short;
-        optAF_Short = argc > 8 && info[8]->IsNumber() ?  info[8]->NumberValue() : optAF_Short;
-        optAF_Max_Short = argc > 9 && info[9]->IsNumber() ?  info[9]->NumberValue() : optAF_Max_Short;
-        startIdx = argc > 10 && info[10]->IsInt32() ? info[10]->Int32Value() : startIdx;
-        endIdx = argc > 11 && info[11]->IsInt32() ? info[11]->Int32Value() : endIdx;
+        optStart_Value = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue(context).FromJust() : optStart_Value;
+        optOffset_on_Reverse = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue(context).FromJust() : optOffset_on_Reverse;
+        optAF_Init_Long = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue(context).FromJust() : optAF_Init_Long;
+        optAF_Long = argc > 5 && info[5]->IsNumber() ?  info[5]->NumberValue(context).FromJust() : optAF_Long;
+        optAF_Max_Long = argc > 6 && info[6]->IsNumber() ?  info[6]->NumberValue(context).FromJust() : optAF_Max_Long;
+        optAF_Init_Short = argc > 7 && info[7]->IsNumber() ?  info[7]->NumberValue(context).FromJust() : optAF_Init_Short;
+        optAF_Short = argc > 8 && info[8]->IsNumber() ?  info[8]->NumberValue(context).FromJust() : optAF_Short;
+        optAF_Max_Short = argc > 9 && info[9]->IsNumber() ?  info[9]->NumberValue(context).FromJust() : optAF_Max_Short;
+        startIdx = argc > 10 && info[10]->IsInt32() ? info[10]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 11 && info[11]->IsInt32() ? info[11]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optStart_Value = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue() : optStart_Value;
-        optOffset_on_Reverse = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optOffset_on_Reverse;
-        optAF_Init_Long = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optAF_Init_Long;
-        optAF_Long = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue() : optAF_Long;
-        optAF_Max_Long = argc > 5 && info[5]->IsNumber() ?  info[5]->NumberValue() : optAF_Max_Long;
-        optAF_Init_Short = argc > 6 && info[6]->IsNumber() ?  info[6]->NumberValue() : optAF_Init_Short;
-        optAF_Short = argc > 7 && info[7]->IsNumber() ?  info[7]->NumberValue() : optAF_Short;
-        optAF_Max_Short = argc > 8 && info[8]->IsNumber() ?  info[8]->NumberValue() : optAF_Max_Short;
-        startIdx = argc > 9 && info[9]->IsInt32() ? info[9]->Int32Value() : startIdx;
-        endIdx = argc > 10 && info[10]->IsInt32() ? info[10]->Int32Value() : endIdx;
+        optStart_Value = argc > 1 && info[1]->IsNumber() ?  info[1]->NumberValue(context).FromJust() : optStart_Value;
+        optOffset_on_Reverse = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue(context).FromJust() : optOffset_on_Reverse;
+        optAF_Init_Long = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue(context).FromJust() : optAF_Init_Long;
+        optAF_Long = argc > 4 && info[4]->IsNumber() ?  info[4]->NumberValue(context).FromJust() : optAF_Long;
+        optAF_Max_Long = argc > 5 && info[5]->IsNumber() ?  info[5]->NumberValue(context).FromJust() : optAF_Max_Long;
+        optAF_Init_Short = argc > 6 && info[6]->IsNumber() ?  info[6]->NumberValue(context).FromJust() : optAF_Init_Short;
+        optAF_Short = argc > 7 && info[7]->IsNumber() ?  info[7]->NumberValue(context).FromJust() : optAF_Short;
+        optAF_Max_Short = argc > 8 && info[8]->IsNumber() ?  info[8]->NumberValue(context).FromJust() : optAF_Max_Short;
+        startIdx = argc > 9 && info[9]->IsInt32() ? info[9]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 10 && info[10]->IsInt32() ? info[10]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -13031,7 +13168,7 @@ void TA_FUNC_SAREXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -13041,6 +13178,7 @@ void TA_FUNC_SAREXT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_SIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -13052,7 +13190,7 @@ void TA_FUNC_SIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -13065,19 +13203,19 @@ void TA_FUNC_SIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -13112,7 +13250,7 @@ void TA_FUNC_SIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -13121,6 +13259,7 @@ void TA_FUNC_SIN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_SINH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -13132,7 +13271,7 @@ void TA_FUNC_SINH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -13145,19 +13284,19 @@ void TA_FUNC_SINH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -13192,7 +13331,7 @@ void TA_FUNC_SINH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -13201,6 +13340,7 @@ void TA_FUNC_SINH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_SMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -13212,7 +13352,7 @@ void TA_FUNC_SMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -13226,21 +13366,21 @@ void TA_FUNC_SMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -13275,7 +13415,7 @@ void TA_FUNC_SMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -13284,6 +13424,7 @@ void TA_FUNC_SMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_SQRT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -13295,7 +13436,7 @@ void TA_FUNC_SQRT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -13308,19 +13449,19 @@ void TA_FUNC_SQRT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -13355,7 +13496,7 @@ void TA_FUNC_SQRT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -13364,6 +13505,7 @@ void TA_FUNC_SQRT(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_STDDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -13375,7 +13517,7 @@ void TA_FUNC_STDDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -13390,23 +13532,23 @@ void TA_FUNC_STDDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optDeviations = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optDeviations;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        optDeviations = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue(context).FromJust() : optDeviations;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        optDeviations = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optDeviations;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        optDeviations = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue(context).FromJust() : optDeviations;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -13441,7 +13583,7 @@ void TA_FUNC_STDDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -13450,6 +13592,7 @@ void TA_FUNC_STDDEV(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -13458,13 +13601,13 @@ void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outSlowK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outSlowD_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outSlowK_JS);
-        outAll_JS->Set(1, outSlowD_JS);
+        Nan::Set(outAll_JS, 0, outSlowK_JS);
+        Nan::Set(outAll_JS, 1, outSlowD_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -13486,35 +13629,35 @@ void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFastK_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFastK_Period;
-        optSlowK_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSlowK_Period;
-        optSlowK_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optSlowK_MA;
-        optSlowD_Period = argc > 6 && info[6]->IsInt32() ?  info[6]->Int32Value() : optSlowD_Period;
-        optSlowD_MA = argc > 7 && info[7]->IsInt32() ? (TA_MAType)  info[7]->Int32Value() : optSlowD_MA;
-        startIdx = argc > 8 && info[8]->IsInt32() ? info[8]->Int32Value() : startIdx;
-        endIdx = argc > 9 && info[9]->IsInt32() ? info[9]->Int32Value() : endIdx;
+        optFastK_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optFastK_Period;
+        optSlowK_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value(context).FromJust() : optSlowK_Period;
+        optSlowK_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value(context).FromJust() : optSlowK_MA;
+        optSlowD_Period = argc > 6 && info[6]->IsInt32() ?  info[6]->Int32Value(context).FromJust() : optSlowD_Period;
+        optSlowD_MA = argc > 7 && info[7]->IsInt32() ? (TA_MAType)  info[7]->Int32Value(context).FromJust() : optSlowD_MA;
+        startIdx = argc > 8 && info[8]->IsInt32() ? info[8]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 9 && info[9]->IsInt32() ? info[9]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFastK_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFastK_Period;
-        optSlowK_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSlowK_Period;
-        optSlowK_MA = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optSlowK_MA;
-        optSlowD_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSlowD_Period;
-        optSlowD_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optSlowD_MA;
-        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
-        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
+        optFastK_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optFastK_Period;
+        optSlowK_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optSlowK_Period;
+        optSlowK_MA = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value(context).FromJust() : optSlowK_MA;
+        optSlowD_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value(context).FromJust() : optSlowD_Period;
+        optSlowD_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value(context).FromJust() : optSlowD_MA;
+        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -13528,8 +13671,8 @@ void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outSlowK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outSlowD_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outSlowK_JS);
-        outAll_JS->Set(1, outSlowD_JS);
+        Nan::Set(outAll_JS, 0, outSlowK_JS);
+        Nan::Set(outAll_JS, 1, outSlowD_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -13556,11 +13699,11 @@ void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outSlowK_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outSlowD_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(2);
-    outAll_JS->Set(0, outSlowK_JS);
-    outAll_JS->Set(1, outSlowD_JS);
+    Nan::Set(outAll_JS, 0, outSlowK_JS);
+    Nan::Set(outAll_JS, 1, outSlowD_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outSlowK_JS->Set(i, Nan::New<v8::Number>(outSlowK[i]));
-        outSlowD_JS->Set(i, Nan::New<v8::Number>(outSlowD[i]));
+        Nan::Set(outSlowK_JS, i, Nan::New<v8::Number>(outSlowK[i]));
+        Nan::Set(outSlowD_JS, i, Nan::New<v8::Number>(outSlowD[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -13572,6 +13715,7 @@ void TA_FUNC_STOCH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -13580,13 +13724,13 @@ void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outFastK_JS);
-        outAll_JS->Set(1, outFastD_JS);
+        Nan::Set(outAll_JS, 0, outFastK_JS);
+        Nan::Set(outAll_JS, 1, outFastD_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -13606,31 +13750,31 @@ void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFastK_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFastK_Period;
-        optFastD_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optFastD_Period;
-        optFastD_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optFastD_MA;
-        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
-        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
+        optFastK_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optFastK_Period;
+        optFastD_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value(context).FromJust() : optFastD_Period;
+        optFastD_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value(context).FromJust() : optFastD_MA;
+        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFastK_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFastK_Period;
-        optFastD_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFastD_Period;
-        optFastD_MA = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value() : optFastD_MA;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optFastK_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optFastK_Period;
+        optFastD_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optFastD_Period;
+        optFastD_MA = argc > 3 && info[3]->IsInt32() ? (TA_MAType)  info[3]->Int32Value(context).FromJust() : optFastD_MA;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -13644,8 +13788,8 @@ void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outFastK_JS);
-        outAll_JS->Set(1, outFastD_JS);
+        Nan::Set(outAll_JS, 0, outFastK_JS);
+        Nan::Set(outAll_JS, 1, outFastD_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -13672,11 +13816,11 @@ void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(2);
-    outAll_JS->Set(0, outFastK_JS);
-    outAll_JS->Set(1, outFastD_JS);
+    Nan::Set(outAll_JS, 0, outFastK_JS);
+    Nan::Set(outAll_JS, 1, outFastD_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outFastK_JS->Set(i, Nan::New<v8::Number>(outFastK[i]));
-        outFastD_JS->Set(i, Nan::New<v8::Number>(outFastD[i]));
+        Nan::Set(outFastK_JS, i, Nan::New<v8::Number>(outFastK[i]));
+        Nan::Set(outFastD_JS, i, Nan::New<v8::Number>(outFastD[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -13688,6 +13832,7 @@ void TA_FUNC_STOCHF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -13696,13 +13841,13 @@ void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outFastK_JS);
-        outAll_JS->Set(1, outFastD_JS);
+        Nan::Set(outAll_JS, 0, outFastK_JS);
+        Nan::Set(outAll_JS, 1, outFastD_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -13719,27 +13864,27 @@ void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optFastK_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optFastK_Period;
-        optFastD_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFastD_Period;
-        optFastD_MA = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value() : optFastD_MA;
-        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : startIdx;
-        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        optFastK_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optFastK_Period;
+        optFastD_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optFastD_Period;
+        optFastD_MA = argc > 4 && info[4]->IsInt32() ? (TA_MAType)  info[4]->Int32Value(context).FromJust() : optFastD_MA;
+        startIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        optFastK_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFastK_Period;
-        optFastD_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optFastD_Period;
-        optFastD_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value() : optFastD_MA;
-        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
-        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        optFastK_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optFastK_Period;
+        optFastD_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value(context).FromJust() : optFastD_Period;
+        optFastD_MA = argc > 5 && info[5]->IsInt32() ? (TA_MAType)  info[5]->Int32Value(context).FromJust() : optFastD_MA;
+        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -13753,8 +13898,8 @@ void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
         v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
         outAll_JS = Nan::New<v8::Array>(2);
-        outAll_JS->Set(0, outFastK_JS);
-        outAll_JS->Set(1, outFastD_JS);
+        Nan::Set(outAll_JS, 0, outFastK_JS);
+        Nan::Set(outAll_JS, 1, outFastD_JS);
         info.GetReturnValue().Set(outAll_JS);
         return;
     }
@@ -13779,11 +13924,11 @@ void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outFastK_JS = Nan::New<v8::Array>(outLength);
     v8::Local<v8::Array> outFastD_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = Nan::New<v8::Array>(2);
-    outAll_JS->Set(0, outFastK_JS);
-    outAll_JS->Set(1, outFastD_JS);
+    Nan::Set(outAll_JS, 0, outFastK_JS);
+    Nan::Set(outAll_JS, 1, outFastD_JS);
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outFastK_JS->Set(i, Nan::New<v8::Number>(outFastK[i]));
-        outFastD_JS->Set(i, Nan::New<v8::Number>(outFastD[i]));
+        Nan::Set(outFastK_JS, i, Nan::New<v8::Number>(outFastK[i]));
+        Nan::Set(outFastD_JS, i, Nan::New<v8::Number>(outFastD[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -13793,6 +13938,7 @@ void TA_FUNC_STOCHRSI(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_SUB(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -13804,7 +13950,7 @@ void TA_FUNC_SUB(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal0 = new double[inLength];
@@ -13819,22 +13965,22 @@ void TA_FUNC_SUB(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inReal0_JS = v8::Local<v8::Array>::Cast(info[0]);
         v8::Local<v8::Array> inReal1_JS = v8::Local<v8::Array>::Cast(info[1]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal0[i] = inReal0_JS->Get(i)->NumberValue();
-            inReal1[i] = inReal1_JS->Get(i)->NumberValue();
+            inReal0[i] = Nan::Get(inReal0_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inReal1_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inReal0Name = info[1]->ToString();
-        v8::Local<v8::String> inReal1Name = info[2]->ToString();
+        v8::Local<v8::String> inReal0Name = info[1]->ToString(context).ToLocalChecked();;
+        v8::Local<v8::String> inReal1Name = info[2]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal0[i] = inObject->Get(inReal0Name)->NumberValue();
-            inReal1[i] = inObject->Get(inReal1Name)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal0[i] = Nan::Get(inObject, inReal0Name).ToLocalChecked()->NumberValue(context).FromJust();
+            inReal1[i] = Nan::Get(inObject, inReal1Name).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -13870,7 +14016,7 @@ void TA_FUNC_SUB(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal0;
@@ -13880,6 +14026,7 @@ void TA_FUNC_SUB(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_SUM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -13891,7 +14038,7 @@ void TA_FUNC_SUM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -13905,21 +14052,21 @@ void TA_FUNC_SUM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -13954,7 +14101,7 @@ void TA_FUNC_SUM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -13963,6 +14110,7 @@ void TA_FUNC_SUM(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_T3(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -13974,7 +14122,7 @@ void TA_FUNC_T3(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -13989,23 +14137,23 @@ void TA_FUNC_T3(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optVolume_Factor = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optVolume_Factor;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        optVolume_Factor = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue(context).FromJust() : optVolume_Factor;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        optVolume_Factor = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optVolume_Factor;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        optVolume_Factor = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue(context).FromJust() : optVolume_Factor;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -14040,7 +14188,7 @@ void TA_FUNC_T3(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -14049,6 +14197,7 @@ void TA_FUNC_T3(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_TAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -14060,7 +14209,7 @@ void TA_FUNC_TAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -14073,19 +14222,19 @@ void TA_FUNC_TAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -14120,7 +14269,7 @@ void TA_FUNC_TAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -14129,6 +14278,7 @@ void TA_FUNC_TAN(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_TANH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -14140,7 +14290,7 @@ void TA_FUNC_TANH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -14153,19 +14303,19 @@ void TA_FUNC_TANH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -14200,7 +14350,7 @@ void TA_FUNC_TANH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -14209,6 +14359,7 @@ void TA_FUNC_TANH(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_TEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -14220,7 +14371,7 @@ void TA_FUNC_TEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -14234,21 +14385,21 @@ void TA_FUNC_TEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -14283,7 +14434,7 @@ void TA_FUNC_TEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -14292,6 +14443,7 @@ void TA_FUNC_TEMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_TRANGE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -14303,7 +14455,7 @@ void TA_FUNC_TRANGE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -14320,25 +14472,25 @@ void TA_FUNC_TRANGE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -14375,7 +14527,7 @@ void TA_FUNC_TRANGE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -14386,6 +14538,7 @@ void TA_FUNC_TRANGE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_TRIMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -14397,7 +14550,7 @@ void TA_FUNC_TRIMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -14411,21 +14564,21 @@ void TA_FUNC_TRIMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -14460,7 +14613,7 @@ void TA_FUNC_TRIMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -14469,6 +14622,7 @@ void TA_FUNC_TRIMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_TRIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -14480,7 +14634,7 @@ void TA_FUNC_TRIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -14494,21 +14648,21 @@ void TA_FUNC_TRIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -14543,7 +14697,7 @@ void TA_FUNC_TRIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -14552,6 +14706,7 @@ void TA_FUNC_TRIX(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_TSF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -14563,7 +14718,7 @@ void TA_FUNC_TSF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -14577,21 +14732,21 @@ void TA_FUNC_TSF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -14626,7 +14781,7 @@ void TA_FUNC_TSF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -14635,6 +14790,7 @@ void TA_FUNC_TSF(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_TYPPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -14646,7 +14802,7 @@ void TA_FUNC_TYPPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -14663,25 +14819,25 @@ void TA_FUNC_TYPPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -14718,7 +14874,7 @@ void TA_FUNC_TYPPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -14729,6 +14885,7 @@ void TA_FUNC_TYPPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_ULTOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -14740,7 +14897,7 @@ void TA_FUNC_ULTOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -14760,31 +14917,31 @@ void TA_FUNC_ULTOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFirst_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optFirst_Period;
-        optSecond_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value() : optSecond_Period;
-        optThird_Period = argc > 5 && info[5]->IsInt32() ?  info[5]->Int32Value() : optThird_Period;
-        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value() : startIdx;
-        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value() : endIdx;
+        optFirst_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optFirst_Period;
+        optSecond_Period = argc > 4 && info[4]->IsInt32() ?  info[4]->Int32Value(context).FromJust() : optSecond_Period;
+        optThird_Period = argc > 5 && info[5]->IsInt32() ?  info[5]->Int32Value(context).FromJust() : optThird_Period;
+        startIdx = argc > 6 && info[6]->IsInt32() ? info[6]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 7 && info[7]->IsInt32() ? info[7]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optFirst_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optFirst_Period;
-        optSecond_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optSecond_Period;
-        optThird_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optThird_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optFirst_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optFirst_Period;
+        optSecond_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optSecond_Period;
+        optThird_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optThird_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -14821,7 +14978,7 @@ void TA_FUNC_ULTOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -14832,6 +14989,7 @@ void TA_FUNC_ULTOSC(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_VAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -14843,7 +15001,7 @@ void TA_FUNC_VAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -14858,23 +15016,23 @@ void TA_FUNC_VAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        optDeviations = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue() : optDeviations;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        optDeviations = argc > 2 && info[2]->IsNumber() ?  info[2]->NumberValue(context).FromJust() : optDeviations;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        optDeviations = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue() : optDeviations;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        optDeviations = argc > 3 && info[3]->IsNumber() ?  info[3]->NumberValue(context).FromJust() : optDeviations;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -14909,7 +15067,7 @@ void TA_FUNC_VAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -14918,6 +15076,7 @@ void TA_FUNC_VAR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_WCLPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -14929,7 +15088,7 @@ void TA_FUNC_WCLPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -14946,25 +15105,25 @@ void TA_FUNC_WCLPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value() : startIdx;
-        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : endIdx;
+        startIdx = argc > 1 && info[1]->IsInt32() ? info[1]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -15001,7 +15160,7 @@ void TA_FUNC_WCLPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -15012,6 +15171,7 @@ void TA_FUNC_WCLPRICE(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_WILLR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -15023,7 +15183,7 @@ void TA_FUNC_WILLR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inHigh = new double[inLength];
@@ -15041,27 +15201,27 @@ void TA_FUNC_WILLR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         v8::Local<v8::Array> inLow_JS = v8::Local<v8::Array>::Cast(info[1]);
         v8::Local<v8::Array> inClose_JS = v8::Local<v8::Array>::Cast(info[2]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inHigh[i] = inHigh_JS->Get(i)->NumberValue();
-            inLow[i] = inLow_JS->Get(i)->NumberValue();
-            inClose[i] = inClose_JS->Get(i)->NumberValue();
+            inHigh[i] = Nan::Get(inHigh_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inLow_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inClose_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value() : optTime_Period;
-        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : startIdx;
-        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value() : endIdx;
+        optTime_Period = argc > 3 && info[3]->IsInt32() ?  info[3]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 5 && info[5]->IsInt32() ? info[5]->Int32Value(context).FromJust() : endIdx;
     } else {
         v8::Local<v8::String> inHighName = Nan::New("High").ToLocalChecked();
         v8::Local<v8::String> inLowName = Nan::New("Low").ToLocalChecked();
         v8::Local<v8::String> inCloseName = Nan::New("Close").ToLocalChecked();
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inHigh[i] = inObject->Get(inHighName)->NumberValue();
-            inLow[i] = inObject->Get(inLowName)->NumberValue();
-            inClose[i] = inObject->Get(inCloseName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inHigh[i] = Nan::Get(inObject, inHighName).ToLocalChecked()->NumberValue(context).FromJust();
+            inLow[i] = Nan::Get(inObject, inLowName).ToLocalChecked()->NumberValue(context).FromJust();
+            inClose[i] = Nan::Get(inObject, inCloseName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -15098,7 +15258,7 @@ void TA_FUNC_WILLR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inHigh;
@@ -15109,6 +15269,7 @@ void TA_FUNC_WILLR(const Nan::FunctionCallbackInfo<v8::Value> &info) {
 
 
 void TA_FUNC_WMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);
     int inLength = inFirst->Length();
     int outLength = 0;
@@ -15120,7 +15281,7 @@ void TA_FUNC_WMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
         return;
     }
     int firstIsRecord = 0;
-    if (inFirst->Get(0)->IsObject()) {
+    if (Nan::Get(inFirst, 0).ToLocalChecked()->IsObject()) {
         firstIsRecord = 1;
     }
     double *inReal = new double[inLength];
@@ -15134,21 +15295,21 @@ void TA_FUNC_WMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     if (firstIsRecord == 0) {
         v8::Local<v8::Array> inReal_JS = v8::Local<v8::Array>::Cast(info[0]);
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inReal[i] = inReal_JS->Get(i)->NumberValue();
+            inReal[i] = Nan::Get(inReal_JS, i).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value() : optTime_Period;
-        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value() : startIdx;
-        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : endIdx;
+        optTime_Period = argc > 1 && info[1]->IsInt32() ?  info[1]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 2 && info[2]->IsInt32() ? info[2]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : endIdx;
     } else {
-        v8::Local<v8::String> inRealName = info[1]->ToString();
+        v8::Local<v8::String> inRealName = info[1]->ToString(context).ToLocalChecked();;
         v8::Local<v8::Object> inObject;
         for (i = 0; i < (uint32_t) inLength; i++) {
-            inObject = inFirst->Get(i)->ToObject();
-            inReal[i] = inObject->Get(inRealName)->NumberValue();
+            inObject = Nan::Get(inFirst, i).ToLocalChecked()->ToObject(context).ToLocalChecked();
+            inReal[i] = Nan::Get(inObject, inRealName).ToLocalChecked()->NumberValue(context).FromJust();
         }
-        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value() : optTime_Period;
-        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value() : startIdx;
-        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value() : endIdx;
+        optTime_Period = argc > 2 && info[2]->IsInt32() ?  info[2]->Int32Value(context).FromJust() : optTime_Period;
+        startIdx = argc > 3 && info[3]->IsInt32() ? info[3]->Int32Value(context).FromJust() : startIdx;
+        endIdx = argc > 4 && info[4]->IsInt32() ? info[4]->Int32Value(context).FromJust() : endIdx;
     }
     if (startIdx < 0 || endIdx >= inLength || startIdx > endIdx) {
         Nan::ThrowRangeError("`startIdx` or `endIdx` out of range");
@@ -15183,7 +15344,7 @@ void TA_FUNC_WMA(const Nan::FunctionCallbackInfo<v8::Value> &info) {
     v8::Local<v8::Array> outReal_JS = Nan::New<v8::Array>(outLength);
     outAll_JS = outReal_JS;
     for (i = 0; i < (uint32_t) outLength; i++) {
-        outReal_JS->Set(i, Nan::New<v8::Number>(outReal[i]));
+        Nan::Set(outReal_JS, i, Nan::New<v8::Number>(outReal[i]));
     }
     info.GetReturnValue().Set(outAll_JS);
     delete[] inReal;
@@ -15197,178 +15358,178 @@ void Init(v8::Local<v8::Object> exports, v8::Local<v8::Object> module) {
         Nan::ThrowError("TA initialize failed!");
         return;
     }
-    exports->Set(Nan::New("ACCBANDS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ACCBANDS)->GetFunction());
-    exports->Set(Nan::New("ACOS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ACOS)->GetFunction());
-    exports->Set(Nan::New("AD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_AD)->GetFunction());
-    exports->Set(Nan::New("ADD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ADD)->GetFunction());
-    exports->Set(Nan::New("ADOSC").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ADOSC)->GetFunction());
-    exports->Set(Nan::New("ADX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ADX)->GetFunction());
-    exports->Set(Nan::New("ADXR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ADXR)->GetFunction());
-    exports->Set(Nan::New("APO").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_APO)->GetFunction());
-    exports->Set(Nan::New("AROON").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_AROON)->GetFunction());
-    exports->Set(Nan::New("AROONOSC").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_AROONOSC)->GetFunction());
-    exports->Set(Nan::New("ASIN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ASIN)->GetFunction());
-    exports->Set(Nan::New("ATAN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ATAN)->GetFunction());
-    exports->Set(Nan::New("ATR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ATR)->GetFunction());
-    exports->Set(Nan::New("AVGPRICE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_AVGPRICE)->GetFunction());
-    exports->Set(Nan::New("AVGDEV").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_AVGDEV)->GetFunction());
-    exports->Set(Nan::New("BBANDS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_BBANDS)->GetFunction());
-    exports->Set(Nan::New("BETA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_BETA)->GetFunction());
-    exports->Set(Nan::New("BOP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_BOP)->GetFunction());
-    exports->Set(Nan::New("CCI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CCI)->GetFunction());
-    exports->Set(Nan::New("CDL2CROWS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL2CROWS)->GetFunction());
-    exports->Set(Nan::New("CDL3BLACKCROWS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3BLACKCROWS)->GetFunction());
-    exports->Set(Nan::New("CDL3INSIDE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3INSIDE)->GetFunction());
-    exports->Set(Nan::New("CDL3LINESTRIKE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3LINESTRIKE)->GetFunction());
-    exports->Set(Nan::New("CDL3OUTSIDE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3OUTSIDE)->GetFunction());
-    exports->Set(Nan::New("CDL3STARSINSOUTH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3STARSINSOUTH)->GetFunction());
-    exports->Set(Nan::New("CDL3WHITESOLDIERS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3WHITESOLDIERS)->GetFunction());
-    exports->Set(Nan::New("CDLABANDONEDBABY").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLABANDONEDBABY)->GetFunction());
-    exports->Set(Nan::New("CDLADVANCEBLOCK").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLADVANCEBLOCK)->GetFunction());
-    exports->Set(Nan::New("CDLBELTHOLD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLBELTHOLD)->GetFunction());
-    exports->Set(Nan::New("CDLBREAKAWAY").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLBREAKAWAY)->GetFunction());
-    exports->Set(Nan::New("CDLCLOSINGMARUBOZU").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLCLOSINGMARUBOZU)->GetFunction());
-    exports->Set(Nan::New("CDLCONCEALBABYSWALL").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLCONCEALBABYSWALL)->GetFunction());
-    exports->Set(Nan::New("CDLCOUNTERATTACK").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLCOUNTERATTACK)->GetFunction());
-    exports->Set(Nan::New("CDLDARKCLOUDCOVER").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLDARKCLOUDCOVER)->GetFunction());
-    exports->Set(Nan::New("CDLDOJI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLDOJI)->GetFunction());
-    exports->Set(Nan::New("CDLDOJISTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLDOJISTAR)->GetFunction());
-    exports->Set(Nan::New("CDLDRAGONFLYDOJI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLDRAGONFLYDOJI)->GetFunction());
-    exports->Set(Nan::New("CDLENGULFING").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLENGULFING)->GetFunction());
-    exports->Set(Nan::New("CDLEVENINGDOJISTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLEVENINGDOJISTAR)->GetFunction());
-    exports->Set(Nan::New("CDLEVENINGSTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLEVENINGSTAR)->GetFunction());
-    exports->Set(Nan::New("CDLGAPSIDESIDEWHITE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLGAPSIDESIDEWHITE)->GetFunction());
-    exports->Set(Nan::New("CDLGRAVESTONEDOJI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLGRAVESTONEDOJI)->GetFunction());
-    exports->Set(Nan::New("CDLHAMMER").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHAMMER)->GetFunction());
-    exports->Set(Nan::New("CDLHANGINGMAN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHANGINGMAN)->GetFunction());
-    exports->Set(Nan::New("CDLHARAMI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHARAMI)->GetFunction());
-    exports->Set(Nan::New("CDLHARAMICROSS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHARAMICROSS)->GetFunction());
-    exports->Set(Nan::New("CDLHIGHWAVE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHIGHWAVE)->GetFunction());
-    exports->Set(Nan::New("CDLHIKKAKE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHIKKAKE)->GetFunction());
-    exports->Set(Nan::New("CDLHIKKAKEMOD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHIKKAKEMOD)->GetFunction());
-    exports->Set(Nan::New("CDLHOMINGPIGEON").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHOMINGPIGEON)->GetFunction());
-    exports->Set(Nan::New("CDLIDENTICAL3CROWS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLIDENTICAL3CROWS)->GetFunction());
-    exports->Set(Nan::New("CDLINNECK").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLINNECK)->GetFunction());
-    exports->Set(Nan::New("CDLINVERTEDHAMMER").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLINVERTEDHAMMER)->GetFunction());
-    exports->Set(Nan::New("CDLKICKING").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLKICKING)->GetFunction());
-    exports->Set(Nan::New("CDLKICKINGBYLENGTH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLKICKINGBYLENGTH)->GetFunction());
-    exports->Set(Nan::New("CDLLADDERBOTTOM").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLLADDERBOTTOM)->GetFunction());
-    exports->Set(Nan::New("CDLLONGLEGGEDDOJI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLLONGLEGGEDDOJI)->GetFunction());
-    exports->Set(Nan::New("CDLLONGLINE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLLONGLINE)->GetFunction());
-    exports->Set(Nan::New("CDLMARUBOZU").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLMARUBOZU)->GetFunction());
-    exports->Set(Nan::New("CDLMATCHINGLOW").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLMATCHINGLOW)->GetFunction());
-    exports->Set(Nan::New("CDLMATHOLD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLMATHOLD)->GetFunction());
-    exports->Set(Nan::New("CDLMORNINGDOJISTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLMORNINGDOJISTAR)->GetFunction());
-    exports->Set(Nan::New("CDLMORNINGSTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLMORNINGSTAR)->GetFunction());
-    exports->Set(Nan::New("CDLONNECK").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLONNECK)->GetFunction());
-    exports->Set(Nan::New("CDLPIERCING").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLPIERCING)->GetFunction());
-    exports->Set(Nan::New("CDLRICKSHAWMAN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLRICKSHAWMAN)->GetFunction());
-    exports->Set(Nan::New("CDLRISEFALL3METHODS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLRISEFALL3METHODS)->GetFunction());
-    exports->Set(Nan::New("CDLSEPARATINGLINES").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSEPARATINGLINES)->GetFunction());
-    exports->Set(Nan::New("CDLSHOOTINGSTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSHOOTINGSTAR)->GetFunction());
-    exports->Set(Nan::New("CDLSHORTLINE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSHORTLINE)->GetFunction());
-    exports->Set(Nan::New("CDLSPINNINGTOP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSPINNINGTOP)->GetFunction());
-    exports->Set(Nan::New("CDLSTALLEDPATTERN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSTALLEDPATTERN)->GetFunction());
-    exports->Set(Nan::New("CDLSTICKSANDWICH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSTICKSANDWICH)->GetFunction());
-    exports->Set(Nan::New("CDLTAKURI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLTAKURI)->GetFunction());
-    exports->Set(Nan::New("CDLTASUKIGAP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLTASUKIGAP)->GetFunction());
-    exports->Set(Nan::New("CDLTHRUSTING").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLTHRUSTING)->GetFunction());
-    exports->Set(Nan::New("CDLTRISTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLTRISTAR)->GetFunction());
-    exports->Set(Nan::New("CDLUNIQUE3RIVER").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLUNIQUE3RIVER)->GetFunction());
-    exports->Set(Nan::New("CDLUPSIDEGAP2CROWS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLUPSIDEGAP2CROWS)->GetFunction());
-    exports->Set(Nan::New("CDLXSIDEGAP3METHODS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLXSIDEGAP3METHODS)->GetFunction());
-    exports->Set(Nan::New("CEIL").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CEIL)->GetFunction());
-    exports->Set(Nan::New("CMO").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CMO)->GetFunction());
-    exports->Set(Nan::New("CORREL").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CORREL)->GetFunction());
-    exports->Set(Nan::New("COS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_COS)->GetFunction());
-    exports->Set(Nan::New("COSH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_COSH)->GetFunction());
-    exports->Set(Nan::New("DEMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_DEMA)->GetFunction());
-    exports->Set(Nan::New("DIV").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_DIV)->GetFunction());
-    exports->Set(Nan::New("DX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_DX)->GetFunction());
-    exports->Set(Nan::New("EMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_EMA)->GetFunction());
-    exports->Set(Nan::New("EXP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_EXP)->GetFunction());
-    exports->Set(Nan::New("FLOOR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_FLOOR)->GetFunction());
-    exports->Set(Nan::New("HT_DCPERIOD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_DCPERIOD)->GetFunction());
-    exports->Set(Nan::New("HT_DCPHASE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_DCPHASE)->GetFunction());
-    exports->Set(Nan::New("HT_PHASOR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_PHASOR)->GetFunction());
-    exports->Set(Nan::New("HT_SINE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_SINE)->GetFunction());
-    exports->Set(Nan::New("HT_TRENDLINE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_TRENDLINE)->GetFunction());
-    exports->Set(Nan::New("HT_TRENDMODE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_TRENDMODE)->GetFunction());
-    exports->Set(Nan::New("IMI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_IMI)->GetFunction());
-    exports->Set(Nan::New("KAMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_KAMA)->GetFunction());
-    exports->Set(Nan::New("LINEARREG").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LINEARREG)->GetFunction());
-    exports->Set(Nan::New("LINEARREG_ANGLE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LINEARREG_ANGLE)->GetFunction());
-    exports->Set(Nan::New("LINEARREG_INTERCEPT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LINEARREG_INTERCEPT)->GetFunction());
-    exports->Set(Nan::New("LINEARREG_SLOPE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LINEARREG_SLOPE)->GetFunction());
-    exports->Set(Nan::New("LN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LN)->GetFunction());
-    exports->Set(Nan::New("LOG10").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LOG10)->GetFunction());
-    exports->Set(Nan::New("MA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MA)->GetFunction());
-    exports->Set(Nan::New("MACD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MACD)->GetFunction());
-    exports->Set(Nan::New("MACDEXT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MACDEXT)->GetFunction());
-    exports->Set(Nan::New("MACDFIX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MACDFIX)->GetFunction());
-    exports->Set(Nan::New("MAMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MAMA)->GetFunction());
-    exports->Set(Nan::New("MAVP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MAVP)->GetFunction());
-    exports->Set(Nan::New("MAX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MAX)->GetFunction());
-    exports->Set(Nan::New("MAXINDEX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MAXINDEX)->GetFunction());
-    exports->Set(Nan::New("MEDPRICE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MEDPRICE)->GetFunction());
-    exports->Set(Nan::New("MFI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MFI)->GetFunction());
-    exports->Set(Nan::New("MIDPOINT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MIDPOINT)->GetFunction());
-    exports->Set(Nan::New("MIDPRICE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MIDPRICE)->GetFunction());
-    exports->Set(Nan::New("MIN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MIN)->GetFunction());
-    exports->Set(Nan::New("MININDEX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MININDEX)->GetFunction());
-    exports->Set(Nan::New("MINMAX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MINMAX)->GetFunction());
-    exports->Set(Nan::New("MINMAXINDEX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MINMAXINDEX)->GetFunction());
-    exports->Set(Nan::New("MINUS_DI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MINUS_DI)->GetFunction());
-    exports->Set(Nan::New("MINUS_DM").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MINUS_DM)->GetFunction());
-    exports->Set(Nan::New("MOM").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MOM)->GetFunction());
-    exports->Set(Nan::New("MULT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MULT)->GetFunction());
-    exports->Set(Nan::New("NATR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_NATR)->GetFunction());
-    exports->Set(Nan::New("OBV").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_OBV)->GetFunction());
-    exports->Set(Nan::New("PLUS_DI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_PLUS_DI)->GetFunction());
-    exports->Set(Nan::New("PLUS_DM").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_PLUS_DM)->GetFunction());
-    exports->Set(Nan::New("PPO").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_PPO)->GetFunction());
-    exports->Set(Nan::New("ROC").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ROC)->GetFunction());
-    exports->Set(Nan::New("ROCP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ROCP)->GetFunction());
-    exports->Set(Nan::New("ROCR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ROCR)->GetFunction());
-    exports->Set(Nan::New("ROCR100").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ROCR100)->GetFunction());
-    exports->Set(Nan::New("RSI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_RSI)->GetFunction());
-    exports->Set(Nan::New("SAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SAR)->GetFunction());
-    exports->Set(Nan::New("SAREXT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SAREXT)->GetFunction());
-    exports->Set(Nan::New("SIN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SIN)->GetFunction());
-    exports->Set(Nan::New("SINH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SINH)->GetFunction());
-    exports->Set(Nan::New("SMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SMA)->GetFunction());
-    exports->Set(Nan::New("SQRT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SQRT)->GetFunction());
-    exports->Set(Nan::New("STDDEV").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_STDDEV)->GetFunction());
-    exports->Set(Nan::New("STOCH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_STOCH)->GetFunction());
-    exports->Set(Nan::New("STOCHF").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_STOCHF)->GetFunction());
-    exports->Set(Nan::New("STOCHRSI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_STOCHRSI)->GetFunction());
-    exports->Set(Nan::New("SUB").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SUB)->GetFunction());
-    exports->Set(Nan::New("SUM").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SUM)->GetFunction());
-    exports->Set(Nan::New("T3").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_T3)->GetFunction());
-    exports->Set(Nan::New("TAN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TAN)->GetFunction());
-    exports->Set(Nan::New("TANH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TANH)->GetFunction());
-    exports->Set(Nan::New("TEMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TEMA)->GetFunction());
-    exports->Set(Nan::New("TRANGE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TRANGE)->GetFunction());
-    exports->Set(Nan::New("TRIMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TRIMA)->GetFunction());
-    exports->Set(Nan::New("TRIX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TRIX)->GetFunction());
-    exports->Set(Nan::New("TSF").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TSF)->GetFunction());
-    exports->Set(Nan::New("TYPPRICE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TYPPRICE)->GetFunction());
-    exports->Set(Nan::New("ULTOSC").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ULTOSC)->GetFunction());
-    exports->Set(Nan::New("VAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_VAR)->GetFunction());
-    exports->Set(Nan::New("WCLPRICE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_WCLPRICE)->GetFunction());
-    exports->Set(Nan::New("WILLR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_WILLR)->GetFunction());
-    exports->Set(Nan::New("WMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_WMA)->GetFunction());
+    Nan::Set(exports, Nan::New("ACCBANDS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ACCBANDS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ACOS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ACOS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("AD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_AD)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ADD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ADD)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ADOSC").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ADOSC)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ADX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ADX)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ADXR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ADXR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("APO").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_APO)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("AROON").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_AROON)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("AROONOSC").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_AROONOSC)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ASIN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ASIN)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ATAN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ATAN)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ATR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ATR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("AVGPRICE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_AVGPRICE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("AVGDEV").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_AVGDEV)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("BBANDS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_BBANDS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("BETA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_BETA)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("BOP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_BOP)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CCI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CCI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDL2CROWS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL2CROWS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDL3BLACKCROWS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3BLACKCROWS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDL3INSIDE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3INSIDE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDL3LINESTRIKE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3LINESTRIKE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDL3OUTSIDE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3OUTSIDE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDL3STARSINSOUTH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3STARSINSOUTH)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDL3WHITESOLDIERS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDL3WHITESOLDIERS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLABANDONEDBABY").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLABANDONEDBABY)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLADVANCEBLOCK").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLADVANCEBLOCK)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLBELTHOLD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLBELTHOLD)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLBREAKAWAY").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLBREAKAWAY)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLCLOSINGMARUBOZU").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLCLOSINGMARUBOZU)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLCONCEALBABYSWALL").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLCONCEALBABYSWALL)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLCOUNTERATTACK").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLCOUNTERATTACK)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLDARKCLOUDCOVER").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLDARKCLOUDCOVER)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLDOJI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLDOJI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLDOJISTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLDOJISTAR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLDRAGONFLYDOJI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLDRAGONFLYDOJI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLENGULFING").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLENGULFING)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLEVENINGDOJISTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLEVENINGDOJISTAR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLEVENINGSTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLEVENINGSTAR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLGAPSIDESIDEWHITE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLGAPSIDESIDEWHITE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLGRAVESTONEDOJI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLGRAVESTONEDOJI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLHAMMER").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHAMMER)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLHANGINGMAN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHANGINGMAN)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLHARAMI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHARAMI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLHARAMICROSS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHARAMICROSS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLHIGHWAVE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHIGHWAVE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLHIKKAKE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHIKKAKE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLHIKKAKEMOD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHIKKAKEMOD)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLHOMINGPIGEON").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLHOMINGPIGEON)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLIDENTICAL3CROWS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLIDENTICAL3CROWS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLINNECK").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLINNECK)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLINVERTEDHAMMER").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLINVERTEDHAMMER)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLKICKING").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLKICKING)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLKICKINGBYLENGTH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLKICKINGBYLENGTH)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLLADDERBOTTOM").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLLADDERBOTTOM)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLLONGLEGGEDDOJI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLLONGLEGGEDDOJI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLLONGLINE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLLONGLINE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLMARUBOZU").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLMARUBOZU)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLMATCHINGLOW").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLMATCHINGLOW)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLMATHOLD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLMATHOLD)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLMORNINGDOJISTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLMORNINGDOJISTAR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLMORNINGSTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLMORNINGSTAR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLONNECK").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLONNECK)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLPIERCING").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLPIERCING)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLRICKSHAWMAN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLRICKSHAWMAN)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLRISEFALL3METHODS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLRISEFALL3METHODS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLSEPARATINGLINES").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSEPARATINGLINES)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLSHOOTINGSTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSHOOTINGSTAR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLSHORTLINE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSHORTLINE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLSPINNINGTOP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSPINNINGTOP)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLSTALLEDPATTERN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSTALLEDPATTERN)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLSTICKSANDWICH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLSTICKSANDWICH)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLTAKURI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLTAKURI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLTASUKIGAP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLTASUKIGAP)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLTHRUSTING").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLTHRUSTING)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLTRISTAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLTRISTAR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLUNIQUE3RIVER").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLUNIQUE3RIVER)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLUPSIDEGAP2CROWS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLUPSIDEGAP2CROWS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CDLXSIDEGAP3METHODS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CDLXSIDEGAP3METHODS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CEIL").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CEIL)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CMO").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CMO)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("CORREL").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_CORREL)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("COS").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_COS)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("COSH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_COSH)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("DEMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_DEMA)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("DIV").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_DIV)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("DX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_DX)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("EMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_EMA)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("EXP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_EXP)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("FLOOR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_FLOOR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("HT_DCPERIOD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_DCPERIOD)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("HT_DCPHASE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_DCPHASE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("HT_PHASOR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_PHASOR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("HT_SINE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_SINE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("HT_TRENDLINE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_TRENDLINE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("HT_TRENDMODE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_HT_TRENDMODE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("IMI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_IMI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("KAMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_KAMA)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("LINEARREG").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LINEARREG)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("LINEARREG_ANGLE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LINEARREG_ANGLE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("LINEARREG_INTERCEPT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LINEARREG_INTERCEPT)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("LINEARREG_SLOPE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LINEARREG_SLOPE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("LN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LN)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("LOG10").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_LOG10)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MA)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MACD").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MACD)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MACDEXT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MACDEXT)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MACDFIX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MACDFIX)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MAMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MAMA)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MAVP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MAVP)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MAX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MAX)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MAXINDEX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MAXINDEX)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MEDPRICE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MEDPRICE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MFI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MFI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MIDPOINT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MIDPOINT)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MIDPRICE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MIDPRICE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MIN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MIN)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MININDEX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MININDEX)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MINMAX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MINMAX)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MINMAXINDEX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MINMAXINDEX)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MINUS_DI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MINUS_DI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MINUS_DM").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MINUS_DM)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MOM").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MOM)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("MULT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_MULT)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("NATR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_NATR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("OBV").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_OBV)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("PLUS_DI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_PLUS_DI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("PLUS_DM").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_PLUS_DM)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("PPO").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_PPO)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ROC").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ROC)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ROCP").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ROCP)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ROCR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ROCR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ROCR100").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ROCR100)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("RSI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_RSI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("SAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SAR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("SAREXT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SAREXT)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("SIN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SIN)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("SINH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SINH)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("SMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SMA)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("SQRT").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SQRT)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("STDDEV").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_STDDEV)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("STOCH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_STOCH)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("STOCHF").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_STOCHF)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("STOCHRSI").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_STOCHRSI)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("SUB").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SUB)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("SUM").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_SUM)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("T3").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_T3)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("TAN").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TAN)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("TANH").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TANH)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("TEMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TEMA)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("TRANGE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TRANGE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("TRIMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TRIMA)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("TRIX").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TRIX)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("TSF").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TSF)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("TYPPRICE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_TYPPRICE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("ULTOSC").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_ULTOSC)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("VAR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_VAR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("WCLPRICE").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_WCLPRICE)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("WILLR").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_WILLR)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    Nan::Set(exports, Nan::New("WMA").ToLocalChecked(), Nan::New<v8::FunctionTemplate>(TA_FUNC_WMA)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
     v8::Local<v8::Object> MATypes = Nan::New<v8::Object>();
-    MATypes->Set(Nan::New("SMA").ToLocalChecked(), Nan::New<v8::Number>(0));
-    MATypes->Set(Nan::New("EMA").ToLocalChecked(), Nan::New<v8::Number>(1));
-    MATypes->Set(Nan::New("WMA").ToLocalChecked(), Nan::New<v8::Number>(2));
-    MATypes->Set(Nan::New("DEMA").ToLocalChecked(), Nan::New<v8::Number>(3));
-    MATypes->Set(Nan::New("TEMA").ToLocalChecked(), Nan::New<v8::Number>(4));
-    MATypes->Set(Nan::New("TRIMA").ToLocalChecked(), Nan::New<v8::Number>(5));
-    MATypes->Set(Nan::New("KAMA").ToLocalChecked(), Nan::New<v8::Number>(6));
-    MATypes->Set(Nan::New("MAMA").ToLocalChecked(), Nan::New<v8::Number>(7));
-    MATypes->Set(Nan::New("T3").ToLocalChecked(), Nan::New<v8::Number>(8));
-    exports->Set(Nan::New("MATypes").ToLocalChecked(), MATypes);
+    Nan::Set(MATypes, Nan::New("SMA").ToLocalChecked(), Nan::New<v8::Number>(0));
+    Nan::Set(MATypes, Nan::New("EMA").ToLocalChecked(), Nan::New<v8::Number>(1));
+    Nan::Set(MATypes, Nan::New("WMA").ToLocalChecked(), Nan::New<v8::Number>(2));
+    Nan::Set(MATypes, Nan::New("DEMA").ToLocalChecked(), Nan::New<v8::Number>(3));
+    Nan::Set(MATypes, Nan::New("TEMA").ToLocalChecked(), Nan::New<v8::Number>(4));
+    Nan::Set(MATypes, Nan::New("TRIMA").ToLocalChecked(), Nan::New<v8::Number>(5));
+    Nan::Set(MATypes, Nan::New("KAMA").ToLocalChecked(), Nan::New<v8::Number>(6));
+    Nan::Set(MATypes, Nan::New("MAMA").ToLocalChecked(), Nan::New<v8::Number>(7));
+    Nan::Set(MATypes, Nan::New("T3").ToLocalChecked(), Nan::New<v8::Number>(8));
+    Nan::Set(exports, Nan::New("MATypes").ToLocalChecked(), MATypes);
 }
 
 NODE_MODULE(talib_binding, Init)
