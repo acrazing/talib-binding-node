@@ -365,9 +365,8 @@ export function generateBindings({ _ }: Arguments) {
       .indent(
         "v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();"
       )
-      .normal(
-        "v8::Local<v8::Array> inFirst = v8::Local<v8::Array>::Cast(info[0]);"
-      )
+      .normal("if (!info[0]->IsArray()) { Nan::ThrowTypeError(\"Argument 0 must be an array\"); return; }")
+      .normal("v8::Local<v8::Array> inFirst = info[0].As<v8::Array>();")
       // input length
       .normal("int inLength = inFirst->Length();")
       // output length
@@ -411,9 +410,14 @@ export function generateBindings({ _ }: Arguments) {
       .normal("if (firstIsRecord == 0) {")
       .indent(
         ...required.map((argv, index) => {
+          return `if (!info[${index}]->IsArray()) { Nan::ThrowTypeError("Argument ${index} must be an array"); return; }`;
+        })
+      )
+      .indent(
+        ...required.map((argv, index) => {
           return `v8::Local<v8::Array> ${jsInName(
             argv
-          )} = v8::Local<v8::Array>::Cast(info[${index}]);`;
+          )} = info[${index}].As<v8::Array>();`;
         })
       )
       // init required
